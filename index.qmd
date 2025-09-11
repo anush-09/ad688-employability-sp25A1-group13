@@ -1,0 +1,47 @@
+---
+title: "Group 13 –  Business Analytics, Data Science and Machine Learning Trends"
+author: "Anu Sharma, Cindy Guzman, Gavin Boss" 
+date: "2025-09-10"  
+format: html  
+execute:
+
+ echo: true
+ eval: false
+ code-fold: true
+
+---
+# Data-Driven Career Analysis: Evaluating Personal Job Market Prospects in 2024
+
+**Rationale:**
+The field of data science, business analytics and machine learning
+has been growing very rapidly in the past few years due to increase in
+use of artificial intelligence and automation across sectors. With this
+emergence of new tools and platforms, companies are constantly 
+updating their hiring criteria. Now more than before, job roles are 
+asking for specific skillsets including both technical and analytical 
+abilities. Therefore, it is important to understand what skills are 
+most in-demand at present, how job descriptions have changed in 
+recent times and which job industries are offering the most opportunities
+in these domain. 
+
+**Literature Review:**
+Recent studies are showing that employers are now giving more importance
+to skill-based hiring especially in data-related roles. Bone et al. (2023)
+found that in AI-related job postings, the need for formal degrees is 
+slowly reducing while practical skills like machine learning and NLP are 
+becoming more valued. Mäkelä and Stephany (2024) also pointed out that 
+roles demanding AI expertise now also look for soft skills like 
+adaptability and teamwork showing that a balance of technical and human
+skills is becoming necessary. These findings suggest that job descriptions
+are evolving to reflect this shift in priorities.
+
+Further, our study reveals that hiring is strong in technology, 
+healthcare and financial sectors where the use of data is becoming highly 
+critical. These trends clearly indicates that both education and job markets
+must keep evolving to stay aligned with real-world demands.
+
+**Sources:**
+
+1.	Skills or Degree? The Rise of Skill Based Hiring for AI and Green Jobs — Matthew Bone, Eugenia Ehlinger, Fabian Stephany.
+
+2.	Complement or substitute? How AI increases the demand for human skills — Elina Mäkelä & Fabian Stephany.
