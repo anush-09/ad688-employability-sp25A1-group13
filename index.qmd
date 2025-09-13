@@ -8,9 +8,9 @@ bibliography: references.bib
 csl: csl/econometrica.csl
 
 
- echo: true
- eval: false
- code-fold: true
+echo: true
+eval: false
+code-fold: true
 
 ---
 # Data-Driven Career Analysis: Evaluating Personal Job Market Prospects in 2024
