@@ -13,9 +13,8 @@ website:
 
 format:
   html:
-    theme:
-      - lumen
-      - brand
+    theme: lux
+    fontsize: 1.1em
     css: styles.css
     toc: true
 
