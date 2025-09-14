@@ -30,36 +30,36 @@
   {
     "objectID": "data_analysis.html",
     "href": "data_analysis.html",
-    "title": "Data Analysis",
+    "title": "Data Cleaning & Rationale",
     "section": "",
-    "text": "title: “Data Cleaning & Rationale” format: html —"
+    "text": "In this section, we outline key decisions made during the data preprocessing phase, focusing on column relevance, code redundancy, and the impact on downstream analysis.\n\n\n\nAfter reviewing the dataset, we identified several columns that were either:\n\nIrrelevant to our analysis goals (e.g., internal IDs, timestamps not tied to labor trends)\nRedundant due to duplication or overlapping information\n\n\n\n\nrecord_id, submission_timestamp: Metadata not used in analysis\nnaics_code_2017, naics_code_2022: Multiple versions of the same classification system\nsoc_code_2010, soc_code_2018: Legacy codes that overlap with updated versions\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nNAICS (North American Industry Classification System) and SOC (Standard Occupational Classification) codes are updated periodically. Including multiple versions introduces: - Redundancy - Confusion in grouping industries or occupations - Risk of double-counting or misalignment in trend analysis\n\n\nWe retained only the most recent version of each code to ensure consistency and relevance to 2024 labor market trends.\n\n\n\n\nCleaning the dataset in this way improves our analysis by:\n\nReducing noise: Fewer columns means clearer signals\nImproving interpretability: Analysts and readers can focus on current classifications\nEnhancing visualizations: Charts and tables are easier to read and more meaningful\nEnsuring consistency: Aligns with external sources like Lightcast and BLS data\n\n\n\n\n\nWith a cleaner dataset, we’re now ready to explore key workforce themes—such as AI-driven job growth, salary disparities, and gender-based employment patterns—using reliable, streamlined data."
   },
   {
     "objectID": "data_analysis.html#identifying-irrelevant-or-redundant-columns",
     "href": "data_analysis.html#identifying-irrelevant-or-redundant-columns",
-    "title": "Data Analysis",
-    "section": "1.1 Identifying Irrelevant or Redundant Columns",
-    "text": "1.1 Identifying Irrelevant or Redundant Columns\nAfter reviewing the dataset, we identified several columns that were either:\n\nIrrelevant to our analysis goals (e.g., internal IDs, timestamps not tied to labor trends)\nRedundant due to duplication or overlapping information\n\n\n1.1.1 Examples of Columns Removed:\n\nrecord_id, submission_timestamp: Metadata not used in analysis\nnaics_code_2017, naics_code_2022: Multiple versions of the same classification system\nsoc_code_2010, soc_code_2018: Legacy codes that overlap with updated versions"
+    "title": "Data Cleaning & Rationale",
+    "section": "",
+    "text": "After reviewing the dataset, we identified several columns that were either:\n\nIrrelevant to our analysis goals (e.g., internal IDs, timestamps not tied to labor trends)\nRedundant due to duplication or overlapping information\n\n\n\n\nrecord_id, submission_timestamp: Metadata not used in analysis\nnaics_code_2017, naics_code_2022: Multiple versions of the same classification system\nsoc_code_2010, soc_code_2018: Legacy codes that overlap with updated versions"
   },
   {
     "objectID": "data_analysis.html#why-remove-multiple-versions-of-naicssoc-codes",
     "href": "data_analysis.html#why-remove-multiple-versions-of-naicssoc-codes",
-    "title": "Data Analysis",
-    "section": "1.2 Why Remove Multiple Versions of NAICS/SOC Codes?",
-    "text": "1.2 Why Remove Multiple Versions of NAICS/SOC Codes?\n\n\n\n\n\n\nNote\n\n\n\nNAICS (North American Industry Classification System) and SOC (Standard Occupational Classification) codes are updated periodically. Including multiple versions introduces: - Redundancy - Confusion in grouping industries or occupations - Risk of double-counting or misalignment in trend analysis\n\n\nWe retained only the most recent version of each code to ensure consistency and relevance to 2024 labor market trends."
+    "title": "Data Cleaning & Rationale",
+    "section": "",
+    "text": "Note\n\n\n\nNAICS (North American Industry Classification System) and SOC (Standard Occupational Classification) codes are updated periodically. Including multiple versions introduces: - Redundancy - Confusion in grouping industries or occupations - Risk of double-counting or misalignment in trend analysis\n\n\nWe retained only the most recent version of each code to ensure consistency and relevance to 2024 labor market trends."
   },
   {
     "objectID": "data_analysis.html#how-this-improves-analysis",
     "href": "data_analysis.html#how-this-improves-analysis",
-    "title": "Data Analysis",
-    "section": "1.3 How This Improves Analysis",
-    "text": "1.3 How This Improves Analysis\nCleaning the dataset in this way improves our analysis by:\n\nReducing noise: Fewer columns means clearer signals\nImproving interpretability: Analysts and readers can focus on current classifications\nEnhancing visualizations: Charts and tables are easier to read and more meaningful\nEnsuring consistency: Aligns with external sources like Lightcast and BLS data"
+    "title": "Data Cleaning & Rationale",
+    "section": "",
+    "text": "Cleaning the dataset in this way improves our analysis by:\n\nReducing noise: Fewer columns means clearer signals\nImproving interpretability: Analysts and readers can focus on current classifications\nEnhancing visualizations: Charts and tables are easier to read and more meaningful\nEnsuring consistency: Aligns with external sources like Lightcast and BLS data"
   },
   {
     "objectID": "data_analysis.html#next-steps",
     "href": "data_analysis.html#next-steps",
-    "title": "Data Analysis",
-    "section": "1.4 Next Steps",
-    "text": "1.4 Next Steps\nWith a cleaner dataset, we’re now ready to explore key workforce themes—such as AI-driven job growth, salary disparities, and gender-based employment patterns—using reliable, streamlined data."
+    "title": "Data Cleaning & Rationale",
+    "section": "",
+    "text": "With a cleaner dataset, we’re now ready to explore key workforce themes—such as AI-driven job growth, salary disparities, and gender-based employment patterns—using reliable, streamlined data."
   }
 ]
