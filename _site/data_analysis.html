@@ -8,7 +8,7 @@
 
 <meta name="author" content="Anu Sharma, Cindy Guzman, Gavin Boss">
 
-<title>Data Analysis – ad688-employability-sp25A1-group13</title>
+<title>Data Cleaning &amp; Rationale – ad688-employability-sp25A1-group13</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -121,15 +121,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-cleaning-overview" id="toc-data-cleaning-overview" class="nav-link active" data-scroll-target="#data-cleaning-overview"><span class="header-section-number">1</span> Data Cleaning Overview</a>
+  <li><a href="#data-cleaning-overview" id="toc-data-cleaning-overview" class="nav-link active" data-scroll-target="#data-cleaning-overview">Data Cleaning Overview</a>
   <ul class="collapse">
-  <li><a href="#identifying-irrelevant-or-redundant-columns" id="toc-identifying-irrelevant-or-redundant-columns" class="nav-link" data-scroll-target="#identifying-irrelevant-or-redundant-columns"><span class="header-section-number">1.1</span> Identifying Irrelevant or Redundant Columns</a>
+  <li><a href="#identifying-irrelevant-or-redundant-columns" id="toc-identifying-irrelevant-or-redundant-columns" class="nav-link" data-scroll-target="#identifying-irrelevant-or-redundant-columns">Identifying Irrelevant or Redundant Columns</a>
   <ul class="collapse">
-  <li><a href="#examples-of-columns-removed" id="toc-examples-of-columns-removed" class="nav-link" data-scroll-target="#examples-of-columns-removed"><span class="header-section-number">1.1.1</span> Examples of Columns Removed:</a></li>
+  <li><a href="#examples-of-columns-removed" id="toc-examples-of-columns-removed" class="nav-link" data-scroll-target="#examples-of-columns-removed">Examples of Columns Removed:</a></li>
   </ul></li>
-  <li><a href="#why-remove-multiple-versions-of-naicssoc-codes" id="toc-why-remove-multiple-versions-of-naicssoc-codes" class="nav-link" data-scroll-target="#why-remove-multiple-versions-of-naicssoc-codes"><span class="header-section-number">1.2</span> Why Remove Multiple Versions of NAICS/SOC Codes?</a></li>
-  <li><a href="#how-this-improves-analysis" id="toc-how-this-improves-analysis" class="nav-link" data-scroll-target="#how-this-improves-analysis"><span class="header-section-number">1.3</span> How This Improves Analysis</a></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps"><span class="header-section-number">1.4</span> Next Steps</a></li>
+  <li><a href="#why-remove-multiple-versions-of-naicssoc-codes" id="toc-why-remove-multiple-versions-of-naicssoc-codes" class="nav-link" data-scroll-target="#why-remove-multiple-versions-of-naicssoc-codes">Why Remove Multiple Versions of NAICS/SOC Codes?</a></li>
+  <li><a href="#how-this-improves-analysis" id="toc-how-this-improves-analysis" class="nav-link" data-scroll-target="#how-this-improves-analysis">How This Improves Analysis</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -139,7 +139,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Analysis</h1>
+<h1 class="title">Data Cleaning &amp; Rationale</h1>
 <p class="subtitle lead">Comprehensive Data Cleaning &amp; Exploratory Analysis of Job Market Trends</p>
 </div>
 
@@ -170,20 +170,19 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>title: “Data Cleaning &amp; Rationale” format: html —</p>
-<section id="data-cleaning-overview" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Data Cleaning Overview</h1>
+<section id="data-cleaning-overview" class="level1">
+<h1>Data Cleaning Overview</h1>
 <p>In this section, we outline key decisions made during the data preprocessing phase, focusing on column relevance, code redundancy, and the impact on downstream analysis.</p>
 <hr>
-<section id="identifying-irrelevant-or-redundant-columns" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="identifying-irrelevant-or-redundant-columns"><span class="header-section-number">1.1</span> Identifying Irrelevant or Redundant Columns</h2>
+<section id="identifying-irrelevant-or-redundant-columns" class="level2">
+<h2 class="anchored" data-anchor-id="identifying-irrelevant-or-redundant-columns">Identifying Irrelevant or Redundant Columns</h2>
 <p>After reviewing the dataset, we identified several columns that were either:</p>
 <ul>
 <li><strong>Irrelevant</strong> to our analysis goals (e.g., internal IDs, timestamps not tied to labor trends)</li>
 <li><strong>Redundant</strong> due to duplication or overlapping information</li>
 </ul>
-<section id="examples-of-columns-removed" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="examples-of-columns-removed"><span class="header-section-number">1.1.1</span> Examples of Columns Removed:</h3>
+<section id="examples-of-columns-removed" class="level3">
+<h3 class="anchored" data-anchor-id="examples-of-columns-removed">Examples of Columns Removed:</h3>
 <ul>
 <li><code>record_id</code>, <code>submission_timestamp</code>: Metadata not used in analysis</li>
 <li><code>naics_code_2017</code>, <code>naics_code_2022</code>: Multiple versions of the same classification system</li>
@@ -192,8 +191,8 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 </section>
 </section>
-<section id="why-remove-multiple-versions-of-naicssoc-codes" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="why-remove-multiple-versions-of-naicssoc-codes"><span class="header-section-number">1.2</span> Why Remove Multiple Versions of NAICS/SOC Codes?</h2>
+<section id="why-remove-multiple-versions-of-naicssoc-codes" class="level2">
+<h2 class="anchored" data-anchor-id="why-remove-multiple-versions-of-naicssoc-codes">Why Remove Multiple Versions of NAICS/SOC Codes?</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -210,8 +209,8 @@ Note
 <p>We retained only the <strong>most recent version</strong> of each code to ensure consistency and relevance to 2024 labor market trends.</p>
 <hr>
 </section>
-<section id="how-this-improves-analysis" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="how-this-improves-analysis"><span class="header-section-number">1.3</span> How This Improves Analysis</h2>
+<section id="how-this-improves-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="how-this-improves-analysis">How This Improves Analysis</h2>
 <p>Cleaning the dataset in this way improves our analysis by:</p>
 <ul>
 <li><strong>Reducing noise</strong>: Fewer columns means clearer signals</li>
@@ -221,8 +220,8 @@ Note
 </ul>
 <hr>
 </section>
-<section id="next-steps" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="next-steps"><span class="header-section-number">1.4</span> Next Steps</h2>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
 <p>With a cleaner dataset, we’re now ready to explore key workforce themes—such as AI-driven job growth, salary disparities, and gender-based employment patterns—using reliable, streamlined data.</p>
 
 
