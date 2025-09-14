@@ -8,7 +8,7 @@ author:
         name: Boston University
         city: Boston
         state: MA
-  - name: John Hamm
+  - name: 
     affiliations:
       - ref: bu
 bibliography: references.bib
