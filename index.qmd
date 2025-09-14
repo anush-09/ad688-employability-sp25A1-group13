@@ -33,7 +33,7 @@ in these domain.
 
 ## Literature Review
 Recent studies are showing that employers are now giving more importance
-to skill-based hiring especially in data-related roles. @bone2025skills
+to skill-based hiring especially in data-related roles. [@bone2025skills]
 found that in AI-related job postings, the need for formal degrees is 
 slowly reducing while practical skills like machine learning and NLP are 
 becoming more valued. [@makela2024complement] also pointed out that 
