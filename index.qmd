@@ -1,5 +1,5 @@
 ---
-title: "Group 13 – Business Analytics, Data Science and Machine Learning Trends"
+title: "Business Analytics, Data Science and Machine Learning Trends"
 author: "Anu Sharma, Cindy Guzman, Gavin Boss"
 date: "2025-09-10"
 format:
