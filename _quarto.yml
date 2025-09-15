@@ -1,6 +1,7 @@
 project:
   type: website
-
+  output-dir: docs
+  
 website:
   title: "ad688-employability-sp25A1-group13"
   navbar:
