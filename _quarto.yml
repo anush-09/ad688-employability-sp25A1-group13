@@ -10,7 +10,8 @@ website:
         text: Home
       - href: data_analysis.qmd
         text: Data Analysis
-      - about.qmd
+      - href: about.qmd
+        text: About 
 
 format:
   html:
