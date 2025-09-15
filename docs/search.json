@@ -1,5 +1,26 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "section": "",
+    "text": "The field of data science, business analytics and machine learning has been growing very rapidly in the past few years due to increase in use of artificial intelligence and automation across sectors. With this emergence of new tools and platforms, companies are constantly updating their hiring criteria. Now more than before, job roles are asking for specific skillsets including both technical and analytical abilities. Therefore, it is important to understand what skills are most in-demand at present, how job descriptions have changed in recent times and which job industries are offering the most opportunities in these domain.\n\n\n\nRecent studies are showing that employers are now giving more importance to skill-based hiring especially in data-related roles. (Bone, Ehlinger, and Stephany (2025)) found that in AI-related job postings, the need for formal degrees is slowly reducing while practical skills like machine learning and NLP are becoming more valued. (Mäkelä and Stephany (2024)) also pointed out that roles demanding AI expertise now also look for soft skills like adaptability and teamwork showing that a balance of technical and human skills is becoming necessary. These findings suggest that job descriptions are evolving to reflect this shift in priorities.\nFurther, our study reveals that hiring is strong in technology, healthcare and financial sectors where the use of data is becoming highly critical. These trends clearly indicates that both education and job markets must keep evolving to stay aligned with real-world demands."
+  },
+  {
+    "objectID": "index.html#rationale",
+    "href": "index.html#rationale",
+    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "section": "",
+    "text": "The field of data science, business analytics and machine learning has been growing very rapidly in the past few years due to increase in use of artificial intelligence and automation across sectors. With this emergence of new tools and platforms, companies are constantly updating their hiring criteria. Now more than before, job roles are asking for specific skillsets including both technical and analytical abilities. Therefore, it is important to understand what skills are most in-demand at present, how job descriptions have changed in recent times and which job industries are offering the most opportunities in these domain."
+  },
+  {
+    "objectID": "index.html#literature-review",
+    "href": "index.html#literature-review",
+    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "section": "",
+    "text": "Recent studies are showing that employers are now giving more importance to skill-based hiring especially in data-related roles. (Bone, Ehlinger, and Stephany (2025)) found that in AI-related job postings, the need for formal degrees is slowly reducing while practical skills like machine learning and NLP are becoming more valued. (Mäkelä and Stephany (2024)) also pointed out that roles demanding AI expertise now also look for soft skills like adaptability and teamwork showing that a balance of technical and human skills is becoming necessary. These findings suggest that job descriptions are evolving to reflect this shift in priorities.\nFurther, our study reveals that hiring is strong in technology, healthcare and financial sectors where the use of data is becoming highly critical. These trends clearly indicates that both education and job markets must keep evolving to stay aligned with real-world demands."
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -40,26 +61,5 @@
     "title": "Data Cleaning & Rationale",
     "section": "",
     "text": "With a cleaner dataset, we’re now ready to explore key workforce themes—such as AI-driven job growth, salary disparities, and gender-based employment patterns—using reliable, streamlined data."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
-    "section": "",
-    "text": "The field of data science, business analytics and machine learning has been growing very rapidly in the past few years due to increase in use of artificial intelligence and automation across sectors. With this emergence of new tools and platforms, companies are constantly updating their hiring criteria. Now more than before, job roles are asking for specific skillsets including both technical and analytical abilities. Therefore, it is important to understand what skills are most in-demand at present, how job descriptions have changed in recent times and which job industries are offering the most opportunities in these domain.\n\n\n\nRecent studies are showing that employers are now giving more importance to skill-based hiring especially in data-related roles. (Bone, Ehlinger, and Stephany (2025)) found that in AI-related job postings, the need for formal degrees is slowly reducing while practical skills like machine learning and NLP are becoming more valued. (Mäkelä and Stephany (2024)) also pointed out that roles demanding AI expertise now also look for soft skills like adaptability and teamwork showing that a balance of technical and human skills is becoming necessary. These findings suggest that job descriptions are evolving to reflect this shift in priorities.\nFurther, our study reveals that hiring is strong in technology, healthcare and financial sectors where the use of data is becoming highly critical. These trends clearly indicates that both education and job markets must keep evolving to stay aligned with real-world demands."
-  },
-  {
-    "objectID": "index.html#rationale",
-    "href": "index.html#rationale",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
-    "section": "",
-    "text": "The field of data science, business analytics and machine learning has been growing very rapidly in the past few years due to increase in use of artificial intelligence and automation across sectors. With this emergence of new tools and platforms, companies are constantly updating their hiring criteria. Now more than before, job roles are asking for specific skillsets including both technical and analytical abilities. Therefore, it is important to understand what skills are most in-demand at present, how job descriptions have changed in recent times and which job industries are offering the most opportunities in these domain."
-  },
-  {
-    "objectID": "index.html#literature-review",
-    "href": "index.html#literature-review",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
-    "section": "",
-    "text": "Recent studies are showing that employers are now giving more importance to skill-based hiring especially in data-related roles. (Bone, Ehlinger, and Stephany (2025)) found that in AI-related job postings, the need for formal degrees is slowly reducing while practical skills like machine learning and NLP are becoming more valued. (Mäkelä and Stephany (2024)) also pointed out that roles demanding AI expertise now also look for soft skills like adaptability and teamwork showing that a balance of technical and human skills is becoming necessary. These findings suggest that job descriptions are evolving to reflect this shift in priorities.\nFurther, our study reveals that hiring is strong in technology, healthcare and financial sectors where the use of data is becoming highly critical. These trends clearly indicates that both education and job markets must keep evolving to stay aligned with real-world demands."
   }
 ]
