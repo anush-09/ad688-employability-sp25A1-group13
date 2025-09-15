@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: site
   
 website:
   title: "ad688-employability-sp25A1-group13"
@@ -12,7 +12,7 @@ website:
         text: Data Analysis
       - href: about.qmd
         text: About Us
-        
+
 
 format:
   html:
