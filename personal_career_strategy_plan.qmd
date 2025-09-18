@@ -15,3 +15,16 @@ format:
     toc: true
     number-sections: true
     df-print: paged
+---
+---
+title: "Personal Career Strategy Plan"
+format: html
+---
+
+# Three Step career action plan
+
+##  Anu Sharma
+
+## Cindy Guzman
+
+## Gavin Boss
