@@ -1,0 +1,16 @@
+title: "Personal Career Strategy Plan"
+subtitle: "Individual plans"
+author:
+  - name: Anu Sharma, Cindy Guzman, Gavin Boss
+    affiliations:
+      - id: bu
+        name: Boston University
+        city: Boston
+        state: MA
+bibliography: references.bib
+csl: csl/econometrica.csl
+format: 
+  html:
+    toc: true
+    number-sections: true
+    df-print: paged
