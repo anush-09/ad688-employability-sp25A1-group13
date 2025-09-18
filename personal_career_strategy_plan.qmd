@@ -12,7 +12,7 @@ execute:
   eval: false
 code-fold: true
 ---
-
+---
 title: "Personal Career Strategy Plan"
 format: html
 
