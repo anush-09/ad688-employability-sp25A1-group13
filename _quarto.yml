@@ -12,6 +12,8 @@ website:
         text: Data Analysis
       - href: about.qmd
         text: About Us
+      - href: personal_career_strategy_plan.qmd
+        text: Personal Plans
 
 
 format:
