@@ -15,7 +15,6 @@ website:
       - href: personal_career_strategy_plan.qmd
         text: Personal Plans
 
-
 format:
   html:
     theme: lux
