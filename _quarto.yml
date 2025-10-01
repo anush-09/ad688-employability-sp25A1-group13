@@ -1,26 +1,27 @@
-project:
-  type: website
-  output-dir: docs
-  
 website:
-  title: "ad688-employability-sp25A1-group13"
+  title: "Business Analytics, Data Science and Machine Learning Trends 2025"
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - href: data_analysis.qmd
-        text: Data Analysis
-      - href: about.qmd
-        text: About Us
-      - href: personal_career_strategy_plan.qmd
-        text: Personal Plans
-
+        text: "Home"
+      - href: introduction.qmd
+        text: "Introduction"
+      - href: data_cleaning.qmd/ipynb
+        text: "Data Cleaning & Exploration"
+      - href: eda.qmd/ipynb
+        text: "Exploratory Data Analysis"
+      - href: skill_gap_analysis.qmd/ipynb
+        text: "Skill Gap Analysis"
+      - href: ml_methods.qmd/ipynb
+        text: "ML Methods"
+      - href: nlp_methods.qmd/ipynb
+        text: "NLP Methods"
 format:
   html:
-    theme: lux
-    fontsize: 1.1em
-    css: styles.css
+    theme: cosmo
     toc: true
-
-
+execute:
+  echo: true
+  eval: true
+  code-fold: true
 
