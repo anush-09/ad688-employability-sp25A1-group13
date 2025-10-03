@@ -10,6 +10,8 @@ website:
         text: "Home"
       - href: introduction.qmd
         text: "Introduction"
+      - href: data_analysis.qmd
+        text: "Data Analysis"
       - href: data_cleaning.qmd
         text: "Data Cleaning & Exploration"
       - href: eda.qmd
@@ -20,6 +22,8 @@ website:
         text: "ML Methods"
       - href: nlp_methods.qmd
         text: "NLP Methods"
+      - href: about.qmd
+        text: "About Us"
 format:
   html:
     theme: cosmo
