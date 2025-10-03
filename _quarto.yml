@@ -1,6 +1,5 @@
 project:
   type: website
-  output-dir: docs
   
 website:
   title: "Business Analytics, Data Science and Machine Learning Trends 2025"
