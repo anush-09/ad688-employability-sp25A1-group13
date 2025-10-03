@@ -1,5 +1,6 @@
 project:
   type: website
+  output-dir: docs
   
 website:
   title: "Business Analytics, Data Science and Machine Learning Trends 2025"
@@ -27,6 +28,3 @@ execute:
   echo: true
   eval: true
   code-fold: true
-
-project:
-  type: website
