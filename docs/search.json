@@ -88,7 +88,7 @@
     "href": "skill_gap_analysis.html",
     "title": "Business Analytics, Data Science and Machine Learning Trends",
     "section": "",
-    "text": "Code\nimport pandas as pd\n# This is a template, need to update\nskills_data = {\n    \"Name\": [\"Anu\", \"Cindy\", \"Gavin\"],\n    \"Python\": [5, 3, 4, 2],\n    \"SQL\": [4, 2, 5, 3],\n    \"Machine Learning\": [3, 1, 4, 2],\n    \"Cloud Computing\": [2, 2, 3, 1]\n}\n\ndf_skills = pd.DataFrame(skills_data)\ndf_skills.set_index(\"Name\", inplace=True)\ndf_skills"
+    "text": "Code\nimport pandas as pd\n# This is a template, need to update\nskills_data = {\n    \"Name\": [\"Anu\", \"Cindy\", \"Gavin\"],\n    \"Python\": [5, 3, 4, 2],\n    \"SQL\": [4, 2, 5, 3],\n    \"Machine Learning\": [3, 1, 4, 2],\n    \"Cloud Computing\": [2, 2, 3, 1]\n}\n\ndf_skills = pd.DataFrame(skills_data)\ndf_skills.set_index(\"Name\", inplace=True)\ndf_skills \n\n\n\n\nCode\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\nplt.figure(figsize=(8, 6))\nsns.heatmap(df_skills, annot=True, cmap=\"coolwarm\", linewidths=0.5)\nplt.title(\"Team Skill Levels Heatmap\")\nplt.show()"
   },
   {
     "objectID": "about.html",
