@@ -36,5 +36,9 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(8, 6))
 sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5)
 plt.title("Team Skill Levels Heatmap")
+
+# Save to figures folder
+plt.savefig("figures/team_skill_heatmap.png", bbox_inches="tight")
 plt.show()
 ```
+![Team Skill Levels Heatmap](figures/team_skill_heatmap.png)
