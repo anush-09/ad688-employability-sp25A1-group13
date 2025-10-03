@@ -27,7 +27,11 @@ skills_data = {
 df_skills = pd.DataFrame(skills_data)
 df_skills.set_index("Name", inplace=True)
 df_skills 
+
+plt.savefig("figures/team_skill_dataframe.png", bbox_inches="tight"
 ```
+
+![Team Skills Level DataFrame](figures/team_skill_dataframe.png)
 
 ```{python}
 import seaborn as sns
