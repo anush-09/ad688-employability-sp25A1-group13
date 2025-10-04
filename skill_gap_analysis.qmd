@@ -17,7 +17,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Fixed: matching number of values with number of names
+# Fixed: matching number of values with number of names, we need to make sure that we update these values and update the formatting, this is just a baseline to get it working
 skills_data = {
     "Name": ["Anu", "Cindy", "Gavin"],
     "Python": [5, 3, 4],
