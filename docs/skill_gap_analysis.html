@@ -207,35 +207,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="a1b749fc" class="cell" data-execution_count="1">
+<div id="32f47530" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a template, need to update</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>skills_data <span class="op">=</span> {</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Name"</span>: [<span class="st">"Anu"</span>, <span class="st">"Cindy"</span>, <span class="st">"Gavin"</span>],</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Python"</span>: [<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>],</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SQL"</span>: [<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">3</span>],</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Machine Learning"</span>: [<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">2</span>],</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cloud Computing"</span>: [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>df_skills <span class="op">=</span> pd.DataFrame(skills_data)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df_skills.set_index(<span class="st">"Name"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>df_skills </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed: matching number of values with number of names</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>skills_data <span class="op">=</span> {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Name"</span>: [<span class="st">"Anu"</span>, <span class="st">"Cindy"</span>, <span class="st">"Gavin"</span>],</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Python"</span>: [<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>],</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SQL"</span>: [<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">5</span>],</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Machine Learning"</span>: [<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>],</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cloud Computing"</span>: [<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df_skills <span class="op">=</span> pd.DataFrame(skills_data)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>df_skills.set_index(<span class="st">"Name"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df_skills[<span class="st">"Average Skill"</span>] <span class="op">=</span> df_skills.mean(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the dataframe</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_skills)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create heatmap</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>sns.heatmap(df_skills, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">"coolwarm"</span>, linewidths<span class="op">=</span><span class="fl">0.5</span>, fmt<span class="op">=</span><span class="st">'0.2f'</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Team Skill Levels Heatmap"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Python  SQL  Machine Learning  Cloud Computing  Average Skill
+Name                                                                
+Anu         5    4                 3                2            3.5
+Cindy       3    2                 1                2            2.0
+Gavin       4    5                 4                3            4.0</code></pre>
 </div>
-<div id="a26fc372" class="cell" data-execution_count="2">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>sns.heatmap(df_skills, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">"coolwarm"</span>, linewidths<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Team Skill Levels Heatmap"</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="skill_gap_analysis_files/figure-html/cell-2-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
 </div>
 
 
