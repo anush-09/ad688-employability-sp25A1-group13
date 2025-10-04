@@ -43,5 +43,21 @@ plt.title("Team Skill Levels Heatmap")
 plt.show()
 ```
 
+```{python}
+from collections import Counter
 
+# Assuming job_descriptions is a list of text from job postings
+top_skills = ["Python", "SQL", "Machine Learning", "Cloud Computing", "Docker", "AWS"]
+job_skill_counts = Counter(top_skills)
 
+# Compare with team skill levels
+for skill in top_skills:
+    if skill not in df_skills.columns:
+        df_skills[skill] = 0  # Assume no knowledge in missing skills
+
+df_skills
+```
+
+## Our team should prioritize learning X skills (need to look at the data in order to ensure that we compare it to the data that meets the job postings)
+## courses that we could take that could help
+## How the team can help eachother, this would be like if one of us was better at other areas as opposed to other areas, say one of us is better at machine learning, we could leverage learning from them in order to gain a better understanding.
