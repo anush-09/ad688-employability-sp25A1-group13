@@ -9,40 +9,39 @@ format:
     toc: true
 execute:
   echo: true
-  eval: false
+  eval: true
 code-fold: true
 ---
-
 ```{python}
 import pandas as pd
-# This is a template, need to update
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Fixed: matching number of values with number of names
 skills_data = {
     "Name": ["Anu", "Cindy", "Gavin"],
-    "Python": [5, 3, 4, 2],
-    "SQL": [4, 2, 5, 3],
-    "Machine Learning": [3, 1, 4, 2],
-    "Cloud Computing": [2, 2, 3, 1]
+    "Python": [5, 3, 4],
+    "SQL": [4, 2, 5],
+    "Machine Learning": [3, 1, 4],
+    "Cloud Computing": [2, 2, 3]
+    
 }
 
 df_skills = pd.DataFrame(skills_data)
 df_skills.set_index("Name", inplace=True)
-df_skills 
+df_skills["Average Skill"] = df_skills.mean(axis=1).round(2)
 
-plt.savefig("figures/team_skill_dataframe.png", bbox_inches="tight"
-```
 
-![Team Skills Level DataFrame](figures/team_skill_dataframe.png)
+# Display the dataframe
+print(df_skills)
 
-```{python}
-import seaborn as sns
-import matplotlib.pyplot as plt
-
+# Create heatmap
 plt.figure(figsize=(8, 6))
-sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5)
+sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5, fmt='0.2f')
 plt.title("Team Skill Levels Heatmap")
 
-# Save to figures folder
-plt.savefig("figures/team_skill_heatmap.png", bbox_inches="tight")
 plt.show()
 ```
-![Team Skill Levels Heatmap](figures/team_skill_heatmap.png)
+
+
+
