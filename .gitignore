@@ -45,3 +45,8 @@ data/
 
 # Data (large/untracked)
 data/
+
+# Quarto build output
+_site/
+site_libs/
+
