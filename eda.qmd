@@ -1,14 +1,134 @@
+--- 
+title: "Exploratory Data Analysis (EDA)" 
+format: 
+ html: 
+  toc: true 
+  number-sections: true 
+execute: 
+ echo: false 
+ warning: false 
+freeze: auto 
 ---
-title: "Business Analytics, Data Science and Machine Learning Trends"
-author: "Anu Sharma, Cindy Guzman, Gavin Boss"
-date: "2025-09-10"
-format:
-  html:
-    bibliography: references.bib
-    csl: csl/econometrica.csl
-    toc: true
-execute:
-  echo: true
-  eval: false
-code-fold: true
----
+
+{python}
+# ---- Imports & setup ----
+import pandas as pd, numpy as np
+import plotly.express as px, plotly.io as pio
+from pathlib import Path
+
+# Optional shared theme (if you added plotly_theme.py)
+try:
+    from plotly_theme import apply_theme
+    apply_theme()
+except Exception:
+    pass
+
+# Figures dir for GH Pages stability
+FIGDIR = Path("figures"); FIGDIR.mkdir(exist_ok=True)
+
+# Helper to save plotly images with PNG fallback to HTML if kaleido missing
+def save_fig(fig, name):
+    path_png = FIGDIR / f"{name}.png"
+    try:
+        fig.write_image(path_png)   # requires kaleido
+    except Exception:
+        fig.write_html(FIGDIR / f"{name}.html")
+    return fig
+{python}
+# ---- Data Load & Light Clean ----
+DATA = Path("data/job_postings_2024.csv")
+df = pd.read_csv(DATA)
+
+# --- Try to auto-detect common columns ---
+def pick(cands):
+    return next((c for c in cands if c in df.columns), None)
+
+SAL   = pick(["Average_Salary","avg_salary","salary","SALARY_AVG"])
+LOC   = pick(["STATE","state","region","LOCATION_STATE","LOCATION"])
+DATE  = pick(["POST_DATE","post_date","date","POSTED_AT","DATE_POSTED"])
+TITLE = pick(["JOB_TITLE","title","ROLE","ROLE_TITLE"])
+COMP  = pick(["COMPANY","company","employer","ORG"])
+EXP   = pick(["MIN_YEARS_EXPERIENCE","min_experience","experience_min"])
+
+# Coerce types
+if SAL:  df[SAL] = pd.to_numeric(df[SAL], errors="coerce")
+if DATE: df[DATE] = pd.to_datetime(df[DATE], errors="coerce")
+if EXP:  df[EXP]  = pd.to_numeric(df[EXP], errors="coerce")
+
+# Basic sanity filters (tweak if your rubric differs)
+if SAL: df = df[df[SAL] > 0]
+if EXP: df = df[df[EXP] >= 0]
+
+profile_cols = [c for c in [TITLE, COMP, LOC, SAL, DATE, EXP] if c]
+df.head(8)[profile_cols]
+{python}
+# ---- Salary Distribution ----
+if SAL:
+    fig = px.histogram(df, x=SAL, nbins=40, title="Salary Distribution")
+    save_fig(fig, "eda_salary_hist")
+    fig
+else:
+    print("No salary column detected.")
+{python}
+# ---- Top Hiring Locations ----
+if LOC:
+    top_loc = df[LOC].value_counts().head(15).reset_index()
+    top_loc.columns = [LOC, "count"]
+    fig = px.bar(top_loc, x=LOC, y="count", title="Top Hiring Locations (Count)")
+    save_fig(fig, "eda_top_locations")
+    fig
+else:
+    print("No location column detected.")
+{python}
+# ---- Salary by Location (Top 10) ----
+if SAL and LOC:
+    top10 = df[LOC].value_counts().head(10).index
+    sub = df[df[LOC].isin(top10)]
+    fig = px.box(sub, x=LOC, y=SAL, points=False, title="Salary by Location (Top 10)")
+    fig.update_xaxes(categoryorder="array", categoryarray=list(top10))
+    save_fig(fig, "eda_salary_by_location")
+    fig
+{python}
+# ---- Salary Trends over Time (if we have dates, if not omit) ----
+if SAL and DATE:
+    trend = (df.dropna(subset=[DATE])
+               .set_index(DATE)
+               .resample("W")[SAL].median()
+               .dropna().reset_index())
+    fig = px.line(trend, x=DATE, y=SAL, title="Median Salary Over Time (Weekly)")
+    save_fig(fig, "eda_salary_trend")
+    fig
+{python}
+# ---- Top Roles & Employers ----
+panels = []
+if TITLE:
+    top_titles = df[TITLE].value_counts().head(15).reset_index()
+    top_titles.columns = [TITLE, "count"]
+    fig1 = px.bar(top_titles, x=TITLE, y="count", title="Top Job Titles")
+    save_fig(fig1, "eda_top_titles")
+    panels.append(fig1)
+
+if COMP:
+    top_comp = df[COMP].value_counts().head(15).reset_index()
+    top_comp.columns = [COMP, "count"]
+    fig2 = px.bar(top_comp, x=COMP, y="count", title="Top Employers")
+    save_fig(fig2, "eda_top_companies")
+    panels.append(fig2)
+
+panels[:1] and panels[0]
+{python}
+# ---- Salary vs. Experience (if available, if not omit) ----
+if SAL and EXP:
+    # jitter experience slightly for visibility (doesn't affect stats)
+    jitter = (np.random.rand(len(df)) - 0.5) * 0.15
+    df["_exp_jitter"] = df[EXP] + jitter
+    fig = px.scatter(df, x="_exp_jitter", y=SAL, opacity=0.6,
+                     title="Salary vs Experience (jittered)",
+                     labels={"_exp_jitter": EXP})
+    save_fig(fig, "eda_salary_vs_experience")
+    fig
+--- ### quick run
+bash
+# from repo root (venv active)
+python -m pip install pandas numpy plotly kaleido
+quarto render
