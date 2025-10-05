@@ -42,3 +42,6 @@ __pycache__/
 
 # Data (large/untracked)
 data/
+
+# Data (large/untracked)
+data/
