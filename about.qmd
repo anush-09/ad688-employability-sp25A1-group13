@@ -1,7 +1,7 @@
----
+export QUARTO_PYTHON="$(pwd)/.venv/bin/python"---
 title: "About"
 ---
-# 👥 About This Project
+#  About This Project
 ### Exploring the future of work through data, collaboration, and curiosity.
 
 The purpose of this project is to explore how job seekers can strategically position themselves in the evolving labor market of 2025. Rather than analyzing trends from a recruiter’s perspective, our team approached this challenge as future professionals navigating a landscape shaped by AI adoption, remote work, shifting salary norms, and gender-based employment patterns.Using real-world data from Lightcast and other labor market sources, we applied data science, analytics, and visualization techniques to investigate key workforce themes. Our goal was to uncover actionable insights that inform personal career planning and highlight the skills most in demand across industries. This website presents our findings, reflections, and recommendations—designed not only to fulfill academic objectives, but to serve as a practical roadmap for anyone preparing to enter or pivot within today’s dynamic job market.
