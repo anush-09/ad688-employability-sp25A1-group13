@@ -18,3 +18,15 @@ __pycache__/
 
 # Data (large/untracked)
 data/
+
+# Quarto
+_site/
+_freeze/
+
+# Python
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+
+# Data (large/untracked)
+data/
