@@ -6,3 +6,15 @@ _site/
 __pycache__/
 figures/
 
+
+# Quarto
+_site/
+_freeze/
+
+# Python
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+
+# Data (large/untracked)
+data/
