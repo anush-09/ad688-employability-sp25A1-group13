@@ -12,3 +12,41 @@ execute:
   eval: false
 code-fold: true
 ---
+
+# Overview
+
+This analysis explores trends in Business Analytics, Data Science, and Machine Learning job postings by focusing on the **skills required** for these roles. We analyze how different skill combinations impact salary, remote work opportunities, and career paths.
+
+# Data Loading and Setup
+
+```{python}
+# | echo: true
+# | eval: true
+
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import plotly.io as pio
+import json
+import re
+from collections import Counter
+
+pio.templates.default = "plotly_white"
+pio.renderers.default = "notebook"
+
+# Load data from csv
+df = pd.read_csv("../assignment-04-anush-09/data/lightcast_job_postings.csv", low_memory=False)
+print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
+
+#df.info()
+
+# Skills-related columns identified through manual inspection of schema
+skills_columns = ['SKILLS', 'SKILLS_NAME', 'SPECIALIZED_SKILLS', 'SPECIALIZED_SKILLS_NAME',
+                  'SOFTWARE_SKILLS', 'SOFTWARE_SKILLS_NAME', 'CERTIFICATIONS', 'CERTIFICATIONS_NAME']
+print("\nSkills-related columns identified through schema:")
+for col in skills_columns:
+    if col in df.columns:
+        print(f"- {col}")
+```
