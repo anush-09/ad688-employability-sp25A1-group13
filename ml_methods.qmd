@@ -50,3 +50,145 @@ for col in skills_columns:
     if col in df.columns:
         print(f"- {col}")
 ```
+
+# Skills Data Preprocessing
+
+```{python}
+#| echo: true
+#| eval: true
+
+# Filter title and salary.
+df_filtered = df.dropna(subset=['SALARY', 'TITLE'])
+
+# Convert salary to numeric and filter null
+df_filtered['SALARY'] = pd.to_numeric(df_filtered['SALARY'], errors='coerce')
+df_filtered = df_filtered[df_filtered['SALARY'] > 0]
+
+print(f"Records after filtering: {len(df_filtered):,}")
+df_skills = df_filtered.copy()
+
+# Creating pre-defined key skills.
+# Extracting them by going through dataset results in long execution
+# time, so we defined them manually for successive runs.
+key_skills = [
+    'Python', 'SQL', 'Machine Learning', 'R', 'Java', 'JavaScript', 'Tableau', 'Power BI',
+    'AWS', 'Azure', 'Google Cloud', 'Docker', 'Kubernetes', 'Spark', 'Hadoop',
+    'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib',
+    'Excel', 'Statistics', 'Data Analysis', 'Deep Learning', 'NLP', 'Computer Vision'
+]
+
+print(f"Using predefined skill list with {len(key_skills)} key skills for "
+      "efficient processing...")
+
+# Creating binary features for each key skill
+for skill in key_skills:
+    # Checking if skill appears in any of the skill columns
+    skill_col_name = f'has_{skill.lower().replace(" ", "_").replace("-", "_")}'
+    df_skills[skill_col_name] = (
+        df_skills['SKILLS_NAME'].str.contains(skill, case=False, na=False) |
+        df_skills['SOFTWARE_SKILLS_NAME'].str.contains(skill, case=False, na=False) |
+        df_skills['SPECIALIZED_SKILLS_NAME'].str.contains(skill, case=False, na=False)
+    ).astype(int)
+
+# # Creating ML/Data Science role indicator using binary features.
+# core_ml_skills = ['has_machine_learning', 'has_tensorflow', 'has_pytorch',
+#                   'has_deep_learning', 'has_nlp', 'has_computer_vision']
+# data_science_skills = ['has_python', 'has_r', 'has_statistics',
+#                        'has_data_analysis']
+
+# # ML role if has core ML skills OR (Python + Statistics/Data Analysis)
+# df_skills['has_core_ml'] = df_skills[core_ml_skills].sum(axis=1) > 0
+# df_skills['has_ds_combo'] = (df_skills['has_python'] == 1) & (df_skills[['has_statistics', 'has_data_analysis']].sum(axis=1) > 0)
+# df_skills['is_ml_role'] = (df_skills['has_core_ml'] | df_skills['has_ds_combo']).astype(int)
+
+# ML roles should typically have these skills.
+core_ml_skills = [
+    'has_machine_learning', 'has_tensorflow', 'has_pytorch',
+    'has_deep_learning', 'has_nlp', 'has_computer_vision',
+    'has_scikit_learn', 'has_spark'
+]
+
+# Data science roles typically require this.
+core_ds_skills = [
+    'has_python', 'has_r', 'has_statistics', 'has_data_analysis',
+    'has_pandas', 'has_numpy', 'has_matplotlib', 'has_excel'
+]
+
+# Role indicators
+df_skills['is_ml_role'] = (
+    (df_skills[core_ml_skills].sum(axis=1) > 0)
+).astype(int)
+# Assuming that if there are least 2 DS-related skills, then it is a
+# DS role.
+df_skills['is_ds_role'] = (
+    (df_skills[core_ds_skills].sum(axis=1) > 1)
+).astype(int)
+
+df_skills['is_ml_ds_role'] = ((df_skills['is_ml_role'] == 1) | (df_skills['is_ds_role'] == 1)).astype(int)
+
+
+# Remote work indicator
+df_skills['is_remote'] = df_skills['REMOTE_TYPE'].fillna(0).astype(int)
+df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
+
+df_final = df_skills
+
+print(f"Final dataset size: {len(df_final):,}")
+print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
+```
+
+
+# Skills Analysis and Visualization
+
+```{python}
+#| echo: true
+#| eval: true
+
+import builtins
+
+# Analyze most common skills
+skill_counts = {}
+for skill in key_skills:
+    skill_col = f'has_{skill.lower().replace(" ", "_").replace("-", "_")}'
+    if skill_col in df_final.columns:
+        skill_counts[skill] = df_final[skill_col].sum()
+
+# Top skills
+top_skills = dict(sorted(skill_counts.items(), key=lambda x: x[1], reverse=True)[:20])
+print(f"Top skills found: {list(top_skills.keys())[:10]}")
+
+# Visualizing top skills
+fig = px.bar(x=list(top_skills.keys()), y=list(top_skills.values()),
+             title='Top 20 Most Required Skills',
+             labels={'x': 'Skills', 'y': 'Frequency'})
+fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
+fig.show()
+
+# Skill comparison between ML and non-ML roles
+ml_role_data = df_final[df_final['is_ml_ds_role'] == 1]
+non_ml_role_data = df_final[df_final['is_ml_ds_role'] == 0]
+
+# Skill count for each category
+ml_skill_counts = {}
+non_ml_skill_counts = {}
+
+for skill in key_skills:
+    skill_col = f'has_{skill.lower().replace(" ", "_").replace("-", "_")}'
+    if skill_col in df_final.columns:
+        ml_skill_counts[skill] = ml_role_data[skill_col].sum()
+        non_ml_skill_counts[skill] = non_ml_role_data[skill_col].sum()
+
+# Top skills for each category
+top_ml_skills = dict(sorted(ml_skill_counts.items(), key=lambda x: x[1], reverse=True)[:15])
+top_non_ml_skills = dict(sorted(non_ml_skill_counts.items(), key=lambda x: x[1], reverse=True)[:15])
+
+print(f"ML roles: {len(ml_role_data):,}, Non-ML roles: {len(non_ml_role_data):,}")
+
+# Comparison chart
+fig = make_subplots(rows=1, cols=2, subplot_titles=('ML/Data Science Roles', 'Non-ML Roles'))
+fig.add_trace(go.Bar(x=list(top_ml_skills.keys()), y=list(top_ml_skills.values()), name="ML Skills"), row=1, col=1)
+fig.add_trace(go.Bar(x=list(top_non_ml_skills.keys()), y=list(top_non_ml_skills.values()), name="Non-ML Skills"), row=1, col=2)
+fig.update_layout(height=500, showlegend=False, template="plotly_white", title_text="Top Skills Comparison")
+fig.update_xaxes(tickangle=-45)
+fig.show()
+```
