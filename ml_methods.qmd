@@ -8,9 +8,9 @@ format:
     csl: csl/econometrica.csl
     toc: true
 execute:
-  echo: true
-  eval: false
-code-fold: true
+  echo: false
+  warning: false
+freeze: auto
 ---
 
 # Overview
@@ -40,7 +40,7 @@ pio.renderers.default = "notebook"
 df = pd.read_csv("../assignment-04-anush-09/data/lightcast_job_postings.csv", low_memory=False)
 print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
 
-#df.info()
+df.info()
 
 # Skills-related columns identified through manual inspection of schema
 skills_columns = ['SKILLS', 'SKILLS_NAME', 'SPECIALIZED_SKILLS', 'SPECIALIZED_SKILLS_NAME',
@@ -56,6 +56,134 @@ for col in skills_columns:
 ```{python}
 #| echo: true
 #| eval: true
+
+# Apply filters
+df_filtered = df.dropna(subset=['SALARY', 'TITLE'])
+
+# Convert salary to numeric and filter
+df_filtered['SALARY'] = pd.to_numeric(df_filtered['SALARY'], errors='coerce')
+df_filtered = df_filtered[df_filtered['SALARY'] > 0]
+
+print(f"Records after filtering: {len(df_filtered):,}")
+
+df_skills = df_filtered.copy()
+
+# Focus on key ML/Data Science skills. We identifief some key skills for
+# ML/DS roles manually.
+key_skills =  [
+        'Python (Programming Language)',
+        'R (Programming Language)',
+        'SQL (Programming Language)',
+        'Machine Learning',
+        'Data Science',
+        'Data Analysis',
+        'Statistics',
+        'Artificial Intelligence',
+        'TensorFlow',
+        'PyTorch (Machine Learning Library)',
+        'Pandas (Python Package)',
+        'NumPy (Python Package)',
+        'Scikit-Learn (Python Package)',
+        'Big Data',
+        'Apache Spark',
+        'Apache Hadoop',
+        'Amazon Web Services',
+        'Microsoft Azure',
+        'Google Cloud Platform (Gcp)',
+        'Data Visualization',
+        'Tableau (Business Intelligence Software)',
+        'Power BI',
+        'Natural Language Processing (NLP)',
+        'Computer Vision',
+        'Deep Learning'
+    ]
+
+print(f"Using focused {len(key_skills)} ML/Data Science skills for analysis")
+
+# Create binary features for each key skill.
+for skill in key_skills:
+    # Clean skill name for column naming
+    # Eg: R (Programming Language) --> has_r_programming_language
+    skill_col_name = f'has_{skill.lower().replace(" ", "_").replace("-", "_").replace("(", "").replace(")", "")}'
+
+
+    df_skills[skill_col_name] = (
+        df_skills['SKILLS_NAME'].str.contains(skill, case=False, na=False, regex=False) |
+        df_skills['SOFTWARE_SKILLS_NAME'].str.contains(skill, case=False, na=False, regex=False) |
+        df_skills['SPECIALIZED_SKILLS_NAME'].str.contains(skill, case=False, na=False, regex=False)
+    ).astype(int)
+
+print("Binary skill features created")
+
+# Create ML/DS role indicator using focused skills
+core_ml_skills = [
+    'has_machine_learning', 'has_artificial_intelligence', 'has_tensorflow', 'has_pytorch_machine_learning_library',
+    'has_deep_learning', 'has_natural_language_processing_nlp', 'has_computer_vision'
+]
+
+core_ds_skills = [
+    'has_python_programming_language', 'has_r_programming_language', 'has_statistics', 'has_data_analysis',
+    'has_data_science', 'has_pandas_python_package', 'has_numpy_python_package',
+    'has_scikit_learn_python_package'
+]
+
+# Role indicators
+df_skills['is_ml_role'] = (
+    (df_skills[core_ml_skills].sum(axis=1) > 0)
+).astype(int)
+# Assuming that if there are least 2 DS-related skills, then it is a
+# DS role.
+df_skills['is_ds_role'] = (
+    (df_skills[core_ds_skills].sum(axis=1) > 1)
+).astype(int)
+
+df_skills['is_ml_ds_role'] = ((df_skills['is_ml_role'] == 1) | (df_skills['is_ds_role'] == 1)).astype(int)
+
+
+# Remote work indicator
+df_skills['is_remote'] = df_skills['REMOTE_TYPE'].fillna(0).astype(int)
+df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
+
+df_final = df_skills
+
+# # Check which skills actually exist in the dataframe
+# available_core_ml = [skill for skill in core_ml_skills if skill in df_skills.columns]
+# available_ds_skills = [skill for skill in data_science_skills if skill in df_skills.columns]
+
+# print(f"Available core ML skills ({len(available_core_ml)}): {available_core_ml}")
+# print(f"Available DS skills ({len(available_ds_skills)}): {available_ds_skills}")
+
+# # ML role if has core ML skills OR (Python + Statistics/Data Analysis)
+# if available_core_ml:
+#     df_skills['has_core_ml'] = df_skills[available_core_ml].sum(axis=1) > 0
+# else:
+#     df_skills['has_core_ml'] = False
+
+# if available_ds_skills and 'has_python_programming_language' in df_skills.columns:
+#     # Check for Python + (Statistics OR Data Analysis OR Data Science)
+#     stats_cols = [col for col in ['has_statistics', 'has_data_analysis', 'has_data_science'] if col in df_skills.columns]
+#     if stats_cols:
+#         df_skills['has_ds_combo'] = (df_skills['has_python_programming_language'] == 1) & (df_skills[stats_cols].sum(axis=1) > 0)
+#     else:
+#         df_skills['has_ds_combo'] = False
+# else:
+#     df_skills['has_ds_combo'] = False
+
+# df_skills['is_ml_role'] = (df_skills['has_core_ml'] | df_skills['has_ds_combo']).astype(int)
+
+# # Create remote work indicator
+# df_skills['is_remote'] = df_skills['REMOTE_TYPE'].fillna(0).astype(int)
+# df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
+
+# df_final = df_skills
+
+print(f"Final dataset size: {len(df_final):,}")
+print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
+```
+
+```{python}
+#| echo: true
+#| eval: false
 
 # Filter title and salary.
 df_filtered = df.dropna(subset=['SALARY', 'TITLE'])
@@ -137,58 +265,122 @@ print(f"Final dataset size: {len(df_final):,}")
 print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
 ```
 
+# Feature Engineering for ML
+```{python}
+#| echo: true
+#| eval: true
 
-# Skills Analysis and Visualization
+# Just prepare the modeling dataset
+modeling_cols = ['SALARY', 'is_ml_role', 'is_remote', 'experience_years'] + \
+               [col for col in df_final.columns if col.startswith('has_')]
+
+df_modeling = df_final[modeling_cols].copy()
+
+print("Features for modeling:")
+print(f"Dataset shape: {df_modeling.shape}")
+print(f"Columns: {list(df_modeling.columns)}")
+print(f"Missing values: {df_modeling.isnull().sum().sum()}")
+```
+
+# Unsupervised Learning: KMeans Clustering Based on Skills
 
 ```{python}
 #| echo: true
 #| eval: true
 
-import builtins
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, f1_score, confusion_matrix, classification_report
 
-# Analyze most common skills
-skill_counts = {}
-for skill in key_skills:
-    skill_col = f'has_{skill.lower().replace(" ", "_").replace("-", "_")}'
-    if skill_col in df_final.columns:
-        skill_counts[skill] = df_final[skill_col].sum()
+# Prepare features for clustering using skills and other features
+skill_feature_cols = [col for col in df_modeling.columns if col.startswith('has_')]
+print(f"Available skill features: {len(skill_feature_cols)}")
 
-# Top skills
-top_skills = dict(sorted(skill_counts.items(), key=lambda x: x[1], reverse=True)[:20])
-print(f"Top skills found: {list(top_skills.keys())[:10]}")
+# Base clustering features
+clustering_features = skill_feature_cols + ['experience_years', 'is_remote']
 
-# Visualizing top skills
-fig = px.bar(x=list(top_skills.keys()), y=list(top_skills.values()),
-             title='Top 20 Most Required Skills',
-             labels={'x': 'Skills', 'y': 'Frequency'})
-fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
-fig.show()
+# Encode ONET and NAICS6.
+le_onet = LabelEncoder()
+df_modeling['onet_encoded'] = le_onet.fit_transform(df_final['ONET'].fillna('Unknown'))
+clustering_features.append('onet_encoded')
 
-# Skill comparison between ML and non-ML roles
-ml_role_data = df_final[df_final['is_ml_ds_role'] == 1]
-non_ml_role_data = df_final[df_final['is_ml_ds_role'] == 0]
+le_naics = LabelEncoder()
+df_modeling['naics_encoded'] = le_naics.fit_transform(df_final['NAICS6'].fillna('Unknown'))
+clustering_features.append('naics_encoded')
 
-# Skill count for each category
-ml_skill_counts = {}
-non_ml_skill_counts = {}
+# Prepare clustering data
+X_cluster = df_modeling[clustering_features].fillna(0)
 
-for skill in key_skills:
-    skill_col = f'has_{skill.lower().replace(" ", "_").replace("-", "_")}'
-    if skill_col in df_final.columns:
-        ml_skill_counts[skill] = ml_role_data[skill_col].sum()
-        non_ml_skill_counts[skill] = non_ml_role_data[skill_col].sum()
+# Scale features
+scaler_cluster = StandardScaler()
+X_cluster_scaled = scaler_cluster.fit_transform(X_cluster)
 
-# Top skills for each category
-top_ml_skills = dict(sorted(ml_skill_counts.items(), key=lambda x: x[1], reverse=True)[:15])
-top_non_ml_skills = dict(sorted(non_ml_skill_counts.items(), key=lambda x: x[1], reverse=True)[:15])
+# KMeans clustering
+kmeans = KMeans(n_clusters=6, random_state=42, n_init=10)
+clusters = kmeans.fit_predict(X_cluster_scaled)
+df_modeling['cluster'] = clusters
 
-print(f"ML roles: {len(ml_role_data):,}, Non-ML roles: {len(non_ml_role_data):,}")
+print("Skills based clustering completed")
+print("Cluster centers:")
+for i, center in enumerate(kmeans.cluster_centers_):
+    print(f"Cluster {i}: {center}")
+```
 
-# Comparison chart
-fig = make_subplots(rows=1, cols=2, subplot_titles=('ML/Data Science Roles', 'Non-ML Roles'))
-fig.add_trace(go.Bar(x=list(top_ml_skills.keys()), y=list(top_ml_skills.values()), name="ML Skills"), row=1, col=1)
-fig.add_trace(go.Bar(x=list(top_non_ml_skills.keys()), y=list(top_non_ml_skills.values()), name="Non-ML Skills"), row=1, col=2)
-fig.update_layout(height=500, showlegend=False, template="plotly_white", title_text="Top Skills Comparison")
-fig.update_xaxes(tickangle=-45)
+```{python}
+#| echo: true
+#| eval: true
+
+# Analyze clustering.
+cluster_summary = df_modeling.groupby('cluster').agg({
+    'SALARY': ['count', 'mean'],
+    'is_ml_role': 'mean',
+    'is_remote': 'mean',
+    'experience_years': 'mean'
+}).round(2)
+
+cluster_summary.columns = ['count', 'avg_salary', 'ml_role_percentage',
+                           'remote_percentage', 'avg_experience']
+cluster_summary = cluster_summary.reset_index()
+
+print("Skills based Cluster Summary:")
+print(cluster_summary)
+
+# Visualize cluster characteristics.
+fig = make_subplots(
+    rows=2, cols=3,
+    subplot_titles=('Cluster Size', 'Average Salary', 'ML Role %',
+                   'Remote Work %', 'Avg Experience', 'Salary Distribution'),
+    specs=[[{"type": "bar"}, {"type": "bar"}, {"type": "bar"}],
+           [{"type": "bar"}, {"type": "bar"}, {"type": "scatter"}]]
+)
+
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['count'], name="Count"), row=1, col=1)
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['avg_salary'], name="Avg Salary"), row=1, col=2)
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['ml_role_percentage'], name="ML %"), row=1, col=3)
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['remote_percentage'], name="Remote %"), row=2, col=1)
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['avg_experience'], name="Experience"), row=2, col=2)
+
+# Salary distribution by cluster.
+fig.add_trace(
+    go.Scatter(
+        x=df_modeling['cluster'],
+        y=df_modeling['SALARY'],
+        mode='markers',
+        opacity=0.6,
+        name="Jobs"
+    ),
+    row=2, col=3
+)
+
+fig.update_layout(
+    height=600,
+    showlegend=False,
+    template="plotly_white",
+    title_text="Skills-Based KMeans Clustering Results"
+)
 fig.show()
 ```
