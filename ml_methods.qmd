@@ -49,6 +49,7 @@ print("\nSkills-related columns identified through schema:")
 for col in skills_columns:
     if col in df.columns:
         print(f"- {col}")
+print("\nOnly 'SKILLS_NAME, 'SOFTWARE_SKILLS_NAME' and 'SPECIALIZED_SKILLS_NAME' are relevant")
 ```
 
 # Skills Data Preprocessing
@@ -122,7 +123,7 @@ core_ml_skills = [
 ]
 
 core_ds_skills = [
-    'has_python_programming_language', 'has_r_programming_language', 'has_statistics', 'has_data_analysis', 'has_big_data',
+    'has_python_programming_language', 'has_r_programming_language', 'has_statistics', 'has_data_analysis', 'has_big_data', 'has_data_visualization',
     'has_data_science', 'has_pandas_python_package', 'has_numpy_python_package',
     'has_scikit_learn_python_package'
 ]
@@ -179,90 +180,6 @@ df_final = df_skills
 # df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
 
 # df_final = df_skills
-
-print(f"Final dataset size: {len(df_final):,}")
-print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
-```
-
-```{python}
-#| echo: true
-#| eval: false
-
-# Filter title and salary.
-df_filtered = df.dropna(subset=['SALARY', 'TITLE'])
-
-# Convert salary to numeric and filter null
-df_filtered['SALARY'] = pd.to_numeric(df_filtered['SALARY'], errors='coerce')
-df_filtered = df_filtered[df_filtered['SALARY'] > 0]
-
-print(f"Records after filtering: {len(df_filtered):,}")
-df_skills = df_filtered.copy()
-
-# Creating pre-defined key skills.
-# Extracting them by going through dataset results in long execution
-# time, so we defined them manually for successive runs.
-key_skills = [
-    'Python', 'SQL', 'Machine Learning', 'R', 'Java', 'JavaScript', 'Tableau', 'Power BI',
-    'AWS', 'Azure', 'Google Cloud', 'Docker', 'Kubernetes', 'Spark', 'Hadoop',
-    'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib',
-    'Excel', 'Statistics', 'Data Analysis', 'Deep Learning', 'NLP', 'Computer Vision'
-]
-
-print(f"Using predefined skill list with {len(key_skills)} key skills for "
-      "efficient processing...")
-
-# Creating binary features for each key skill
-for skill in key_skills:
-    # Checking if skill appears in any of the skill columns
-    skill_col_name = f'has_{skill.lower().replace(" ", "_").replace("-", "_")}'
-    df_skills[skill_col_name] = (
-        df_skills['SKILLS_NAME'].str.contains(skill, case=False, na=False) |
-        df_skills['SOFTWARE_SKILLS_NAME'].str.contains(skill, case=False, na=False) |
-        df_skills['SPECIALIZED_SKILLS_NAME'].str.contains(skill, case=False, na=False)
-    ).astype(int)
-
-# # Creating ML/Data Science role indicator using binary features.
-# core_ml_skills = ['has_machine_learning', 'has_tensorflow', 'has_pytorch',
-#                   'has_deep_learning', 'has_nlp', 'has_computer_vision']
-# data_science_skills = ['has_python', 'has_r', 'has_statistics',
-#                        'has_data_analysis']
-
-# # ML role if has core ML skills OR (Python + Statistics/Data Analysis)
-# df_skills['has_core_ml'] = df_skills[core_ml_skills].sum(axis=1) > 0
-# df_skills['has_ds_combo'] = (df_skills['has_python'] == 1) & (df_skills[['has_statistics', 'has_data_analysis']].sum(axis=1) > 0)
-# df_skills['is_ml_role'] = (df_skills['has_core_ml'] | df_skills['has_ds_combo']).astype(int)
-
-# ML roles should typically have these skills.
-core_ml_skills = [
-    'has_machine_learning', 'has_tensorflow', 'has_pytorch',
-    'has_deep_learning', 'has_nlp', 'has_computer_vision',
-    'has_scikit_learn', 'has_spark'
-]
-
-# Data science roles typically require this.
-core_ds_skills = [
-    'has_python', 'has_r', 'has_statistics', 'has_data_analysis',
-    'has_pandas', 'has_numpy', 'has_matplotlib', 'has_excel'
-]
-
-# Role indicators
-df_skills['is_ml_role'] = (
-    (df_skills[core_ml_skills].sum(axis=1) > 0)
-).astype(int)
-# Assuming that if there are least 2 DS-related skills, then it is a
-# DS role.
-df_skills['is_ds_role'] = (
-    (df_skills[core_ds_skills].sum(axis=1) > 1)
-).astype(int)
-
-df_skills['is_ml_ds_role'] = ((df_skills['is_ml_role'] == 1) | (df_skills['is_ds_role'] == 1)).astype(int)
-
-
-# Remote work indicator
-df_skills['is_remote'] = df_skills['REMOTE_TYPE'].fillna(0).astype(int)
-df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
-
-df_final = df_skills
 
 print(f"Final dataset size: {len(df_final):,}")
 print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
