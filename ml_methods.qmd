@@ -314,12 +314,16 @@ fig.show()
 The clustering analysis grouped jobs based on their skill requirements and characteristics. We found 6 distinct job clusters, each with different salary levels, remote work availability, and skill profiles.
 
 **Key Findings:**
-- Some clusters show higher concentrations of ML/DS roles with corresponding higher average salaries
+
+- Cluster 4 shows higher concentrations of ML/DS roles with corresponding higher average salaries
 - Remote work availability varies significantly across clusters, suggesting that certain skill combinations are more compatible with remote positions.
 - Experience requirements differ by cluster, indicating distinct career progression paths.
 
 **Takeaways for Job Seekers:**
-- Target skills that appear in higher-paying clusters to max
+
+- The specialized ML/DS cluster (Cluster 4) offers good pay but fewer opportunities.
+- Target skills that appear in higher-paying clusters to maximize salary potential
+- If remote work is important, target skills common in Cluster(5).
 
 # Supervised Learning: Multiple Regression
 
@@ -393,6 +397,11 @@ print("\nTop skills by salary impact:")
 for skill, importance in skill_importance[:10]:
     print(f"{skill}: {importance:.4f}")
 ```
+## Regression Analysis: What drives salary?
+We built the prediction models to understand how skills influence salary. The Random Forest model achieved R2 of 0.47 compared to 0.28 for Linear Regression, showing that skill-salary relationships are complex.
+
+**Mode Performance:**
+
 
 # Supervised Learning: Classification Using Skills (Random Forest Only)
 
