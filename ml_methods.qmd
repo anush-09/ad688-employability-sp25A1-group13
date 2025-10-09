@@ -271,7 +271,7 @@ print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
 #| eval: true
 
 # Just prepare the modeling dataset
-modeling_cols = ['SALARY', 'is_ml_role', 'is_remote', 'experience_years'] + \
+modeling_cols = ['SALARY', 'is_ml_ds_role', 'is_remote', 'experience_years'] + \
                [col for col in df_final.columns if col.startswith('has_')]
 
 df_modeling = df_final[modeling_cols].copy()
@@ -337,7 +337,7 @@ for i, center in enumerate(kmeans.cluster_centers_):
 # Analyze clustering.
 cluster_summary = df_modeling.groupby('cluster').agg({
     'SALARY': ['count', 'mean'],
-    'is_ml_role': 'mean',
+    'is_ml_ds_role': 'mean',
     'is_remote': 'mean',
     'experience_years': 'mean'
 }).round(2)
@@ -392,7 +392,7 @@ fig.show()
 #| eval: true
 
 # Identify regression features.
-regression_features = skill_feature_cols + ['experience_years', 'is_remote', 'is_ml_role']
+regression_features = skill_feature_cols + ['experience_years', 'is_remote', 'is_ml_ds_role']
 
 # Prepare regression data using salary as the target variable
 X_reg = df_modeling[regression_features].fillna(0)
@@ -457,3 +457,71 @@ print("\nTop skills by salary impact:")
 for skill, importance in skill_importance[:10]:
     print(f"{skill}: {importance:.4f}")
 ```
+
+# Supervised Learning: Classification Using Skills (Random Forest Only)
+
+```{python}
+#| echo: true
+#| eval: true
+
+# Prepare features for classification.
+classification_features = skill_feature_cols + ['experience_years', 'is_remote']
+
+# Prepare classification data
+X_clf = df_modeling[classification_features].fillna(0)
+y_clf = df_modeling['is_ml_ds_role']
+
+# Train/test split for classification
+X_train_clf, X_test_clf, y_train_clf, y_test_clf = train_test_split(X_clf, y_clf, test_size=0.2, random_state=42)
+
+# Scale features
+scaler_clf = StandardScaler()
+X_train_clf_scaled = scaler_clf.fit_transform(X_train_clf)
+X_test_clf_scaled = scaler_clf.transform(X_test_clf)
+
+# Random Forest Classification
+rf_clf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_clf.fit(X_train_clf_scaled, y_train_clf)
+
+print("Skills-based classification model trained successfully!")
+```
+
+```{python}
+#| echo: true
+#| eval: true
+#|
+# Random Forest predictions
+y_pred_rf_clf = rf_clf.predict(X_test_clf_scaled)
+accuracy_rf = accuracy_score(y_test_clf, y_pred_rf_clf)
+f1_rf = f1_score(y_test_clf, y_pred_rf_clf)
+
+print("Skills based Classification Model Performance:")
+print(f"Random Forest - Accuracy: {accuracy_rf:.4f}, F1 Score: {f1_rf:.4f}")
+
+# Confusion Matrix for Random Forest
+cm = confusion_matrix(y_test_clf, y_pred_rf_clf)
+
+# Visualize confusion matrix
+fig = px.imshow(cm, text_auto=True, aspect="auto",
+                title="Confusion Matrix - ML/DS Role Classification",
+                labels=dict(x="Predicted", y="Actual"),
+                color_continuous_scale="Blues")
+fig.update_layout(template="plotly_white")
+fig.show()
+
+print("Classification Report:")
+print(classification_report(y_test_clf, y_pred_rf_clf))
+
+# Feature importance for classification
+# Only use features that actually exist in the classification model
+clf_actual_feature_names = [col for col in classification_features if col in X_train_clf.columns]
+clf_importances = rf_clf.feature_importances_
+
+# Visualize classification feature importance
+fig = px.bar(x=clf_actual_feature_names, y=clf_importances,
+             title="Skills Impact on ML/Data Science Role Classification",
+             labels={'x': 'Features', 'y': 'Importance'})
+fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
+fig.show()
+```
+
