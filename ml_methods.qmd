@@ -40,9 +40,9 @@ pio.renderers.default = "notebook"
 df = pd.read_csv("../assignment-04-anush-09/data/lightcast_job_postings.csv", low_memory=False)
 print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
 
-df.info()
+print(df.head())
 
-# Skills-related columns identified through manual inspection of schema
+# Skills related columns identified through manual inspection of schema
 skills_columns = ['SKILLS', 'SKILLS_NAME', 'SPECIALIZED_SKILLS', 'SPECIALIZED_SKILLS_NAME',
                   'SOFTWARE_SKILLS', 'SOFTWARE_SKILLS_NAME', 'CERTIFICATIONS', 'CERTIFICATIONS_NAME']
 print("\nSkills-related columns identified through schema:")
@@ -122,19 +122,22 @@ core_ml_skills = [
 ]
 
 core_ds_skills = [
-    'has_python_programming_language', 'has_r_programming_language', 'has_statistics', 'has_data_analysis',
+    'has_python_programming_language', 'has_r_programming_language', 'has_statistics', 'has_data_analysis', 'has_big_data',
     'has_data_science', 'has_pandas_python_package', 'has_numpy_python_package',
     'has_scikit_learn_python_package'
 ]
 
 # Role indicators
+# ML roles are straighforward.
 df_skills['is_ml_role'] = (
     (df_skills[core_ml_skills].sum(axis=1) > 0)
 ).astype(int)
-# Assuming that if there are least 2 DS-related skills, then it is a
-# DS role.
+
+# R language is primarily associated with Data Science field. So,
+# if job requires R language or if it has more than one data science
+# skills then it is considered DS role.
 df_skills['is_ds_role'] = (
-    (df_skills[core_ds_skills].sum(axis=1) > 1)
+    df_skills['has_r_programming_language'] == 1 | (df_skills[core_ds_skills].sum(axis=1) > 1)
 ).astype(int)
 
 df_skills['is_ml_ds_role'] = ((df_skills['is_ml_role'] == 1) | (df_skills['is_ds_role'] == 1)).astype(int)
@@ -512,7 +515,6 @@ fig.show()
 print("Classification Report:")
 print(classification_report(y_test_clf, y_pred_rf_clf))
 
-# Feature importance for classification
 # Only use features that actually exist in the classification model
 clf_actual_feature_names = [col for col in classification_features if col in X_train_clf.columns]
 clf_importances = rf_clf.feature_importances_
@@ -522,6 +524,35 @@ fig = px.bar(x=clf_actual_feature_names, y=clf_importances,
              title="Skills Impact on ML/Data Science Role Classification",
              labels={'x': 'Features', 'y': 'Importance'})
 fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
+fig.show()
+```
+
+# Model Results Visualization
+
+```{python}
+#| echo: true
+#| eval: true
+
+# Visualization of model results
+fig = make_subplots(
+    rows=1, cols=2,
+    subplot_titles=('Model Performance Comparison', 'Skills vs Salary Impact'),
+    specs=[[{"type": "bar"}, {"type": "bar"}]]
+)
+
+# Model performance comparison
+models = ['Linear Regression', 'Random Forest Regression', 'Random Forest Classification']
+metrics = [r2_lr, r2_rf, accuracy_rf]
+
+fig.add_trace(go.Bar(x=models, y=metrics, name="Performance"), row=1, col=1)
+
+# Skills vs salary impact
+top_skills_salary = skill_importance[:8]
+fig.add_trace(go.Bar(x=[s[0] for s in top_skills_salary],
+                    y=[s[1] for s in top_skills_salary], name="Salary Impact"), row=1, col=2)
+
+fig.update_layout(height=400, showlegend=False, template="plotly_white",
+                  title_text="Core Model Results - Topic 2.5: ML/Data Science Skills Analysis")
 fig.show()
 ```
 
