@@ -16,4 +16,165 @@ format:
     number-sections: true
     df-print: paged
 ---
----
+#Needed this to fix java error
+#python3.10 -m venv spark_env
+#source spark_env/bin/activate
+#pip install pyspark==3.5.6 pandas numpy plotly
+
+
+```{python}
+# Load the Dataset
+from pyspark.sql import SparkSession
+import pandas as pd
+import numpy as np
+from pyspark.sql import functions as F
+from pyspark.sql.functions import col
+
+# Initialize Spark Session
+spark = (
+    SparkSession.builder
+    .appName("LightcastDataCleaning")
+    .config("spark.sql.legacy.timeParserPolicy", "LEGACY")  # must be here!
+    .getOrCreate()
+)
+
+
+# Load Data
+df = spark.read.option("header", "true").option("inferSchema", "true") \
+    .option("multiLine", "true").option("escape", "\"") \
+    .csv("data/lightcast_job_postings.csv")
+
+df.show(5)
+```
+
+# Looks for the duration of job postings 
+```{python}
+from pyspark.sql.functions import col, to_date, datediff, when
+#| label: duration
+#| include: true
+
+# --- Step 1: Use a flexible date format ---
+date_cols = ["POSTED", "EXPIRED", "MODELED_EXPIRED"]
+for colname in date_cols:
+    # Cast to string first in case it's not string
+    df = df.withColumn(colname, col(colname).cast("string"))
+    # Use M/d/yyyy for single-digit month/day
+    df = df.withColumn(colname, to_date(col(colname), "M/d/yyyy"))
+
+# --- Step 2: Compute durations safely ---
+df = df.withColumn(
+    "DURATION",
+    when(col("DURATION").isNull(), datediff("EXPIRED", "POSTED")).otherwise(col("DURATION"))
+).withColumn(
+    "MODELED_DURATION",
+    when(col("MODELED_DURATION").isNull(), datediff("MODELED_EXPIRED", "POSTED")).otherwise(col("MODELED_DURATION"))
+)
+
+```
+
+# Column Cleaning
+```{python}
+# ===============================
+# Full Text Column Cleaning
+# ===============================
+
+# --- Imports ---
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, regexp_replace
+
+# --- Columns to clean ---
+text_columns = [
+    "TITLE_RAW", "BODY", "SKILLS_NAME",
+    "SPECIALIZED_SKILLS_NAME",
+    "CERTIFICATIONS_NAME",
+    "COMMON_SKILLS_NAME",
+    "SOFTWARE_SKILLS_NAME", "URL",
+    "EDUCATION_LEVELS_NAME", "LIGHTCAST_SECTORS_NAME",
+    "CIP6_NAME", "CIP4_NAME", "CIP2_NAME",
+    "TITLE_NAME", "TITLE_CLEAN",
+    "COMPANY_NAME", "COMPANY_RAW",
+    "ONET", "ONET_NAME", "ONET_2019", "ONET_2019_NAME",
+    "SOC_2021_2_NAME", "SOC_2021_3_NAME", "SOC_2021_4_NAME", "SOC_2021_5_NAME",
+    "LOT_CAREER_AREA_NAME", "LOT_OCCUPATION_NAME", "LOT_SPECIALIZED_OCCUPATION_NAME",
+    "LOT_OCCUPATION_GROUP_NAME", "LOT_V6_SPECIALIZED_OCCUPATION_NAME",
+    "LOT_V6_OCCUPATION_NAME", "LOT_V6_OCCUPATION_GROUP_NAME", "LOT_V6_CAREER_AREA_NAME",
+    "SOC_2_NAME", "SOC_3_NAME", "SOC_4_NAME", "SOC_5_NAME",
+    "NAICS2_NAME", "NAICS3_NAME", "NAICS4_NAME", "NAICS5_NAME", "NAICS6_NAME",
+    "NAICS_2022_2_NAME", "NAICS_2022_3_NAME", "NAICS_2022_4_NAME",
+    "NAICS_2022_5_NAME", "NAICS_2022_6_NAME"
+]
+
+# --- Function to clean text columns ---
+def clean_text_columns(df, columns):
+    """
+    Cleans text-heavy columns by:
+    - Removing brackets, quotes, and newlines
+    - Replacing multiple spaces with single space
+    - Standardizing commas with proper spacing
+    """
+    pattern_cleanup = r'[\[\]\n{}"]'  # remove brackets, newlines, braces, quotes
+    for c in columns:
+        df = df.withColumn(c, regexp_replace(col(c), pattern_cleanup, ""))
+        df = df.withColumn(c, regexp_replace(col(c), r'\s{2,}', ' '))  # multiple spaces → 1 space
+        df = df.withColumn(c, regexp_replace(col(c), r'\s*,\s*', ', '))  # standardize commas
+    return df
+
+# --- Apply cleaning ---
+df = clean_text_columns(df, text_columns)
+
+# --- Preview cleaned text ---
+df.select(text_columns).show(5, truncate=100)
+
+```
+
+# Targeted column-specific cleaning
+```{python}
+from pyspark.sql.functions import col, regexp_extract, when, regexp_replace
+#| label: targeted_cleaning
+#| include: true
+
+# Education levels → keep digits
+df = df.withColumn("EDUCATION_LEVELS", regexp_extract("EDUCATION_LEVELS", r'(\d+)', 1))
+
+# Location cleanup
+df = df.withColumn("LOCATION", regexp_replace(col("LOCATION"), r"\s*\n\s*", " "))
+df = df.withColumn("LOCATION", regexp_replace(col("LOCATION"), r"[{}]", ""))
+
+# Standardize remote work labels
+df = df.withColumn(
+    "REMOTE_TYPE_NAME",
+    when(col("REMOTE_TYPE_NAME").isin("[None]", "Not Remote") | col("REMOTE_TYPE_NAME").isNull(), "On-Site")
+    .when(col("REMOTE_TYPE_NAME") == "Hybrid Remote", "Hybrid")
+    .when(col("REMOTE_TYPE_NAME") == "Remote", "Remote")
+    .otherwise(col("REMOTE_TYPE_NAME"))
+)
+```
+
+# Save the cleaned dataset
+
+```{python}
+import os
+import shutil
+#| label: save_cleaned
+#| include: true
+
+clean_path = "data/lightcast_cleaned.csv"
+
+(
+    df.coalesce(1)
+    .write.mode("overwrite")
+    .option("header", True)
+    .csv("data/lightcast_cleaned_temp")
+)
+
+# Find generated CSV file and move it
+temp_dir = "data/lightcast_cleaned_temp"
+for f in os.listdir(temp_dir):
+    if f.endswith(".csv"):
+        shutil.move(os.path.join(temp_dir, f), clean_path)
+
+shutil.rmtree(temp_dir)
+print(f"✅ Cleaned data saved to {clean_path}")
+
+spark.stop()
+```
