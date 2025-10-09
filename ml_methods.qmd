@@ -400,8 +400,27 @@ for skill, importance in skill_importance[:10]:
 ## Regression Analysis: What drives salary?
 We built the prediction models to understand how skills influence salary. The Random Forest model achieved R2 of 0.47 compared to 0.28 for Linear Regression, showing that skill-salary relationships are complex.
 
-**Mode Performance:**
+**Model Performance:**
+Random Forest R2 of 0.07 means it explains 47% of salary variation.
+RMSE of 32514 shows typical prediction error
+It shows skill alone don't fully determine salary - other factors matter too
 
+**Feature Importance Results:**
+The chart shows which skills have the strongest impact on salary predictions.
+**Top Salary Drivers(by importance):**
+1. **Experience years**(0.49) - the biggest factor, almost half of salary determination
+2. **Remote work**(0.07) - remote positions tend to pay differently
+3. **Data Analysis skill**(0.04) - core analytical capability
+4. **Tableau**(0.04) - visualization and BI tool
+5. **AWS**(0.04) - cloud computing platform
+6. **SQL**(0.04) - database querying
+7. **Python**(0.03) - programming language
+
+**Implications for Career Development:**
+Experience matters - nearly 50% of salary impact comes from years of computer
+Remote works capability add salary premium
+Combination of skills drives salary differences
+Experience(years) and remote work flexibility influence compensation
 
 # Supervised Learning: Classification Using Skills (Random Forest Only)
 
@@ -468,6 +487,23 @@ fig = px.bar(x=clf_actual_feature_names, y=clf_importances,
 fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
 fig.show()
 ```
+## Clasification Results: Identifying ML/Data Science Roles
+
+The classification model predicts whether a job is an ML/Data Science role based on its skill requirements. The Random Forest Classifier achieved stong performance in distinguishing these specialized roles from analyst positions.
+
+**Model Performance Interpretation:**
+-**Accuracy** shows the model correctly identified all roles
+-It suggests ML/DS roles have very distinct skill patterns compared to other data jobs
+-This high accuracy indicates our skill based criteria effectively separates these roles
+
+**Feature Importance**
+This chart shows which skills are strongest predictors of ML/DS classification. Skills with higher bars are the "signature" skills that clearly distinguish ML/DS roles from analyst positions.
+
+**Actionable Insights**
+- The perfect accuracy shows DL/MS roles require distinctly different skill sets
+- Focus on the top features to signal ML/DS capabilities to employers
+- These specialized skills are what separate advance roles from general analytics
+- Building expertise in high importance features directly increases ML/DS role readiness
 
 # Model Results Visualization
 
