@@ -1,6 +1,6 @@
 /.quarto/
 **/*.quarto_ipynb
-_site/
+
 .venv/
 *.ipynb_checkpoints/
 __pycache__/
@@ -8,7 +8,7 @@ figures/
 
 
 # Quarto
-_site/
+
 _freeze/
 
 # Python
@@ -20,7 +20,7 @@ __pycache__/
 data/
 
 # Quarto
-_site/
+
 _freeze/
 
 # Python
@@ -32,7 +32,7 @@ __pycache__/
 data/
 
 # Quarto
-_site/
+
 _freeze/
 
 # Python
@@ -47,6 +47,5 @@ data/
 data/
 
 # Quarto build output
-_site/
 site_libs/
 
