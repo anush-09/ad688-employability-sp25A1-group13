@@ -384,3 +384,76 @@ fig.update_layout(
 )
 fig.show()
 ```
+
+# Supervised Learning: Multiple Regression
+
+```{python}
+#| echo: true
+#| eval: true
+
+# Identify regression features.
+regression_features = skill_feature_cols + ['experience_years', 'is_remote', 'is_ml_role']
+
+# Prepare regression data using salary as the target variable
+X_reg = df_modeling[regression_features].fillna(0)
+y_reg = df_modeling['SALARY']
+
+X_train, X_test, y_train, y_test = train_test_split(X_reg, y_reg, test_size=0.2, random_state=42)
+
+print(f"Training set size: {len(X_train):,}")
+print(f"Test set size: {len(X_test):,}")
+
+# Scale features
+scaler_reg = StandardScaler()
+X_train_scaled = scaler_reg.fit_transform(X_train)
+X_test_scaled = scaler_reg.transform(X_test)
+
+# Multiple Linear Regression
+lr = LinearRegression()
+lr.fit(X_train_scaled, y_train)
+
+# Random Forest Regression
+rf_reg = RandomForestRegressor(n_estimators=100, random_state=42)
+rf_reg.fit(X_train_scaled, y_train)
+
+print("Skills based regression models training completed")
+```
+
+```{python}
+#| echo: true
+#| eval: true
+
+# Evaluate regression models
+# Linear Regression predictions
+y_pred_lr = lr.predict(X_test_scaled)
+rmse_lr = np.sqrt(mean_squared_error(y_test, y_pred_lr))
+r2_lr = r2_score(y_test, y_pred_lr)
+
+# Random Forest predictions
+y_pred_rf = rf_reg.predict(X_test_scaled)
+rmse_rf = np.sqrt(mean_squared_error(y_test, y_pred_rf))
+r2_rf = r2_score(y_test, y_pred_rf)
+
+print("Skills-based Regression Model Performance:")
+print(f"Linear Regression - RMSE: ${rmse_lr:,.2f}, R²: {r2_lr:.4f}")
+print(f"Random Forest - RMSE: ${rmse_rf:,.2f}, R²: {r2_rf:.4f}")
+
+# Feature importance for Random Forest
+# Only use features that actually exist in the model
+actual_feature_names = [col for col in regression_features if col in X_train.columns]
+importances = rf_reg.feature_importances_
+
+# Visualize feature importance
+fig = px.bar(x=actual_feature_names, y=importances,
+             title="Skills Impact on Salary (Random Forest Feature Importance)",
+             labels={'x': 'Features', 'y': 'Importance'})
+fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
+fig.show()
+
+# Top skills by salary impact
+skill_importance = list(zip(actual_feature_names, importances))
+skill_importance.sort(key=lambda x: x[1], reverse=True)
+print("\nTop skills by salary impact:")
+for skill, importance in skill_importance[:10]:
+    print(f"{skill}: {importance:.4f}")
+```
