@@ -40,7 +40,7 @@ pio.renderers.default = "notebook"
 df = pd.read_csv("../assignment-04-anush-09/data/lightcast_job_postings.csv", low_memory=False)
 print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
 
-print(df.head())
+# print(df.head())
 
 # Skills related columns identified through manual inspection of schema
 skills_columns = ['SKILLS', 'SKILLS_NAME', 'SPECIALIZED_SKILLS', 'SPECIALIZED_SKILLS_NAME',
@@ -49,8 +49,9 @@ print("\nSkills-related columns identified through schema:")
 for col in skills_columns:
     if col in df.columns:
         print(f"- {col}")
-print("\nOnly 'SKILLS_NAME, 'SOFTWARE_SKILLS_NAME' and 'SPECIALIZED_SKILLS_NAME' are relevant")
 ```
+## IMPORTANT Skills columns
+We identified that 'SKILLS_NAME, 'SOFTWARE_SKILLS_NAME' and 'SPECIALIZED_SKILLS_NAME' columns are most relevant to the analysis.
 
 # Skills Data Preprocessing
 
@@ -185,6 +186,11 @@ print(f"Final dataset size: {len(df_final):,}")
 print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
 ```
 
+## Heuristics employed for ML/DS roles
+We identified ML and Data Science roles using specific technical skills listed in the dataset. ML roles need skills like TensorFlow, PyTorch, Deep Learning, etc. Data Science roles typically require R programming, Python with Statistics, or multiple data analysis tools.
+
+The goal is to see how these specialized skills impact salary and career opportunities. We'll use machine learning models to find patterns that can guide job seekers in choosing which skills to develop.
+
 # Feature Engineering for ML
 ```{python}
 #| echo: true
@@ -304,6 +310,16 @@ fig.update_layout(
 )
 fig.show()
 ```
+## Insights from KMeans Clustering
+The clustering analysis grouped jobs based on their skill requirements and characteristics. We found 6 distinct job clusters, each with different salary levels, remote work availability, and skill profiles.
+
+**Key Findings:**
+- Some clusters show higher concentrations of ML/DS roles with corresponding higher average salaries
+- Remote work availability varies significantly across clusters, suggesting that certain skill combinations are more compatible with remote positions.
+- Experience requirements differ by cluster, indicating distinct career progression paths.
+
+**Takeaways for Job Seekers:**
+- Target skills that appear in higher-paying clusters to max
 
 # Supervised Learning: Multiple Regression
 
@@ -469,7 +485,7 @@ fig.add_trace(go.Bar(x=[s[0] for s in top_skills_salary],
                     y=[s[1] for s in top_skills_salary], name="Salary Impact"), row=1, col=2)
 
 fig.update_layout(height=400, showlegend=False, template="plotly_white",
-                  title_text="Core Model Results - Topic 2.5: ML/Data Science Skills Analysis")
+                  title_text="Core Model Results - ML/Data Science Skills Analysis\n")
 fig.show()
 ```
 
