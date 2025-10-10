@@ -35,7 +35,7 @@ We focused on:
 - Skill demand frequency and specialization  
 - Emerging data science and analytics trends
 
----
+
 # Load and Prepare Data
 ```{python}
 import pandas as pd
