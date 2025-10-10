@@ -40,19 +40,81 @@ We focused on:
 ```{python}
 import pandas as pd
 import plotly.express as px
-import plotly.figure_factory as ff
-from collections import Counter
+import numpy as np
 
-# Efficient load with selective columns
-usecols = [
-    "Average_Salary", "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE",
-    "REMOTE_GROUP", "ROLE_GROUP", "STATE", "TOP_SKILLS"
+# === Ultra-Safe Lightweight Data Load ===
+# Only grab the essential columns
+cols_needed = [
+    "SALARY_FROM", "SALARY_TO",
+    "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE",
+    "REMOTE_TYPE_NAME", "STATE_NAME",
+    "LOT_V6_OCCUPATION_GROUP_NAME"
 ]
-df = pd.read_csv("data/lightcast_cleaned.csv", usecols=usecols, low_memory=False)
 
-# Downsample for memory safety on EC2
-if len(df) > 8000:
-    df = df.sample(8000, random_state=42)
+# ✅ Read only first 5,000 rows to keep memory small
+df = pd.read_csv(
+    "data/lightcast_cleaned.csv",
+    usecols=lambda c: c in cols_needed,
+    nrows=5000,
+    low_memory=False
+)
+
+import re
+
+# --- Robust extraction for numeric values from messy text ---
+print(f"Raw rows after load: {len(df)}")
+
+def extract_number(val):
+    """Extract first numeric value from strings like '$120K per year', '5 years', etc."""
+    if pd.isna(val):
+        return np.nan
+    match = re.search(r"(\d+\.?\d*)", str(val).replace(",", ""))
+    return float(match.group(1)) if match else np.nan
+
+# Apply to salary columns
+for col in ["SALARY_FROM", "SALARY_TO"]:
+    if col in df.columns:
+        df[col] = df[col].apply(extract_number)
+
+# Compute average salary
+df["Average_Salary"] = df[["SALARY_FROM", "SALARY_TO"]].mean(axis=1, skipna=True)
+
+# Apply to experience columns
+for col in ["MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE"]:
+    if col in df.columns:
+        df[col] = df[col].apply(extract_number)
+
+# --- Basic renames ---
+df.rename(columns={
+    "REMOTE_TYPE_NAME": "REMOTE_GROUP",
+    "STATE_NAME": "STATE",
+    "LOT_V6_OCCUPATION_GROUP_NAME": "ROLE_GROUP"
+}, inplace=True)
+
+# --- Diagnose row counts at each stage ---
+print(f"Raw rows after load: {len(df)}")
+
+# --- Convert to numeric just in case ---
+df["Average_Salary"] = pd.to_numeric(df["Average_Salary"], errors="coerce")
+df["MIN_YEARS_EXPERIENCE"] = pd.to_numeric(df["MIN_YEARS_EXPERIENCE"], errors="coerce")
+
+# --- Relaxed filters: keep broader ranges ---
+# Allow salaries as low as 1k, up to 600k
+df = df[df["Average_Salary"].between(1000, 600000, inclusive="both")]
+
+# Allow experience between 0 and 60 years
+df = df[df["MIN_YEARS_EXPERIENCE"].between(0, 60, inclusive="both")]
+
+# Drop remaining NaNs
+df = df.dropna(subset=["Average_Salary", "MIN_YEARS_EXPERIENCE"])
+
+print(f"Remaining after filters: {len(df)}")
+
+# --- If still large, take a small random sample ---
+if len(df) > 2000:
+    df = df.sample(2000, random_state=42)
+
+print(f"✅ Data loaded safely: {len(df)} rows, {df.memory_usage(deep=True).sum()/1e6:.1f} MB in memory")
 ```
 
 ```{python}
@@ -73,6 +135,7 @@ fig
 Salaries are right-skewed — most roles pay under $150K, but select senior and ML-focused positions exceed $200K, highlighting outlier opportunities for experienced professionals.
 
 ```{python}
+
 fig = px.scatter(
     df,
     x="MIN_YEARS_EXPERIENCE",
@@ -105,24 +168,6 @@ fig
 ### Salary by Role Category (BA / DS / ML)
 Machine Learning roles exhibit the highest median salaries, followed by Data Science and Business Analytics. This validates using ROLE_GROUP as a key feature in regression modeling.
 
-```{python}
-if df["STATE"].notna().sum() > 0:
-    fig = px.choropleth(
-        df,
-        locations="STATE",
-        locationmode="USA-states",
-        color="Average_Salary",
-        scope="usa",
-        color_continuous_scale="Greens",
-        title="Average Salary by U.S. State"
-    )
-    fig
-else:
-    print("State data not available — skipping map.")
-```
-
-### Geographic and Remote Trends
-Coastal states (CA, MA, NY) show higher average salaries — consistent with tech-industry concentration. These differences will be important for geographic feature engineering.
 
 ```{python}
 fig = px.box(
