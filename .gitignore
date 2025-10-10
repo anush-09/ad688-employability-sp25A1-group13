@@ -1,12 +1,42 @@
+# ===============================
+# Project: AD688 Employability Group
+# Clean .gitignore (safe for submission)
+# ===============================
+
+# ----- Quarto build outputs -----
+.quarto/
+_freeze/
+_site/
+site_libs/
+**/_quarto_ipynb
+
+# ----- Python virtual environment -----
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# ----- Figures / Generated assets -----
+figures/
+_output/
+
+# ----- System / IDE files -----
+.DS_Store
+Thumbs.db
+
+# ----- Data -----
+# Allow small CSVs (e.g., Lightcast cleaned + job postings)
+# Large or private datasets should still be excluded if added later.
+# Example of how to ignore large files in future:
+# data/*.parquet
+# data/large_*.csv
+
+
+
+
 /.quarto/
 **/*.quarto_ipynb
-.venv/
-*.ipynb_checkpoints/
-__pycache__/
-figures/
-_freeze/
-# Python
-.ipynb_checkpoints/
-site_libs/
-data/lightcast_cleaned.csv
+
+
+# Large data files (too big for GitHub)
 data/lightcast_job_postings.csv
+data/lightcast_cleaned.csv
