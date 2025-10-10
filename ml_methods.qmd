@@ -250,10 +250,10 @@ kmeans = KMeans(n_clusters=6, random_state=42, n_init=10)
 clusters = kmeans.fit_predict(X_cluster_scaled)
 df_modeling['cluster'] = clusters
 
-print("Skills based clustering completed")
-print("Cluster centers:")
-for i, center in enumerate(kmeans.cluster_centers_):
-    print(f"Cluster {i}: {center}")
+# print("Skills based clustering completed")
+# print("Cluster centers:")
+# for i, center in enumerate(kmeans.cluster_centers_):
+#     print(f"Cluster {i}: {center}")
 ```
 
 ```{python}
@@ -303,10 +303,17 @@ fig.add_trace(
 )
 
 fig.update_layout(
-    height=600,
+    height=650,
     showlegend=False,
     template="plotly_white",
-    title_text="Skills-Based KMeans Clustering Results"
+    title={
+        'text': "Skills-Based KMeans Clustering Results",
+        'y': 0.98,
+        'x': 0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'
+    },
+    margin=dict(t=80)
 )
 fig.show()
 ```
@@ -529,8 +536,19 @@ top_skills_salary = skill_importance[:8]
 fig.add_trace(go.Bar(x=[s[0] for s in top_skills_salary],
                     y=[s[1] for s in top_skills_salary], name="Salary Impact"), row=1, col=2)
 
-fig.update_layout(height=400, showlegend=False, template="plotly_white",
-                  title_text="Core Model Results - ML/Data Science Skills Analysis\n")
+fig.update_layout(
+    height=450,
+    showlegend=False,
+    template="plotly_white",
+    title={
+        'text': "Core Model Results - ML/Data Science Skills Analysis",
+        'y': 0.98,
+        'x': 0.5,
+        'xanchor': 'center',
+        'yanchor': 'top',
+    },
+    margin=dict(t=80)
+)
 fig.show()
 ```
 
