@@ -31,7 +31,6 @@ skills_data = {
     "Machine Learning": [3, 1, 4],
     "Cloud Computing": [2, 2, 3],
     "Power BI": [3, 2, 4],
-    "R": [3, 1, 4],
     "AWS": [3,1,4]
 }
 
@@ -58,7 +57,7 @@ df_styled
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(14, 6))
+plt.figure(figsize=(14, 12))
 sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5)
 plt.title("Team Skill Levels Heatmap")
 plt.show()
