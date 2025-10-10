@@ -139,14 +139,41 @@ for skill, count in top_skills:
 
 ```{python}
 import matplotlib.pyplot as plt
+import numpy as np
 
+# Extract skills and counts
 skills, counts = zip(*skill_counts.most_common(10))
-plt.barh(skills, counts)
-plt.xlabel("Frequency")
-plt.ylabel("Skill")
-plt.title("Top 10 Skills Mentioned in Job Descriptions")
+
+# Set up the figure
+plt.figure(figsize=(10, 6))
+
+# Use a qualitative colormap for distinct colors
+colors = plt.cm.tab10(np.linspace(0, 1, len(skills)))
+
+# Create the bar chart
+bars = plt.barh(skills, counts, color=colors, edgecolor="black")
+
+# Invert y-axis so the top skill appears at the top
 plt.gca().invert_yaxis()
+
+# Titles and labels
+plt.title("Top 10 Most Mentioned Skills in Job Descriptions", fontsize=14, fontweight="bold", pad=15)
+plt.xlabel("Frequency (Number of Mentions)", fontsize=12)
+plt.ylabel("Skill", fontsize=12)
+
+# Add value labels
+for bar in bars:
+    width = bar.get_width()
+    plt.text(width + max(counts) * 0.01, bar.get_y() + bar.get_height() / 2,
+             f"{width:,}", va="center", fontsize=10, color="black")
+
+# Style adjustments
+plt.grid(axis="x", linestyle="--", alpha=0.6)
+plt.tight_layout()
+
+# Show the plot
 plt.show()
+
 ```
 
 
