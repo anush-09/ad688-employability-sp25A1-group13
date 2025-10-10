@@ -1,53 +1,12 @@
 /.quarto/
 **/*.quarto_ipynb
-
 .venv/
 *.ipynb_checkpoints/
 __pycache__/
 figures/
-
-
-# Quarto
-
 _freeze/
-
 # Python
-.venv/
 .ipynb_checkpoints/
-__pycache__/
-
-# Data (large/untracked)
-
-
-# Quarto
-
-_freeze/
-
-# Python
-.venv/
-.ipynb_checkpoints/
-__pycache__/
-
-# Data (large/untracked)
-
-
-# Quarto
-
-_freeze/
-
-# Python
-.venv/
-.ipynb_checkpoints/
-__pycache__/
-
-# Data (large/untracked)
-
-
-# Data (large/untracked)
-
-
-# Quarto build output
 site_libs/
-
 data/lightcast_cleaned.csv
 data/lightcast_job_postings.csv
