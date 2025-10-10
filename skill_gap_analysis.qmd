@@ -2,15 +2,39 @@
 ```{python}
 import pandas as pd
 
-# Example skills data (can be updated later with real values)
+# Extended skills data
 skills_data = {
     "Name": ["Anu", "Cindy", "Gavin"],
     "Python": [5, 3, 4],
     "SQL": [4, 2, 5],
     "Machine Learning": [3, 1, 4],
-    "Cloud Computing": [2, 2, 3]
+    "Cloud Computing": [2, 2, 3],
+    "Excel": [5, 4, 5],
+    "Tableau": [4, 3, 4],
+    "Power BI": [3, 2, 4],
+    "R": [3, 1, 4]
 }
 
+# Create DataFrame and set index
 df_skills = pd.DataFrame(skills_data).set_index("Name")
+
+# Ensure all columns are numeric
+df_skills = df_skills.apply(pd.to_numeric)
+
+# Add average skill score across all tools
+df_skills["Average_Skill"] = df_skills.mean(axis=1)
+
 df_skills
+
+```
+
+```{python}
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5)
+plt.title("Team Skill Levels Heatmap")
+plt.show()
+
 ```

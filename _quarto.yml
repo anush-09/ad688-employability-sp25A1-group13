@@ -1,24 +1,23 @@
 project:
   type: website
-  output-dir: docs
   
 website:
   title: "Business Analytics, Data Science and Machine Learning Trends 2025"
   navbar:
     left:
-      - href: index.html
+      - href: index.qmd
         text: "Home"
-      - href: about.html
+      - href: about.qmd
         text: "About"
-      - href: introduction.html
+      - href: introduction.qmd
         text: "Introduction"
-      - href: data_cleaning.html
+      - href: data_cleaning.qmd
         text: "Data Cleaning & Exploration"
-      - href: eda.html
+      - href: eda.qmd
         text: "Exploratory Data Analysis"
-      - href: skill_gap_analysis.html
+      - href: skill_gap_analysis.qmd
         text: "Skill Gap Analysis"
-      - href: ml_methods.html
+      - href: ml_methods.qmd
         text: "ML Methods"
 format:
   html:
