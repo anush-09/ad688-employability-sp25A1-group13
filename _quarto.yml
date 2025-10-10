@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: _site
+  output-dir: docs
   
 website:
   title: "Business Analytics, Data Science and Machine Learning Trends 2025"
@@ -20,8 +20,6 @@ website:
         text: "Skill Gap Analysis"
       - href: ml_methods.html
         text: "ML Methods"
-      - href: nlp_methods.html
-        text: "NLP Methods"
 format:
   html:
     theme: cosmo
