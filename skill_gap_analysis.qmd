@@ -1,4 +1,24 @@
+---
+title: "Skill Gap Analysis"
+subtitle: "Group 13 Skill Assessments"
+author:
+  - name: Anu Sharma, Cindy Guzman, Gavin Boss
+    affiliations:
+      - id: bu
+        name: Boston University
+        city: Boston
+        state: MA
+bibliography: references.bib
+csl: csl/econometrica.csl
+format: 
+  html:
+    toc: true
+    number-sections: true
+    df-print: paged
+---
+# Team Dataframe
 
+Our team conducted  an overview of our current technical skills when it comes to Business Analytics and our skill levels. The goal was to understand where the group's strengths and weaknesses were, and understand how the data that was collected could relate to the data that was observed in the research conducted. This was used to identify strengths and weaknesses for the group while also identifying potential gaps within the group.
 ```{python}
 import pandas as pd
 
@@ -32,7 +52,7 @@ df_skills
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(12, 10))
 sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5)
 plt.title("Team Skill Levels Heatmap")
 plt.show()
