@@ -7,7 +7,6 @@
 .quarto/
 _freeze/
 _site/
-site_libs/
 **/_quarto_ipynb
 
 # ----- Python virtual environment -----
