@@ -26,12 +26,13 @@ import pandas as pd
 # Extended skills data
 skills_data = {
     "Name": ["Anu", "Cindy", "Gavin"],
+    "Data Analysis": [3,1,4]
     "Python": [5, 3, 4],
     "SQL": [4, 2, 5],
     "Machine Learning": [3, 1, 4],
     "Cloud Computing": [2, 2, 3],
     "Power BI": [3, 2, 4],
-    "AWS": [3,1,4]
+    
 }
 
 # Create DataFrame and set index
@@ -63,3 +64,16 @@ plt.title("Team Skill Levels Heatmap")
 plt.show()
 
 ```
+
+# What the Heatmap Shows
+
+When looking at the heatmap it shows that our team still feels relatively new to these technical skills and highlighted in blue are the most notable areas for growth. One person in our group is a Business Analyst while the other two do not use these tools on a daily basis and due to this lack of exposure likely contribute to a lack of technical skill observed in the heatmap. Increased exposure and experience outside of an educational setting could contribute to increased technical skills within the group.
+
+Data Analysis represents the strongest skill that our group presents, while this isn't a program it was noted as one of the top skills that impacted salary, alongside experience and being remote. Regardless of the type of data analysis experience, having the ability to analyze data is more vital according to the data represented in the ML Model section of this website. Having a core analytical ability puts our group ahead of most canidates that have vast python experience depending on the types of jobs that they are looking to apply for, and adding the other analytical tools such as Python and PowerBI only empower our group further in the ability to find higher paying jobs.
+
+Python is one of the strongest skills across the team and this is likely in large part due to the exposure that has occured during this course, while no one in the group are experts in Python our technical skill levels indicate that we have a foundational understanding of the programming language and are able to navigate the complexities and manipulate data in order to meet organizational goals and objectives required for data analysis, automation, and model development that was observed during this course. Cloud computing was one of the areas where we struggled as a group and this was in large part due to a lack of exposure and could likely increase in environments where this was utilized similar to our educational environment like this class.
+
+# Addressing Skill Gaps
+
+# Comparing Top Job Market Skills
+
