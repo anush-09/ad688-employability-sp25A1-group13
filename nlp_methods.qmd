@@ -12,3 +12,20 @@ execute:
   eval: false
 code-fold: true
 ---
+
+```{python}
+# Load necessary libraries
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Initialize Spark session
+spark = SparkSession.builder.appName("NLPAnalysis").getOrCreate()
+
+# Load cleaned dataset
+df = spark.read.option("header", "true").option("inferSchema", "true") \
+    .csv("data/lightcast_cleaned.csv")
+
+# Preview
+df.select("TITLE_CLEAN", "BODY").show(5, truncate=100)
+```
+

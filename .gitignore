@@ -17,7 +17,7 @@ _freeze/
 __pycache__/
 
 # Data (large/untracked)
-data/
+
 
 # Quarto
 
@@ -29,7 +29,7 @@ _freeze/
 __pycache__/
 
 # Data (large/untracked)
-data/
+
 
 # Quarto
 
@@ -41,11 +41,13 @@ _freeze/
 __pycache__/
 
 # Data (large/untracked)
-data/
+
 
 # Data (large/untracked)
-data/
+
 
 # Quarto build output
 site_libs/
 
+data/lightcast_cleaned.csv
+data/lightcast_job_postings.csv
