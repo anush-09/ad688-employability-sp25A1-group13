@@ -141,38 +141,37 @@ for skill, count in top_skills:
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Extract skills and counts
 skills, counts = zip(*skill_counts.most_common(10))
 
-# Set up the figure
+# Make figure taller for vertical bars
 plt.figure(figsize=(10, 6))
 
-# Use a qualitative colormap for distinct colors
+# Unique color per bar
 colors = plt.cm.tab10(np.linspace(0, 1, len(skills)))
 
-# Create the bar chart
+# Plot vertical bars
 bars = plt.bar(skills, counts, color=colors, edgecolor="black")
-
-# Invert y-axis so the top skill appears at the top
-plt.gca().invert_yaxis()
 
 # Titles and labels
 plt.title("Top 10 Most Mentioned Skills in Job Descriptions", fontsize=14, fontweight="bold", pad=15)
-plt.xlabel("Frequency (Number of Mentions)", fontsize=12)
-plt.ylabel("Skill", fontsize=12)
+plt.xlabel("Skill", fontsize=12)
+plt.ylabel("Frequency (Number of Mentions)", fontsize=12)
 
-# Add value labels
+# Rotate x labels for readability
+plt.xticks(rotation=45, ha="right", fontsize=10)
+plt.yticks(fontsize=10)
+
+# Add values on top of bars
 for bar in bars:
-    width = bar.get_width()
-    plt.text(width + max(counts) * 0.01, bar.get_y() + bar.get_height() / 2,
-             f"{width:,}", va="center", fontsize=10, color="black")
+    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(counts)*0.01,
+             f"{bar.get_height():,}", ha="center", va="bottom", fontsize=9, color="black")
 
-# Style adjustments
-plt.grid(axis="x", linestyle="--", alpha=0.6)
+# Gridlines and layout
+plt.grid(axis="y", linestyle="--", alpha=0.6)
 plt.tight_layout()
 
-# Show the plot
 plt.show()
+
 
 ```
 
