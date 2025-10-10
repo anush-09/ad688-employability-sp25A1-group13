@@ -1,49 +1,19 @@
-/.quarto/
-**/*.quarto_ipynb
+# Quarto
+.quarto/
+**/_quarto_ipynb
 
+# Python
 .venv/
-*.ipynb_checkpoints/
+.ipynb_checkpoints/
 __pycache__/
+
+# Figures & Build
 figures/
-
-
-# Quarto
-
 _freeze/
+_site/
+site_libs/
 
-# Python
-.venv/
-.ipynb_checkpoints/
-__pycache__/
-
-# Data (large/untracked)
-
-
-# Quarto
-
-_freeze/
-
-# Python
-.venv/
-.ipynb_checkpoints/
-__pycache__/
-
-# Data (large/untracked)
-
-
-# Quarto
-
-_freeze/
-
-# Python
-.venv/
-.ipynb_checkpoints/
-__pycache__/
-
-# Data (large/untracked)
-
-
-# Data (large/untracked)
-
+# Data (now tracked — CSVs will be visible)
+# (You removed the ignore lines for data/)
 
 
