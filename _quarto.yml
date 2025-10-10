@@ -20,6 +20,7 @@ website:
         text: "Skill Gap Analysis"
       - href: ml_methods.qmd
         text: "ML Methods"
+
 format:
   html:
     theme: cosmo
@@ -28,10 +29,12 @@ format:
     code-fold: true
     anchor-sections: true
     df-print: paged
+
 execute:
   echo: true
   eval: true
   freeze: auto
+
 resources:
   - figures/**
 
