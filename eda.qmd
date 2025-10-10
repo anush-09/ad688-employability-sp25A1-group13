@@ -42,8 +42,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 
-# === Ultra-Safe Lightweight Data Load ===
-# Only grab the essential columns
+# === Minimal safe load ===
 cols_needed = [
     "SALARY_FROM", "SALARY_TO",
     "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE",
@@ -51,70 +50,43 @@ cols_needed = [
     "LOT_V6_OCCUPATION_GROUP_NAME"
 ]
 
-# ✅ Read only first 5,000 rows to keep memory small
+# Load only needed columns, small sample for EC2
 df = pd.read_csv(
     "data/lightcast_cleaned.csv",
     usecols=lambda c: c in cols_needed,
-    nrows=5000,
+    nrows=8000,
     low_memory=False
 )
 
-import re
+# --- Convert numeric columns safely ---
+for col in ["SALARY_FROM", "SALARY_TO", "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE"]:
+    df[col] = pd.to_numeric(df[col], errors="coerce")
 
-# --- Robust extraction for numeric values from messy text ---
-print(f"Raw rows after load: {len(df)}")
-
-def extract_number(val):
-    """Extract first numeric value from strings like '$120K per year', '5 years', etc."""
-    if pd.isna(val):
-        return np.nan
-    match = re.search(r"(\d+\.?\d*)", str(val).replace(",", ""))
-    return float(match.group(1)) if match else np.nan
-
-# Apply to salary columns
-for col in ["SALARY_FROM", "SALARY_TO"]:
-    if col in df.columns:
-        df[col] = df[col].apply(extract_number)
-
-# Compute average salary
+# --- Compute average salary (avoid string concat) ---
 df["Average_Salary"] = df[["SALARY_FROM", "SALARY_TO"]].mean(axis=1, skipna=True)
 
-# Apply to experience columns
-for col in ["MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE"]:
-    if col in df.columns:
-        df[col] = df[col].apply(extract_number)
-
-# --- Basic renames ---
+# --- Clean and rename ---
 df.rename(columns={
     "REMOTE_TYPE_NAME": "REMOTE_GROUP",
     "STATE_NAME": "STATE",
     "LOT_V6_OCCUPATION_GROUP_NAME": "ROLE_GROUP"
 }, inplace=True)
 
-# --- Diagnose row counts at each stage ---
-print(f"Raw rows after load: {len(df)}")
+# --- Drop invalid rows early ---
+df = df[df["Average_Salary"].notna() & (df["Average_Salary"] > 0)]
 
-# --- Convert to numeric just in case ---
-df["Average_Salary"] = pd.to_numeric(df["Average_Salary"], errors="coerce")
-df["MIN_YEARS_EXPERIENCE"] = pd.to_numeric(df["MIN_YEARS_EXPERIENCE"], errors="coerce")
+# --- Downsample further if needed ---
+if len(df) > 5000:
+    df = df.sample(5000, random_state=42)
 
-# --- Relaxed filters: keep broader ranges ---
-# Allow salaries as low as 1k, up to 600k
-df = df[df["Average_Salary"].between(1000, 600000, inclusive="both")]
+print(f"✅ Loaded {len(df)} rows safely with columns: {list(df.columns)}")
 
-# Allow experience between 0 and 60 years
-df = df[df["MIN_YEARS_EXPERIENCE"].between(0, 60, inclusive="both")]
-
-# Drop remaining NaNs
-df = df.dropna(subset=["Average_Salary", "MIN_YEARS_EXPERIENCE"])
-
-print(f"Remaining after filters: {len(df)}")
-
-# --- If still large, take a small random sample ---
-if len(df) > 2000:
-    df = df.sample(2000, random_state=42)
-
-print(f"✅ Data loaded safely: {len(df)} rows, {df.memory_usage(deep=True).sum()/1e6:.1f} MB in memory")
+# Optional lightweight check
+fig = px.histogram(df, x="Average_Salary", nbins=25,
+                   color_discrete_sequence=["#187145"],
+                   title="Average Salary Distribution (sample)")
+fig.update_layout(template="plotly_white")
+fig
 ```
 
 ```{python}
