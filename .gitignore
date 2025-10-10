@@ -46,8 +46,4 @@ __pycache__/
 # Data (large/untracked)
 
 
-# Quarto build output
-site_libs/
 
-data/lightcast_cleaned.csv
-data/lightcast_job_postings.csv
