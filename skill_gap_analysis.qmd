@@ -58,7 +58,7 @@ df_styled
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(10, 10))
+plt.figure(figsize=(10, 6))
 sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5)
 plt.title("Team Skill Levels Heatmap")
 plt.xlabel("Technical Skills", fontsize=14)
