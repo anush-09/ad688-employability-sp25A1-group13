@@ -16,7 +16,7 @@ code-fold: true
 
 
 
----
+
 # Data-Driven Career Analysis: Evaluating Personal Job Market Prospects in 2024
 
 ## Rationale
@@ -48,4 +48,3 @@ critical. These trends clearly indicates that both education and job markets
 must keep evolving to stay aligned with real-world demands.
 
 ## References
----
