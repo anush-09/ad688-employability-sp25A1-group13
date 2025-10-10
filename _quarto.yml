@@ -36,7 +36,7 @@ execute:
   freeze: auto
 
 resources:
-  - figures/**
+  - figures
 
 bibliography: references.bib
 csl: csl/econometrica.csl
