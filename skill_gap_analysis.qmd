@@ -41,9 +41,6 @@ df_skills = pd.DataFrame(skills_data).set_index("Name")
 # Ensure all columns are numeric
 df_skills = df_skills.apply(pd.to_numeric)
 
-# Add average skill score across all tools
-df_skills["Average Skill"] = df_skills.mean(axis=1)
-
 # Style with borders and centered text
 df_styled = df_skills.style.set_table_styles([
     {'selector': 'th, td', 'props': [('border', '1px solid black'),

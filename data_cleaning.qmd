@@ -1,5 +1,5 @@
 ---
-title: "Data Analysis"
+title: "Data Cleaning"
 subtitle: "Comprehensive Data Cleaning & Exploratory Analysis of Job Market Trends"
 author:
   - name: Anu Sharma, Cindy Guzman, Gavin Boss
@@ -16,10 +16,7 @@ format:
     number-sections: true
     df-print: paged
 ---
-#Needed this to fix java error
-#python3.10 -m venv spark_env
-#source spark_env/bin/activate
-#pip install pyspark==3.5.6 pandas numpy plotly
+
 
 
 ```{python}
