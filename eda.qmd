@@ -55,7 +55,6 @@ if len(df) > 8000:
     df = df.sample(8000, random_state=42)
 ```
 
-
 ```{python}
 fig = px.histogram(
     df, x="Average_Salary", nbins=40,
