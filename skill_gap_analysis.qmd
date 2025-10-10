@@ -19,6 +19,7 @@ format:
 # Team Dataframe
 
 Our team conducted  an overview of our current technical skills when it comes to Business Analytics and our skill levels. The goal was to understand where the group's strengths and weaknesses were, and understand how the data that was collected could relate to the data that was observed in the research conducted. This was used to identify strengths and weaknesses for the group while also identifying potential gaps within the group.
+
 ```{python}
 import pandas as pd
 
@@ -44,7 +45,13 @@ df_skills = df_skills.apply(pd.to_numeric)
 # Add average skill score across all tools
 df_skills["Average_Skill"] = df_skills.mean(axis=1)
 
-df_skills
+# Style with borders and centered text
+df_styled = df_skills.style.set_table_styles([
+    {'selector': 'th, td', 'props': [('border', '1px solid black'),
+                                     ('text-align', 'center')]}
+])
+
+df_styled
 
 ```
 
