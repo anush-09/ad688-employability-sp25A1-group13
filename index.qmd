@@ -11,7 +11,7 @@ execute:
   echo: true
   eval: false
 code-fold: true
-
+---
 
 
 
@@ -48,3 +48,4 @@ critical. These trends clearly indicates that both education and job markets
 must keep evolving to stay aligned with real-world demands.
 
 ## References
+---
