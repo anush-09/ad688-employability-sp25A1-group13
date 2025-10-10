@@ -30,10 +30,9 @@ skills_data = {
     "SQL": [4, 2, 5],
     "Machine Learning": [3, 1, 4],
     "Cloud Computing": [2, 2, 3],
-    "Excel": [5, 4, 5],
-    "Tableau": [4, 3, 4],
     "Power BI": [3, 2, 4],
-    "R": [3, 1, 4]
+    "R": [3, 1, 4],
+    "AWS": [3,1,4]
 }
 
 # Create DataFrame and set index
