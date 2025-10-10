@@ -35,3 +35,8 @@ Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+
+
+# Large data files (too big for GitHub)
+data/lightcast_job_postings.csv
+data/lightcast_cleaned.csv
