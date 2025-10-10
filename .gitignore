@@ -1,19 +1,34 @@
-# Quarto
+# ===============================
+# Project: AD688 Employability Group
+# Clean .gitignore (safe for submission)
+# ===============================
+
+# ----- Quarto build outputs -----
 .quarto/
-**/_quarto_ipynb
-
-# Python
-.venv/
-.ipynb_checkpoints/
-__pycache__/
-
-# Figures & Build
-figures/
 _freeze/
 _site/
 site_libs/
+**/_quarto_ipynb
 
-# Data (now tracked — CSVs will be visible)
-# (You removed the ignore lines for data/)
+# ----- Python virtual environment -----
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# ----- Figures / Generated assets -----
+figures/
+_output/
+
+# ----- System / IDE files -----
+.DS_Store
+Thumbs.db
+
+# ----- Data -----
+# Allow small CSVs (e.g., Lightcast cleaned + job postings)
+# Large or private datasets should still be excluded if added later.
+# Example of how to ignore large files in future:
+# data/*.parquet
+# data/large_*.csv
+
 
 
