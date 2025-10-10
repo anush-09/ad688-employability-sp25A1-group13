@@ -8,7 +8,7 @@
 
 <meta name="author" content="Anu Sharma, Cindy Guzman, Gavin Boss">
 
-<title>Business Analytics, Data Science and Machine Learning Trends 2025 - Data Analysis</title>
+<title>Business Analytics, Data Science and Machine Learning Trends 2025 - Data Cleaning</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -178,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Analysis</h1>
+<h1 class="title">Data Cleaning</h1>
 <p class="subtitle lead">Comprehensive Data Cleaning &amp; Exploratory Analysis of Job Market Trends</p>
 </div>
 
@@ -209,8 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>#Needed this to fix java error #python3.10 -m venv spark_env #source spark_env/bin/activate #pip install pyspark==3.5.6 pandas numpy plotly</p>
-<div id="966bcf80" class="cell" data-execution_count="1">
+<div id="a8fc225a" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the Dataset</span></span>
@@ -239,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stderr">
 <pre><code>Setting default log level to "WARN".
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-25/10/10 02:40:46 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-[Stage 0:===========================================================(1 + 0) / 1]                                                                                [Stage 1:&gt;                                                          (0 + 1) / 1]                                                                                25/10/10 02:41:01 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+25/10/10 23:14:42 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[Stage 0:&gt;                                                          (0 + 1) / 1]                                                                                [Stage 1:&gt;                                                          (0 + 1) / 1]                                                                                25/10/10 23:15:01 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
 [Stage 2:&gt;                                                          (0 + 1) / 1]                                                                                </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -259,7 +258,7 @@ only showing top 5 rows
 </div>
 <section id="looks-for-the-duration-of-job-postings" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Looks for the duration of job postings</h1>
-<div id="22c9e328" class="cell" data-execution_count="2">
+<div id="573a0eca" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, to_date, datediff, when</span>
@@ -287,7 +286,7 @@ only showing top 5 rows
 </section>
 <section id="column-cleaning" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Column Cleaning</h1>
-<div id="2325edb1" class="cell" data-execution_count="3">
+<div id="1c274c1f" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ===============================</span></span>
@@ -355,7 +354,7 @@ only showing top 5 rows
 </section>
 <section id="targeted-column-specific-cleaning" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Targeted column-specific cleaning</h1>
-<div id="d40808ac" class="cell" data-execution_count="4">
+<div id="e628b280" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, regexp_extract, when, regexp_replace</span>
@@ -382,7 +381,7 @@ only showing top 5 rows
 </section>
 <section id="save-the-cleaned-dataset" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Save the cleaned dataset</h1>
-<div id="1834eb64" class="cell" data-execution_count="5">
+<div id="57b61f5e" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
