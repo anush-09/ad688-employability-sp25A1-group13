@@ -61,8 +61,8 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(14, 12))
 sns.heatmap(df_skills, annot=True, cmap="coolwarm", linewidths=0.5)
 plt.title("Team Skill Levels Heatmap")
-plt.xlabel("Technical Skills", fontsize=14, fontname="Arial")
-plt.ylabel("Team Members", fontsize=14, fontname="Arial")
+plt.xlabel("Technical Skills", fontsize=14)
+plt.ylabel("Team Members", fontsize=14)
 plt.xticks(rotation=30, fontsize=14)  
 plt.yticks(fontsize=14)
 annot_kws={"fontsize":12}
