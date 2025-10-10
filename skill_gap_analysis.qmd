@@ -151,7 +151,7 @@ plt.figure(figsize=(10, 6))
 colors = plt.cm.tab10(np.linspace(0, 1, len(skills)))
 
 # Create the bar chart
-bars = plt.barh(skills, counts, color=colors, edgecolor="black")
+bars = plt.bar(skills, counts, color=colors, edgecolor="black")
 
 # Invert y-axis so the top skill appears at the top
 plt.gca().invert_yaxis()
