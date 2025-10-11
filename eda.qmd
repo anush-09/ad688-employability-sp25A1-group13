@@ -49,7 +49,7 @@ Specifically, this section covers:
 Together, these insights establish a clear understanding of labor market patterns and help define which features are most predictive for the upcoming salary regression models.
 
 
-#### Load and Prepare Data
+### Load and Prepare Data
 ```{python}
 # | echo: true
 # | eval: true
@@ -143,21 +143,50 @@ Downsampling: For performance, the dataset was randomly reduced to 5,000 represe
 This preprocessing established a clean, consistent dataset suitable for visualization and modeling.
 
 ```{python}
+# ✅ Filter out negative or zero salary values before plotting
+df_salary = df[df["Average_Salary"] > 0]
+
 fig = px.histogram(
-    df, x="Average_Salary", nbins=40,
+    df,
+    x="Average_Salary",
+    nbins=40,
     color_discrete_sequence=["#187145"],
     title="Distribution of Average Salaries"
 )
+
 fig.update_layout(
-    xaxis_title="Average Salary ($ USD)",
-    yaxis_title="Number of Job Postings",
-    template="plotly_white"
+    # 🎯 Title styling
+    title=dict(
+        text="<b>Distribution of Average Salaries</b>",
+        x=0.5,  # center the title
+        xanchor="center",
+        font=dict(size=20)
+    ),
+    
+    # 🧭 Axis labels
+    xaxis_title="<b>Average Salary (USD)</b>",
+    yaxis_title="<b>Number of Job Postings</b>",
+    
+    # 🧱 Layout polish
+    template="plotly_white",
+    width=900,
+    height=550,
+    bargap=0.05,
+    font=dict(size=14),
+    margin=dict(l=60, r=40, t=80, b=60)
 )
+
+# 🪶 Subtle gridlines for readability
+fig.update_xaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
+fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
+
 fig
 ```
 
-### Salary Distribution and Outliers
-Salaries are right-skewed — most roles pay under $150K, but select senior and ML-focused positions exceed $200K, highlighting outlier opportunities for experienced professionals.
+### Salary Distribution
+The salary distribution is right-skewed, indicating that most job postings fall within the $80K–$150K range.
+A smaller number of positions extend above $200K, reflecting higher-paying senior and Machine Learning roles.
+This pattern suggests that while the majority of opportunities in analytics and data science offer mid-range compensation, specialized expertise and advanced roles drive the upper end of the salary spectrum.
 
 ```{python}
 fig = px.scatter(

@@ -171,15 +171,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul class="collapse">
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">1</span> Overview</a></li>
-  <li><a href="#load-and-prepare-data" id="toc-load-and-prepare-data" class="nav-link" data-scroll-target="#load-and-prepare-data"><span class="header-section-number">2</span> Load and Prepare Data</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -223,17 +216,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="overview" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Overview</h1>
-<p>In this section, we examine job postings across Business Analytics, Data Science, and Machine Learning roles to identify key patterns before modeling. We explore salary, experience, remote work trends, and skill demand to guide the regression and classification stages.</p>
-<p>We focused on: - Job distribution across industries and roles<br>
-- Salary variation by experience and remote type<br>
-- Skill demand frequency and specialization<br>
-- Emerging data science and analytics trends</p>
+<section id="overview" class="level3" data-number="0.1">
+<h3 data-number="0.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">0.1</span> Overview</h3>
+<p>This Exploratory Data Analysis (EDA) examines job postings from Lightcast to uncover salary trends, experience requirements, remote work dynamics, and skill demand across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles. The analysis prepares the dataset for modeling and provides statistical and visual insights that guide the regression and feature engineering stages of the project.</p>
+<p>Specifically, this section covers:</p>
+<ul>
+<li><p>Data preparation and cleaning – handling duplicates, renaming key columns, converting data types, and computing an Average_Salary variable</p></li>
+<li><p>Salary distribution and outliers – visualizing the spread of compensation and identifying high-paying ML and senior roles</p></li>
+<li><p>Experience and salary relationships – analyzing how required years of experience influence pay across remote and hybrid work types</p></li>
+<li><p>Role-based salary comparison – comparing median salaries for BA, DS, and ML roles</p></li>
+<li><p>Remote work trends – exploring how work flexibility impacts compensation</p></li>
+<li><p>Top skill frequencies – identifying the most in-demand technical and analytical skills in job descriptions</p></li>
+<li><p>Feature correlations – assessing relationships between numeric variables such as salary and experience to inform model selection</p></li>
+</ul>
+<p>Together, these insights establish a clear understanding of labor market patterns and help define which features are most predictive for the upcoming salary regression models.</p>
 </section>
-<section id="load-and-prepare-data" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Load and Prepare Data</h1>
-<div id="6d4750d9" class="cell" data-execution_count="1">
+<section id="load-and-prepare-data" class="level3" data-number="0.2">
+<h3 data-number="0.2" class="anchored" data-anchor-id="load-and-prepare-data"><span class="header-section-number">0.2</span> Load and Prepare Data</h3>
+<div id="202db65f" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -303,29 +303,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># print(f"✅ Loaded {len(df)} rows safely with {len(df.columns)} unique columns.")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="a2b3a3e6" class="cell" data-execution_count="2">
+</section>
+<section id="data-preparation-and-cleaning" class="level3" data-number="0.3">
+<h3 data-number="0.3" class="anchored" data-anchor-id="data-preparation-and-cleaning"><span class="header-section-number">0.3</span> Data Preparation and Cleaning</h3>
+<p>The dataset used for this analysis was sourced from Lightcast job postings, containing thousands of listings across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles. To ensure data quality and consistency:</p>
+<p>Column Normalization: Extra spaces and hidden characters were stripped from column names to avoid mismatches and duplicates.</p>
+<p>Duplicate Removal: Identical columns were collapsed to retain only unique fields.</p>
+<p>Type Conversion: Numeric columns such as SALARY_FROM, SALARY_TO, MIN_YEARS_EXPERIENCE, and MAX_YEARS_EXPERIENCE were coerced into numeric format, with non-numeric values safely converted to NaN.</p>
+<p>Average Salary Calculation: A new feature, Average_Salary, was computed as the mean of the salary range for each posting to simplify analysis.</p>
+<p>Column Renaming: Key columns were standardized (REMOTE_TYPE_NAME → REMOTE_GROUP, STATE_NAME → STATE, LOT_V6_OCCUPATION_GROUP_NAME → ROLE_GROUP) for clarity.</p>
+<p>Invalid Data Removal: Rows with missing or non-positive salaries were dropped.</p>
+<p>Downsampling: For performance, the dataset was randomly reduced to 5,000 representative rows, preserving the statistical diversity of the original population.</p>
+<p>This preprocessing established a clean, consistent dataset suitable for visualization and modeling.</p>
+<div id="a34b0659" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.histogram(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    df, x<span class="op">=</span><span class="st">"Average_Salary"</span>, nbins<span class="op">=</span><span class="dv">40</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    color_discrete_sequence<span class="op">=</span>[<span class="st">"#187145"</span>],</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Distribution of Average Salaries"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">"Average Salary ($ USD)"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">"Number of Job Postings"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span><span class="st">"plotly_white"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ Filter out negative or zero salary values before plotting</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df_salary <span class="op">=</span> df[df[<span class="st">"Average_Salary"</span>] <span class="op">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.histogram(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"Average_Salary"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    nbins<span class="op">=</span><span class="dv">40</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    color_discrete_sequence<span class="op">=</span>[<span class="st">"#187145"</span>],</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Distribution of Average Salaries"</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 🎯 Title styling</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        text<span class="op">=</span><span class="st">"&lt;b&gt;Distribution of Average Salaries&lt;/b&gt;"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="fl">0.5</span>,  <span class="co"># center the title</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        xanchor<span class="op">=</span><span class="st">"center"</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        font<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 🧭 Axis labels</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">"&lt;b&gt;Average Salary (USD)&lt;/b&gt;"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">"&lt;b&gt;Number of Job Postings&lt;/b&gt;"</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 🧱 Layout polish</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span><span class="st">"plotly_white"</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="dv">900</span>,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    height<span class="op">=</span><span class="dv">550</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    bargap<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    font<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">14</span>),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    margin<span class="op">=</span><span class="bu">dict</span>(l<span class="op">=</span><span class="dv">60</span>, r<span class="op">=</span><span class="dv">40</span>, t<span class="op">=</span><span class="dv">80</span>, b<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 🪶 Subtle gridlines for readability</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>fig.update_xaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_2.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_2.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
-<section id="salary-distribution-and-outliers" class="level3" data-number="2.0.1">
-<h3 data-number="2.0.1" class="anchored" data-anchor-id="salary-distribution-and-outliers"><span class="header-section-number">2.0.1</span> Salary Distribution and Outliers</h3>
-<p>Salaries are right-skewed — most roles pay under $150K, but select senior and ML-focused positions exceed $200K, highlighting outlier opportunities for experienced professionals.</p>
-<div id="c16d50a4" class="cell" data-execution_count="3">
+</section>
+<section id="salary-distribution" class="level3" data-number="0.4">
+<h3 data-number="0.4" class="anchored" data-anchor-id="salary-distribution"><span class="header-section-number">0.4</span> Salary Distribution</h3>
+<p>The salary distribution is right-skewed, indicating that most job postings fall within the $80K–$150K range. A smaller number of positions extend above $200K, reflecting higher-paying senior and Machine Learning roles. This pattern suggests that while the majority of opportunities in analytics and data science offer mid-range compensation, specialized expertise and advanced roles drive the upper end of the salary spectrum.</p>
+<div id="b366e76e" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
@@ -345,10 +385,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="salary-vs-experience" class="level3" data-number="2.0.2">
-<h3 data-number="2.0.2" class="anchored" data-anchor-id="salary-vs-experience"><span class="header-section-number">2.0.2</span> Salary vs Experience</h3>
+<section id="salary-vs-experience" class="level3" data-number="0.5">
+<h3 data-number="0.5" class="anchored" data-anchor-id="salary-vs-experience"><span class="header-section-number">0.5</span> Salary vs Experience</h3>
 <p>Salary shows a positive correlation with experience, particularly for hybrid and remote roles — suggesting advanced or flexible positions are often compensated higher.</p>
-<div id="a3b04e17" class="cell" data-execution_count="4">
+<div id="a2dfbdcf" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.box(</span>
@@ -367,10 +407,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="salary-by-role-category-ba-ds-ml" class="level3" data-number="2.0.3">
-<h3 data-number="2.0.3" class="anchored" data-anchor-id="salary-by-role-category-ba-ds-ml"><span class="header-section-number">2.0.3</span> Salary by Role Category (BA / DS / ML)</h3>
+<section id="salary-by-role-category-ba-ds-ml" class="level3" data-number="0.6">
+<h3 data-number="0.6" class="anchored" data-anchor-id="salary-by-role-category-ba-ds-ml"><span class="header-section-number">0.6</span> Salary by Role Category (BA / DS / ML)</h3>
 <p>Machine Learning roles exhibit the highest median salaries, followed by Data Science and Business Analytics. This validates using ROLE_GROUP as a key feature in regression modeling.</p>
-<div id="5f2962e8" class="cell" data-execution_count="5">
+<div id="4c7950c8" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.box(</span>
@@ -389,10 +429,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="remote-work-vs-salary-trends" class="level3" data-number="2.0.4">
-<h3 data-number="2.0.4" class="anchored" data-anchor-id="remote-work-vs-salary-trends"><span class="header-section-number">2.0.4</span> Remote Work vs Salary Trends</h3>
+<section id="remote-work-vs-salary-trends" class="level3" data-number="0.7">
+<h3 data-number="0.7" class="anchored" data-anchor-id="remote-work-vs-salary-trends"><span class="header-section-number">0.7</span> Remote Work vs Salary Trends</h3>
 <p>Remote roles tend to offer higher median salaries compared to onsite jobs, supporting modern hybrid compensation trends in data-driven fields.</p>
-<div id="7620954b" class="cell" data-execution_count="6">
+<div id="12fb2e0a" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Top Skills Visualization (Safe Version) ---</span></span>
@@ -431,10 +471,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </section>
-<section id="top-skills-frequency" class="level3" data-number="2.0.5">
-<h3 data-number="2.0.5" class="anchored" data-anchor-id="top-skills-frequency"><span class="header-section-number">2.0.5</span> Top Skills Frequency</h3>
+<section id="top-skills-frequency" class="level3" data-number="0.8">
+<h3 data-number="0.8" class="anchored" data-anchor-id="top-skills-frequency"><span class="header-section-number">0.8</span> Top Skills Frequency</h3>
 <p>Python, SQL, and Machine Learning dominate job descriptions, indicating their critical role in employability and forming the foundation for the modeling phase.</p>
-<div id="27f07605" class="cell" data-execution_count="7">
+<div id="50dba2b6" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>corr_cols <span class="op">=</span> [<span class="st">"Average_Salary"</span>, <span class="st">"MIN_YEARS_EXPERIENCE"</span>, <span class="st">"MAX_YEARS_EXPERIENCE"</span>]</span>
@@ -455,12 +495,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="correlation-heatmap" class="level3" data-number="2.0.6">
-<h3 data-number="2.0.6" class="anchored" data-anchor-id="correlation-heatmap"><span class="header-section-number">2.0.6</span> Correlation Heatmap</h3>
+<section id="correlation-heatmap" class="level3" data-number="0.9">
+<h3 data-number="0.9" class="anchored" data-anchor-id="correlation-heatmap"><span class="header-section-number">0.9</span> Correlation Heatmap</h3>
 <p>Salary correlates moderately with both minimum and maximum experience, confirming their inclusion in regression modeling. We’ll rely on additional categorical encodings (e.g., REMOTE_GROUP, ROLE_GROUP) for predictive depth.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
