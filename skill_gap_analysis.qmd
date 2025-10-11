@@ -143,8 +143,8 @@ import numpy as np
 
 skills, counts = zip(*skill_counts.most_common(10))
 
-# Make figure taller for vertical bars
-plt.figure(figsize=(10, 6))
+# Make figure taller for vertical bars, and increase quality of graphic
+plt.figure(figsize=(10, 6), dpi=150)
 
 # Unique color per bar
 colors = plt.cm.tab10(np.linspace(0, 1, len(skills)))
