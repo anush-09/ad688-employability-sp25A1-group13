@@ -184,20 +184,8 @@ For **Cloud Computing** there are many programs that offer the ability to gain e
 For **Machine learning** our group is below average in technical skill level, with an average skill level of 2 out of 5. While this is mostly due to a lack of exposure, this can be overcome with practical exercises such as Datacamp, which states "Machine learning courses cover algorithms and concepts for enabling computers to learn from data and make decisions without explicit programming. Build your skills in NLP, deep learning, MLOps and more." [@datacamp_ml]. This is a way to gain practical skills that can be translated into real world careers, but similar to how PowerBI was mentioned above, Machine Learning is ranked on the lower end of the count when looking at Job Descriptions, which may just mean that these are less in demand jobs but not necessarily that they are lower paying jobs. This may not be as valuable a skill to learn as continuing to increase skills such as **Python**,**Cloud**, or **SQL**.
 
 
-
-
 # Comparing Top Job Market Skills
 
-When looking at the most important skill gaps to consider in terms of the job market, we compared our average skills (last column of the heatmap) with the most in demand across all job descriptions within the dataset. This revealed that we should focus on improving our abilities in data analysis, along with python. While our group has had some introductory knowledge into Python in this class there are still advances that could be made in order to continue to grow and become proficient and employable at a high level. Below are two charts that break down the teams skills average skills vs the same skills that are in demand within the data set provided for this assignment.
-
-(Results of the chart)
-
-Data Analysis...
-
-Python...
-
-Assessment ...
+The Top 3 market skills include **SQL**,**Cloud**,and **Python**. When comparing our average skills (the last column of our heatmap) with these we can see that our group is about average in our perception of our technical skills the top 3 jobs when it comes to description count. This again doesn't indicate that these jobs have the highest pay as the ML Methods tab will indicate the correlation between skills and salary where this data is just indicating the amount of times that the skill itself was referenced. Improving these abilities even further could open the ability to increase job opportunities for the future. This was roughly 60% of the job postings when looking at just these Top 3 skills, and even just having average skills would put you in the upper quartile of employable canidates if you have this skill available. This data was not broken down into the experience level required, as this would be more enlightening to the requirements of employability with these skills, but these are the most common terms associated.
 
 # Summary
-
-# References

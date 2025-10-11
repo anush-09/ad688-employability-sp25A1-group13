@@ -194,7 +194,6 @@ div.csl-indent {
   <li><a href="#addressing-skill-gaps" id="toc-addressing-skill-gaps" class="nav-link" data-scroll-target="#addressing-skill-gaps"><span class="header-section-number">4</span> Addressing Skill Gaps</a></li>
   <li><a href="#comparing-top-job-market-skills" id="toc-comparing-top-job-market-skills" class="nav-link" data-scroll-target="#comparing-top-job-market-skills"><span class="header-section-number">5</span> Comparing Top Job Market Skills</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6</span> Summary</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
   </ul>
 </nav>
     </div>
@@ -237,7 +236,7 @@ div.csl-indent {
 <section id="team-dataframe" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Team Dataframe</h1>
 <p>Our team conducted an overview of our current technical skills when it comes to Business Analytics and our skill levels. The goal was to understand where the group’s strengths and weaknesses were, and understand how the data that was collected could relate to the data that was observed in the research conducted. This was used to identify strengths and weaknesses for the group while also identifying potential gaps within the group.</p>
-<div id="5dc88f01" class="cell" data-execution_count="1">
+<div id="407a353f" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -272,7 +271,7 @@ div.csl-indent {
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># df_styled</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="6a600f54" class="cell" data-execution_count="2">
+<div id="343f593c" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -308,7 +307,7 @@ div.csl-indent {
 </section>
 <section id="most-in-demand-skills-ranked" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Most in demand skills ranked</h1>
-<div id="c0741fe1" class="cell" data-execution_count="3">
+<div id="7ed45e34" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Skill Key Words</span></span>
@@ -362,7 +361,7 @@ div.csl-indent {
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>skills_df <span class="op">=</span> skills_df.sort_values(by<span class="op">=</span><span class="st">"Count"</span>, ascending<span class="op">=</span><span class="va">False</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>skills_df.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <div>
 
@@ -433,7 +432,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<div id="7452d785" class="cell" data-execution_count="4">
+<div id="b6eb5a29" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -487,23 +486,16 @@ div.csl-indent {
 </section>
 <section id="comparing-top-job-market-skills" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Comparing Top Job Market Skills</h1>
-<p>When looking at the most important skill gaps to consider in terms of the job market, we compared our average skills (last column of the heatmap) with the most in demand across all job descriptions within the dataset. This revealed that we should focus on improving our abilities in data analysis, along with python. While our group has had some introductory knowledge into Python in this class there are still advances that could be made in order to continue to grow and become proficient and employable at a high level. Below are two charts that break down the teams skills average skills vs the same skills that are in demand within the data set provided for this assignment.</p>
-<p>(Results of the chart)</p>
-<p>Data Analysis…</p>
-<p>Python…</p>
-<p>Assessment …</p>
+<p>The Top 3 market skills include <strong>SQL</strong>,<strong>Cloud</strong>,and <strong>Python</strong>. When comparing our average skills (the last column of our heatmap) with these we can see that our group is about average in our perception of our technical skills the top 3 jobs when it comes to description count. This again doesn’t indicate that these jobs have the highest pay as the ML Methods tab will indicate the correlation between skills and salary where this data is just indicating the amount of times that the skill itself was referenced. Improving these abilities even further could open the ability to increase job opportunities for the future. This was roughly 60% of the job postings when looking at just these Top 3 skills, and even just having average skills would put you in the upper quartile of employable canidates if you have this skill available. This data was not broken down into the experience level required, as this would be more enlightening to the requirements of employability with these skills, but these are the most common terms associated.</p>
 </section>
 <section id="summary" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Summary</h1>
-</section>
-<section id="references" class="level1" data-number="7">
 
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">7 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">6 Summary</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-datacamp_ml" class="csl-entry" role="listitem">
 <span class="smallcaps">DataCamp</span>. (2025): <span>“Machine Learning Courses | DataCamp,”</span>
 </div>
