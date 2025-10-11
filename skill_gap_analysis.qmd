@@ -138,7 +138,7 @@ skills_df = pd.DataFrame(skill_counts.items(), columns=["Skill", "Count"])
 
 # Optional: sort by count descending
 skills_df = skills_df.sort_values(by="Count", ascending=False).reset_index(drop=True)
-
+skills_df.head(10)
 ```
 
 ```{python}
