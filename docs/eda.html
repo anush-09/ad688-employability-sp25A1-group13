@@ -233,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="load-and-prepare-data" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Load and Prepare Data</h1>
-<div id="2baeabcc" class="cell" data-execution_count="1">
+<div id="18eedc95" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -320,10 +320,10 @@ Unique columns now: 131
 ✅ Loaded 5000 rows safely with 132 unique columns.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_0.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_9.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
-<div id="1f858ecc" class="cell" data-execution_count="2">
+<div id="183c8caf" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sorted</span>(df.columns))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -332,7 +332,7 @@ Unique columns now: 131
 <pre><code>['ACTIVE_SOURCES_INFO', 'ACTIVE_URLS', 'Average_Salary', 'BODY', 'CERTIFICATIONS', 'CERTIFICATIONS_NAME', 'CIP2', 'CIP2_NAME', 'CIP4', 'CIP4_NAME', 'CIP6', 'CIP6_NAME', 'CITY', 'CITY_NAME', 'COMMON_SKILLS', 'COMMON_SKILLS_NAME', 'COMPANY', 'COMPANY_IS_STAFFING', 'COMPANY_NAME', 'COMPANY_RAW', 'COUNTY', 'COUNTY_INCOMING', 'COUNTY_NAME', 'COUNTY_NAME_INCOMING', 'COUNTY_NAME_OUTGOING', 'COUNTY_OUTGOING', 'DUPLICATES', 'DURATION', 'EDUCATION_LEVELS', 'EDUCATION_LEVELS_NAME', 'EMPLOYMENT_TYPE', 'EMPLOYMENT_TYPE_NAME', 'EXPIRED', 'ID', 'IS_INTERNSHIP', 'LAST_UPDATED_DATE', 'LAST_UPDATED_TIMESTAMP', 'LIGHTCAST_SECTORS', 'LIGHTCAST_SECTORS_NAME', 'LOCATION', 'LOT_CAREER_AREA', 'LOT_CAREER_AREA_NAME', 'LOT_OCCUPATION', 'LOT_OCCUPATION_GROUP', 'LOT_OCCUPATION_GROUP_NAME', 'LOT_OCCUPATION_NAME', 'LOT_SPECIALIZED_OCCUPATION', 'LOT_SPECIALIZED_OCCUPATION_NAME', 'LOT_V6_CAREER_AREA', 'LOT_V6_CAREER_AREA_NAME', 'LOT_V6_OCCUPATION', 'LOT_V6_OCCUPATION_GROUP', 'LOT_V6_OCCUPATION_NAME', 'LOT_V6_SPECIALIZED_OCCUPATION', 'LOT_V6_SPECIALIZED_OCCUPATION_NAME', 'MAX_EDULEVELS', 'MAX_EDULEVELS_NAME', 'MAX_YEARS_EXPERIENCE', 'MIN_EDULEVELS', 'MIN_EDULEVELS_NAME', 'MIN_YEARS_EXPERIENCE', 'MODELED_DURATION', 'MODELED_EXPIRED', 'MSA', 'MSA_INCOMING', 'MSA_NAME', 'MSA_NAME_INCOMING', 'MSA_NAME_OUTGOING', 'MSA_OUTGOING', 'NAICS2', 'NAICS2_NAME', 'NAICS3', 'NAICS3_NAME', 'NAICS4', 'NAICS4_NAME', 'NAICS5', 'NAICS5_NAME', 'NAICS6', 'NAICS6_NAME', 'NAICS_2022_2', 'NAICS_2022_2_NAME', 'NAICS_2022_3', 'NAICS_2022_3_NAME', 'NAICS_2022_4', 'NAICS_2022_4_NAME', 'NAICS_2022_5', 'NAICS_2022_5_NAME', 'NAICS_2022_6', 'NAICS_2022_6_NAME', 'ONET', 'ONET_2019', 'ONET_2019_NAME', 'ONET_NAME', 'ORIGINAL_PAY_PERIOD', 'POSTED', 'REMOTE_GROUP', 'REMOTE_TYPE', 'ROLE_GROUP', 'SALARY', 'SALARY_FROM', 'SALARY_TO', 'SKILLS', 'SKILLS_NAME', 'SOC_2', 'SOC_2021_2', 'SOC_2021_2_NAME', 'SOC_2021_3', 'SOC_2021_3_NAME', 'SOC_2021_4', 'SOC_2021_4_NAME', 'SOC_2021_5', 'SOC_2021_5_NAME', 'SOC_2_NAME', 'SOC_3', 'SOC_3_NAME', 'SOC_4', 'SOC_4_NAME', 'SOC_5', 'SOC_5_NAME', 'SOFTWARE_SKILLS', 'SOFTWARE_SKILLS_NAME', 'SOURCES', 'SOURCE_TYPES', 'SPECIALIZED_SKILLS', 'SPECIALIZED_SKILLS_NAME', 'STATE', 'STATE_NAME', 'TITLE', 'TITLE_CLEAN', 'TITLE_NAME', 'TITLE_RAW', 'URL']</code></pre>
 </div>
 </div>
-<div id="5b2f645b" class="cell" data-execution_count="3">
+<div id="d5cf3725" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.histogram(</span>
@@ -348,13 +348,13 @@ Unique columns now: 131
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_3.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_11.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 <section id="salary-distribution-and-outliers" class="level3" data-number="2.0.1">
 <h3 data-number="2.0.1" class="anchored" data-anchor-id="salary-distribution-and-outliers"><span class="header-section-number">2.0.1</span> Salary Distribution and Outliers</h3>
 <p>Salaries are right-skewed — most roles pay under $150K, but select senior and ML-focused positions exceed $200K, highlighting outlier opportunities for experienced professionals.</p>
-<div id="7c426fe4" class="cell" data-execution_count="4">
+<div id="de2e68bd" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
@@ -370,14 +370,14 @@ Unique columns now: 131
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="520" src="iframe_figures/figure_4.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="520" src="iframe_figures/figure_12.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="salary-vs-experience" class="level3" data-number="2.0.2">
 <h3 data-number="2.0.2" class="anchored" data-anchor-id="salary-vs-experience"><span class="header-section-number">2.0.2</span> Salary vs Experience</h3>
 <p>Salary shows a positive correlation with experience, particularly for hybrid and remote roles — suggesting advanced or flexible positions are often compensated higher.</p>
-<div id="e2d2d265" class="cell" data-execution_count="5">
+<div id="e20ff23a" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.box(</span>
@@ -392,14 +392,14 @@ Unique columns now: 131
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_5.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_13.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="salary-by-role-category-ba-ds-ml" class="level3" data-number="2.0.3">
 <h3 data-number="2.0.3" class="anchored" data-anchor-id="salary-by-role-category-ba-ds-ml"><span class="header-section-number">2.0.3</span> Salary by Role Category (BA / DS / ML)</h3>
 <p>Machine Learning roles exhibit the highest median salaries, followed by Data Science and Business Analytics. This validates using ROLE_GROUP as a key feature in regression modeling.</p>
-<div id="2af4d181" class="cell" data-execution_count="6">
+<div id="ea6be589" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.box(</span>
@@ -414,14 +414,14 @@ Unique columns now: 131
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_6.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_14.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="remote-work-vs-salary-trends" class="level3" data-number="2.0.4">
 <h3 data-number="2.0.4" class="anchored" data-anchor-id="remote-work-vs-salary-trends"><span class="header-section-number">2.0.4</span> Remote Work vs Salary Trends</h3>
 <p>Remote roles tend to offer higher median salaries compared to onsite jobs, supporting modern hybrid compensation trends in data-driven fields.</p>
-<div id="074f007a" class="cell" data-execution_count="7">
+<div id="3a2d7ddd" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Top Skills Visualization (Safe Version) ---</span></span>
@@ -466,7 +466,7 @@ Unique columns now: 131
 <section id="top-skills-frequency" class="level3" data-number="2.0.5">
 <h3 data-number="2.0.5" class="anchored" data-anchor-id="top-skills-frequency"><span class="header-section-number">2.0.5</span> Top Skills Frequency</h3>
 <p>Python, SQL, and Machine Learning dominate job descriptions, indicating their critical role in employability and forming the foundation for the modeling phase.</p>
-<div id="8edd8dd3" class="cell" data-execution_count="8">
+<div id="d4187b77" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>corr_cols <span class="op">=</span> [<span class="st">"Average_Salary"</span>, <span class="st">"MIN_YEARS_EXPERIENCE"</span>, <span class="st">"MAX_YEARS_EXPERIENCE"</span>]</span>
@@ -483,7 +483,7 @@ Unique columns now: 131
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="470" src="iframe_figures/figure_8.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="470" src="iframe_figures/figure_16.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
