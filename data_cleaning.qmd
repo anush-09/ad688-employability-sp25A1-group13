@@ -20,6 +20,10 @@ format:
 
 
 ```{python}
+#| echo: false
+#| include: false
+#| warning: false
+
 # Load the Dataset
 from pyspark.sql import SparkSession
 import pandas as pd
@@ -147,6 +151,10 @@ df = df.withColumn(
 # Save the cleaned dataset
 
 ```{python}
+#| echo: false
+#| include: false
+#| warning: false
+
 import os
 import shutil
 #| label: save_cleaned
