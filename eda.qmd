@@ -82,7 +82,7 @@ before_cols = len(df.columns)
 df = df.loc[:, ~df.columns.duplicated()]
 after_cols = len(df.columns)
 
-# print(f"🧹 Cleaned column names: removed {before_cols - after_cols} duplicate(s).")
+# print(f" Cleaned column names: removed {before_cols - after_cols} duplicate(s).")
 # print("Unique columns now:", len(df.columns))
 
 # --- Convert numeric columns safely ---
@@ -106,7 +106,7 @@ for old, new in rename_map.items():
     if old in df.columns and new not in df.columns:
         df.rename(columns={old: new}, inplace=True)
     elif old in df.columns and new in df.columns:
-      # print(f"⚠️ Skipping rename '{old}' → '{new}' to avoid duplicate column name.")
+      # print(f" Skipping rename '{old}' → '{new}' to avoid duplicate column name.")
       pass
 
 
@@ -118,7 +118,7 @@ if "Average_Salary" in df.columns:
 if len(df) > 5000:
     df = df.sample(5000, random_state=42)
 
-# print(f"✅ Loaded {len(df)} rows safely with {len(df.columns)} unique columns.")
+# print(f" Loaded {len(df)} rows safely with {len(df.columns)} unique columns.")
 ```
 
 ### Data Preparation and Cleaning
@@ -143,7 +143,7 @@ Downsampling: For performance, the dataset was randomly reduced to 5,000 represe
 This preprocessing established a clean, consistent dataset suitable for visualization and modeling.
 
 ```{python}
-# ✅ Filter out negative or zero salary values before plotting
+# Filter out negative or zero salary values before plotting
 df_salary = df[df["Average_Salary"] > 0]
 
 fig = px.histogram(
@@ -155,7 +155,7 @@ fig = px.histogram(
 )
 
 fig.update_layout(
-    # 🎯 Title styling
+    #  Title styling
     title=dict(
         text="<b>Distribution of Average Salaries</b>",
         x=0.5,  # center the title
@@ -163,11 +163,11 @@ fig.update_layout(
         font=dict(size=20)
     ),
     
-    # 🧭 Axis labels
+    #  Axis labels
     xaxis_title="<b>Average Salary (USD)</b>",
     yaxis_title="<b>Number of Job Postings</b>",
     
-    # 🧱 Layout polish
+    #  Layout polish
     template="plotly_white",
     width=900,
     height=550,
@@ -176,7 +176,7 @@ fig.update_layout(
     margin=dict(l=60, r=40, t=80, b=60)
 )
 
-# 🪶 Subtle gridlines for readability
+#  Subtle gridlines for readability
 fig.update_xaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 
@@ -189,37 +189,113 @@ A smaller number of positions extend above $200K, reflecting higher-paying senio
 This pattern suggests that while the majority of opportunities in analytics and data science offer mid-range compensation, specialized expertise and advanced roles drive the upper end of the salary spectrum.
 
 ```{python}
+# Filter out invalid or missing values
+df_exp = df[(df["Average_Salary"] > 0) & (df["MIN_YEARS_EXPERIENCE"] >= 0)].copy()
+
+# Combine '[None]' and 'Not Remote' into 'Onsite'
+df_exp["REMOTE_GROUP"] = df_exp["REMOTE_GROUP"].replace({
+    None: "Onsite",
+    "[None]": "Onsite",
+    "Not Remote": "Onsite"
+})
+
+#  Create scatter plot with trendlines
 fig = px.scatter(
-    df,
+    df_exp,
     x="MIN_YEARS_EXPERIENCE",
     y="Average_Salary",
     color="REMOTE_GROUP",
     trendline="ols",
     title="Salary vs. Minimum Experience by Remote Type",
-    height=500
+    color_discrete_sequence=["#187145", "#45A274", "#79C99E"],
+    opacity=0.7,
+    height=550
 )
-fig.update_layout(template="plotly_white")
+
+fig.update_layout(
+    title=dict(
+        text="<b>Salary vs. Minimum Experience by Remote Type</b>",
+        x=0.5,
+        xanchor="center",
+        font=dict(size=20)
+    ),
+    xaxis_title="<b>Minimum Years of Experience</b>",
+    yaxis_title="<b>Average Salary (USD)</b>",
+    template="plotly_white",
+    width=900,
+    height=550,
+    font=dict(size=14),
+    legend_title_text="<b>Remote Work Type</b>",
+    margin=dict(l=60, r=40, t=80, b=60)
+)
+
+#  Final touch: consistent visual polish
+fig.update_traces(marker=dict(size=6))
+fig.update_xaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
+fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
+
 fig
 ```
 
 ### Salary vs Experience
-Salary shows a positive correlation with experience, particularly for hybrid and remote roles — suggesting advanced or flexible positions are often compensated higher.
+The scatterplot shows a clear positive relationship between experience and salary across all remote work types. As minimum years of experience increase, average salary consistently rises.
+Among the three groups, Remote and Hybrid Remote roles generally track above Not Remote positions, suggesting that employers may offer higher compensation for flexible or remote-friendly roles.
+This trend highlights how both experience level and work flexibility contribute to earning potential in analytics and data science careers.
 
 ```{python}
+#  Filter valid salary data
+df_roles = df[df["Average_Salary"] > 0].copy()
+
+#  Create the boxplot
 fig = px.box(
-    df,
+    df_roles,
     x="ROLE_GROUP",
     y="Average_Salary",
     color="ROLE_GROUP",
-    color_discrete_sequence=["#187145", "#45A274", "#79C99E"],
-    title="Salary Comparison Across Role Categories"
+    color_discrete_sequence=[
+        "#187145", "#45A274", "#79C99E", "#A7D9C9", "#C9EBDD", "#E3F6EE"
+    ],
+    title="Salary Comparison Across Role Categories",
+    points="outliers",   # show only outliers for clarity
+    height=550
 )
-fig.update_layout(template="plotly_white")
+
+#  Layout polish
+fig.update_layout(
+    title=dict(
+        text="<b>Salary Comparison Across Role Categories</b>",
+        x=0.5,
+        xanchor="center",
+        font=dict(size=20)
+    ),
+    xaxis_title="<b>Role Group</b>",
+    yaxis_title="<b>Average Salary (USD)</b>",
+    template="plotly_white",
+    width=900,
+    height=550,
+    font=dict(size=14),
+    legend_title_text="<b>ROLE_GROUP</b>",
+    margin=dict(l=60, r=40, t=80, b=120)
+)
+
+#  Axis & tick styling
+fig.update_xaxes(
+    tickangle=30,
+    tickfont=dict(size=12),
+    showgrid=False
+)
+fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
+
 fig
 ```
 
-### Salary by Role Category (BA / DS / ML)
-Machine Learning roles exhibit the highest median salaries, followed by Data Science and Business Analytics. This validates using ROLE_GROUP as a key feature in regression modeling.
+### Role-Based Salary Trends
+The boxplot shows clear salary variation across professional role groups.
+Network and Systems Engineering roles offer the highest median salaries and the widest overall pay range, indicating both strong earning potential and greater variation in compensation.
+Business Intelligence and Data Analysis and Mathematics positions follow, reflecting competitive pay linked to technical and analytical expertise.
+Roles such as Business Analysis, Health IT Professionals, and Marketing Specialists sit at the lower end of the salary scale, with tighter interquartile ranges suggesting more standardized pay structures.
+
+Overall, the trend highlights that roles with deeper technical specialization or infrastructure focus command higher compensation, while business-oriented and support analytics positions tend to offer more consistent but lower salary ranges.
 
 
 ```{python}
