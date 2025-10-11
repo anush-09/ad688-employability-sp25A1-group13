@@ -41,7 +41,7 @@ df = spark.read.option("header", "true").option("inferSchema", "true") \
     .option("multiLine", "true").option("escape", "\"") \
     .csv("data/lightcast_job_postings.csv")
 
-df.show(5)
+# df.show(5)
 ```
 
 # Looks for the duration of job postings 
@@ -117,7 +117,7 @@ def clean_text_columns(df, columns):
 df = clean_text_columns(df, text_columns)
 
 # --- Preview cleaned text ---
-df.select(text_columns).show(5, truncate=100)
+# df.select(text_columns).show(5, truncate=100)
 
 ```
 
@@ -168,7 +168,6 @@ for f in os.listdir(temp_dir):
         shutil.move(os.path.join(temp_dir, f), clean_path)
 
 shutil.rmtree(temp_dir)
-print(f"✅ Cleaned data saved to {clean_path}")
 
 spark.stop()
 ```
