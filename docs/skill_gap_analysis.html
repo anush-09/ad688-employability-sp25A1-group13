@@ -55,7 +55,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -218,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="team-dataframe" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Team Dataframe</h1>
 <p>Our team conducted an overview of our current technical skills when it comes to Business Analytics and our skill levels. The goal was to understand where the group’s strengths and weaknesses were, and understand how the data that was collected could relate to the data that was observed in the research conducted. This was used to identify strengths and weaknesses for the group while also identifying potential gaps within the group.</p>
-<div id="65840484" class="cell" data-execution_count="1">
+<div id="5dc88f01" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -253,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># df_styled</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cb6ab184" class="cell" data-execution_count="2">
+<div id="6a600f54" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -289,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="most-in-demand-skills-ranked" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Most in demand skills ranked</h1>
-<div id="88a9da3a" class="cell" data-execution_count="3">
+<div id="c0741fe1" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Skill Key Words</span></span>
@@ -343,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>skills_df <span class="op">=</span> skills_df.sort_values(by<span class="op">=</span><span class="st">"Count"</span>, ascending<span class="op">=</span><span class="va">False</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>skills_df.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 <div>
 
@@ -414,7 +433,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="7e2f8aef" class="cell" data-execution_count="4">
+<div id="7452d785" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -463,10 +482,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="addressing-skill-gaps" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Addressing Skill Gaps</h1>
 <p>When looking at our groups skill gaps, the group should focus on our weakest points which are <strong>Cloud Computing</strong> and <strong>Machine Learning</strong>.</p>
-<p>Each group member can enroll in free online certifications such as certifications that were taken in this course that can enable learning about the systems that would be used like AWS or machine learning platforms. These platforms often provide trainings for little to no cost, and while attending a university can obtain discounts in order to obtain the certifications that would be required to enable jobs that would result in more exposure to amplify the skills to increase the proficiency for each individual in the group. AWS Certifications hold a majority of the market because of their market share, and starting with</p>
-<p>(Refine this, look at AWS classes and list what they can provide and how much they would cost, which ones are the most beneficial)</p>
 <p>For <strong>Cloud Computing</strong> there are many programs that offer the ability to gain experience and knowledge on platform specific programs such as AWS, Azure, or Google Cloud Platform (GCP). These are just a few examples of ways that our group could continue to expand on their knowledge and grow their analytical toolkit to expand for the future and meet the ever expanding requirements out in the job market. Cloud Computing is a great way to do it, as cloud was the highest noted keyword, indicating that there is increased work going on in the cloud. These programs can also include access to free tiers such as AWS, Azure or GCP to experiment, just like the EC2 we are using for this class currently!</p>
-<p>For ****Machine learning** our group is below average in technical skill level, with an average skill level of 2 out of 5. While this is mostly due to a lack of exposure, this can be overcome with practical exercises such as Datacamp, which states “Machine learning courses cover algorithms and concepts for enabling computers to learn from data and make decisions without explicit programming. Build your skills in NLP, deep learning, MLOps and more.” <span class="citation" data-cites="datacamp_ml">(<a href="#ref-datacamp_ml" role="doc-biblioref"><strong>datacamp_ml?</strong></a>)</span>. This is a way to gain practical skills that can be translated into real world careers, but similar to how PowerBI was mentioned above, Machine Learning is ranked on the lower end of the count when looking at Job Descriptions, which may just mean that these are less in demand jobs but not necessarily that they are lower paying jobs. This may not be as valuable a skill to learn as continuing to increase skills such as <strong>Python</strong>,<strong>Cloud</strong>, or <strong>SQL</strong>.</p>
+<p>For <strong>Machine learning</strong> our group is below average in technical skill level, with an average skill level of 2 out of 5. While this is mostly due to a lack of exposure, this can be overcome with practical exercises such as Datacamp, which states “Machine learning courses cover algorithms and concepts for enabling computers to learn from data and make decisions without explicit programming. Build your skills in NLP, deep learning, MLOps and more.” <span class="citation" data-cites="datacamp_ml">(<a href="#ref-datacamp_ml" role="doc-biblioref">DataCamp (2025)</a>)</span>. This is a way to gain practical skills that can be translated into real world careers, but similar to how PowerBI was mentioned above, Machine Learning is ranked on the lower end of the count when looking at Job Descriptions, which may just mean that these are less in demand jobs but not necessarily that they are lower paying jobs. This may not be as valuable a skill to learn as continuing to increase skills such as <strong>Python</strong>,<strong>Cloud</strong>, or <strong>SQL</strong>.</p>
 </section>
 <section id="comparing-top-job-market-skills" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Comparing Top Job Market Skills</h1>
@@ -480,12 +497,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="6"><span class="header-section-number">6</span> Summary</h1>
 </section>
 <section id="references" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> References</h1>
+
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">7 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-datacamp_ml" class="csl-entry" role="listitem">
+<span class="smallcaps">DataCamp</span>. (2025): <span>“Machine Learning Courses | DataCamp,”</span>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
