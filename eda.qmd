@@ -25,18 +25,31 @@ execute:
   message: false
 ---
 
-# Overview
+### Overview
 
-In this section, we examine job postings across Business Analytics, Data Science, and Machine Learning roles to identify key patterns before modeling. We explore salary, experience, remote work trends, and skill demand to guide the regression and classification stages.
+This Exploratory Data Analysis (EDA) examines job postings from Lightcast to uncover salary trends, experience requirements, remote work dynamics, and skill demand across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles.
+The analysis prepares the dataset for modeling and provides statistical and visual insights that guide the regression and feature engineering stages of the project.
 
-We focused on:
-- Job distribution across industries and roles  
-- Salary variation by experience and remote type  
-- Skill demand frequency and specialization  
-- Emerging data science and analytics trends
+Specifically, this section covers:
+
+- Data preparation and cleaning – handling duplicates, renaming key columns, converting data types, and computing an Average_Salary variable
+
+- Salary distribution and outliers – visualizing the spread of compensation and identifying high-paying ML and senior roles
+
+- Experience and salary relationships – analyzing how required years of experience influence pay across remote and hybrid work types
+
+- Role-based salary comparison – comparing median salaries for BA, DS, and ML roles
+
+- Remote work trends – exploring how work flexibility impacts compensation
+
+- Top skill frequencies – identifying the most in-demand technical and analytical skills in job descriptions
+
+- Feature correlations – assessing relationships between numeric variables such as salary and experience to inform model selection
+
+Together, these insights establish a clear understanding of labor market patterns and help define which features are most predictive for the upcoming salary regression models.
 
 
-# Load and Prepare Data
+#### Load and Prepare Data
 ```{python}
 # | echo: true
 # | eval: true
@@ -57,7 +70,7 @@ pio.renderers.default = "iframe_connected"
 
 # === Load data from CSV ===
 df = pd.read_csv("data/lightcast_job_postings.csv", low_memory=False)
-print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
+# print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
 
 # --- Detect & drop duplicate columns ---
 # --- Detect & fully clean duplicate-like columns ---
@@ -69,8 +82,8 @@ before_cols = len(df.columns)
 df = df.loc[:, ~df.columns.duplicated()]
 after_cols = len(df.columns)
 
-print(f"🧹 Cleaned column names: removed {before_cols - after_cols} duplicate(s).")
-print("Unique columns now:", len(df.columns))
+# print(f"🧹 Cleaned column names: removed {before_cols - after_cols} duplicate(s).")
+# print("Unique columns now:", len(df.columns))
 
 # --- Convert numeric columns safely ---
 for col in ["SALARY_FROM", "SALARY_TO", "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE"]:
@@ -93,7 +106,8 @@ for old, new in rename_map.items():
     if old in df.columns and new not in df.columns:
         df.rename(columns={old: new}, inplace=True)
     elif old in df.columns and new in df.columns:
-        print(f"⚠️ Skipping rename '{old}' → '{new}' to avoid duplicate column name.")
+      # print(f"⚠️ Skipping rename '{old}' → '{new}' to avoid duplicate column name.")
+      pass
 
 
 # --- Drop invalid rows early ---
@@ -104,23 +118,29 @@ if "Average_Salary" in df.columns:
 if len(df) > 5000:
     df = df.sample(5000, random_state=42)
 
-print(f"✅ Loaded {len(df)} rows safely with {len(df.columns)} unique columns.")
-
-# --- Lightweight histogram check ---
-fig = px.histogram(
-    df,
-    x="Average_Salary",
-    nbins=25,
-    color_discrete_sequence=["#187145"],
-    title="Average Salary Distribution (sample)"
-)
-fig.update_layout(template="plotly_white")
-fig
+# print(f"✅ Loaded {len(df)} rows safely with {len(df.columns)} unique columns.")
 ```
 
-```{python}
-print(sorted(df.columns))
-```
+### Data Preparation and Cleaning
+
+The dataset used for this analysis was sourced from Lightcast job postings, containing thousands of listings across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles.
+To ensure data quality and consistency:
+
+Column Normalization: Extra spaces and hidden characters were stripped from column names to avoid mismatches and duplicates.
+
+Duplicate Removal: Identical columns were collapsed to retain only unique fields.
+
+Type Conversion: Numeric columns such as SALARY_FROM, SALARY_TO, MIN_YEARS_EXPERIENCE, and MAX_YEARS_EXPERIENCE were coerced into numeric format, with non-numeric values safely converted to NaN.
+
+Average Salary Calculation: A new feature, Average_Salary, was computed as the mean of the salary range for each posting to simplify analysis.
+
+Column Renaming: Key columns were standardized (REMOTE_TYPE_NAME → REMOTE_GROUP, STATE_NAME → STATE, LOT_V6_OCCUPATION_GROUP_NAME → ROLE_GROUP) for clarity.
+
+Invalid Data Removal: Rows with missing or non-positive salaries were dropped.
+
+Downsampling: For performance, the dataset was randomly reduced to 5,000 representative rows, preserving the statistical diversity of the original population.
+
+This preprocessing established a clean, consistent dataset suitable for visualization and modeling.
 
 ```{python}
 fig = px.histogram(
@@ -129,7 +149,7 @@ fig = px.histogram(
     title="Distribution of Average Salaries"
 )
 fig.update_layout(
-    xaxis_title="Average Salary ($)",
+    xaxis_title="Average Salary ($ USD)",
     yaxis_title="Number of Job Postings",
     template="plotly_white"
 )
@@ -199,7 +219,7 @@ for col in ["SKILLS_NAME", "COMMON_SKILLS_NAME", "SPECIALIZED_SKILLS_NAME", "SOF
         break
 
 if skills_column:
-    print(f"✅ Using '{skills_column}' for skill frequency analysis.")
+    # print(f"✅ Using '{skills_column}' for skill frequency analysis.")
     
     skills_flat = [
         s.strip()
