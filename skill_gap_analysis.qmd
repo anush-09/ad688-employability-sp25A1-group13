@@ -50,7 +50,7 @@ df_styled = df_skills.style.set_table_styles([
                                      ('text-align', 'center')]}
 ])
 
-df_styled
+# df_styled
 
 ```
 
