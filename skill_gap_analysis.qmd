@@ -83,6 +83,14 @@ When looking at the heatmap it shows that our team still feels relatively new to
 
 **Cloud Computing** was one of the areas where we struggled as a group and this was in large part due to a lack of exposure and could likely increase in environments where this was utilized like our educational environment like this class.
 
+# Team Strengths
+
+**Anu**
+
+**Cindy**
+
+**Gavin**
+
 # Most in demand skills ranked
 ```{python}
 # Skill Key Words
