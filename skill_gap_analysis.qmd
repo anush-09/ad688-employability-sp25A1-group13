@@ -131,9 +131,13 @@ for chunk in pd.read_csv(
 top_skills = skill_counts.most_common(5)
 
 # 6️⃣ Print results neatly
-print("Top 5 Most Mentioned Skills:\n")
-for skill, count in top_skills:
-    print(f"{skill.title()}: {count}")
+import pandas as pd
+
+# Convert Counter to DataFrame
+skills_df = pd.DataFrame(skill_counts.items(), columns=["Skill", "Count"])
+
+# Optional: sort by count descending
+skills_df = skills_df.sort_values(by="Count", ascending=False).reset_index(drop=True)
 
 ```
 
@@ -144,7 +148,7 @@ import numpy as np
 skills, counts = zip(*skill_counts.most_common(10))
 
 # Make figure taller for vertical bars, and increase quality of graphic
-plt.figure(figsize=(10, 6), dpi=150)
+plt.figure(figsize=(10, 6), dpi=300)
 
 # Unique color per bar
 colors = plt.cm.tab10(np.linspace(0, 1, len(skills)))
