@@ -38,55 +38,88 @@ We focused on:
 
 # Load and Prepare Data
 ```{python}
+# | echo: true
+# | eval: true
+
 import pandas as pd
-import plotly.express as px
 import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import plotly.figure_factory as ff
+import plotly.io as pio
+import json
+import re
+from collections import Counter
 
-# === Minimal safe load ===
-cols_needed = [
-    "SALARY_FROM", "SALARY_TO",
-    "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE",
-    "REMOTE_TYPE_NAME", "STATE_NAME",
-    "LOT_V6_OCCUPATION_GROUP_NAME"
-]
+pio.templates.default = "plotly_white"
+pio.renderers.default = "iframe_connected"
 
-# Load only needed columns, small sample for EC2
-df = pd.read_csv(
-    "data/lightcast_cleaned.csv",
-    usecols=lambda c: c in cols_needed,
-    nrows=8000,
-    low_memory=False
-)
+# === Load data from CSV ===
+df = pd.read_csv("data/lightcast_job_postings.csv", low_memory=False)
+print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
+
+# --- Detect & drop duplicate columns ---
+# --- Detect & fully clean duplicate-like columns ---
+# Normalize column names: strip whitespace and hidden characters
+df.columns = df.columns.str.strip().str.replace(r"\s+", " ", regex=True)
+
+# Collapse exact duplicates after cleanup
+before_cols = len(df.columns)
+df = df.loc[:, ~df.columns.duplicated()]
+after_cols = len(df.columns)
+
+print(f"🧹 Cleaned column names: removed {before_cols - after_cols} duplicate(s).")
+print("Unique columns now:", len(df.columns))
 
 # --- Convert numeric columns safely ---
 for col in ["SALARY_FROM", "SALARY_TO", "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE"]:
-    df[col] = pd.to_numeric(df[col], errors="coerce")
+    if col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
 
 # --- Compute average salary (avoid string concat) ---
-df["Average_Salary"] = df[["SALARY_FROM", "SALARY_TO"]].mean(axis=1, skipna=True)
+if {"SALARY_FROM", "SALARY_TO"}.issubset(df.columns):
+    df["Average_Salary"] = df[["SALARY_FROM", "SALARY_TO"]].mean(axis=1, skipna=True)
 
-# --- Clean and rename ---
-df.rename(columns={
+# --- Clean and rename (safely) ---
+rename_map = {
     "REMOTE_TYPE_NAME": "REMOTE_GROUP",
     "STATE_NAME": "STATE",
     "LOT_V6_OCCUPATION_GROUP_NAME": "ROLE_GROUP"
-}, inplace=True)
+}
+
+# Only rename columns that won't create duplicates
+for old, new in rename_map.items():
+    if old in df.columns and new not in df.columns:
+        df.rename(columns={old: new}, inplace=True)
+    elif old in df.columns and new in df.columns:
+        print(f"⚠️ Skipping rename '{old}' → '{new}' to avoid duplicate column name.")
+
 
 # --- Drop invalid rows early ---
-df = df[df["Average_Salary"].notna() & (df["Average_Salary"] > 0)]
+if "Average_Salary" in df.columns:
+    df = df[df["Average_Salary"].notna() & (df["Average_Salary"] > 0)]
 
-# --- Downsample further if needed ---
+# --- Downsample if dataset is large ---
 if len(df) > 5000:
     df = df.sample(5000, random_state=42)
 
-print(f"✅ Loaded {len(df)} rows safely with columns: {list(df.columns)}")
+print(f"✅ Loaded {len(df)} rows safely with {len(df.columns)} unique columns.")
 
-# Optional lightweight check
-fig = px.histogram(df, x="Average_Salary", nbins=25,
-                   color_discrete_sequence=["#187145"],
-                   title="Average Salary Distribution (sample)")
+# --- Lightweight histogram check ---
+fig = px.histogram(
+    df,
+    x="Average_Salary",
+    nbins=25,
+    color_discrete_sequence=["#187145"],
+    title="Average Salary Distribution (sample)"
+)
 fig.update_layout(template="plotly_white")
 fig
+```
+
+```{python}
+print(sorted(df.columns))
 ```
 
 ```{python}
@@ -107,7 +140,6 @@ fig
 Salaries are right-skewed — most roles pay under $150K, but select senior and ML-focused positions exceed $200K, highlighting outlier opportunities for experienced professionals.
 
 ```{python}
-
 fig = px.scatter(
     df,
     x="MIN_YEARS_EXPERIENCE",
@@ -158,25 +190,39 @@ fig
 Remote roles tend to offer higher median salaries compared to onsite jobs, supporting modern hybrid compensation trends in data-driven fields.
 
 ```{python}
-skills_flat = [
-    s.strip()
-    for sublist in df['TOP_SKILLS'].dropna().str.split(',')
-    for s in sublist if s.strip()
-]
-skill_counts = pd.DataFrame(
-    Counter(skills_flat).most_common(15),
-    columns=['Skill', 'Count']
-)
+# --- Top Skills Visualization (Safe Version) ---
 
-fig = px.bar(
-    skill_counts,
-    x='Skill',
-    y='Count',
-    title="Most Frequent Skills in Job Postings",
-    color_discrete_sequence=["#187145"]
-)
-fig.update_layout(template="plotly_white")
-fig
+skills_column = None
+for col in ["SKILLS_NAME", "COMMON_SKILLS_NAME", "SPECIALIZED_SKILLS_NAME", "SOFTWARE_SKILLS_NAME"]:
+    if col in df.columns:
+        skills_column = col
+        break
+
+if skills_column:
+    print(f"✅ Using '{skills_column}' for skill frequency analysis.")
+    
+    skills_flat = [
+        s.strip()
+        for sublist in df[skills_column].dropna().astype(str).str.split(',')
+        for s in sublist if s.strip()
+    ]
+
+    skill_counts = pd.DataFrame(
+        Counter(skills_flat).most_common(15),
+        columns=["Skill", "Count"]
+    )
+
+    fig = px.bar(
+        skill_counts,
+        x="Skill",
+        y="Count",
+        title=f"Top 15 Most Frequent Skills ({skills_column})",
+        color_discrete_sequence=["#187145"]
+    )
+    fig.update_layout(template="plotly_white")
+    fig
+else:
+    print("⚠️ No skill-related column found — skipping skills frequency plot.")
 ```
 
 ### Top Skills Frequency
