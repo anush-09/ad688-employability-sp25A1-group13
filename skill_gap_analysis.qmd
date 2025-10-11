@@ -157,7 +157,7 @@ colors = plt.cm.tab10(np.linspace(0, 1, len(skills)))
 bars = plt.bar(skills, counts, color=colors, edgecolor="black")
 
 # Titles and labels
-plt.title("Top 9 Most Mentioned Skills in Job Descriptions", fontsize=14, fontweight="bold", pad=15)
+plt.title("Top 10 Most Mentioned Skills in Job Descriptions", fontsize=14, fontweight="bold", pad=15)
 plt.xlabel("Skill", fontsize=12)
 plt.ylabel("Frequency (Number of Mentions)", fontsize=12)
 
