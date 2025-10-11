@@ -26,12 +26,12 @@ import pandas as pd
 # Extended skills data
 skills_data = {
     "Name": ["Anu", "Cindy", "Gavin"],
-    "Data Analysis": [3, 1, 4],
-    "Python": [5, 3, 4],
-    "SQL": [4, 2, 5],
-    "Machine Learning": [3, 1, 4],
-    "Cloud Computing": [2, 2, 3],
-    "Power BI": [3, 2, 4],
+    "Data Analysis": [3, 4, 4],
+    "Python": [5, 3, 3],
+    "SQL": [4, 3, 2],
+    "Machine Learning": [3, 2, 2],
+    "Cloud Computing": [2, 3, 2],
+    "Power BI": [3, 5, 3],
     
 }
 
