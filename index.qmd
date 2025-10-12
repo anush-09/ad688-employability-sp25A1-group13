@@ -13,6 +13,13 @@ execute:
 code-fold: true
 ---
 
+::: {.callout-note title="Project Overview"}
+This project explores how **Business Analytics**, **Data Science**, and **Machine Learning** skills influence employability and salary outcomes in the 2024–2025 job market.  
+Using real-world data from **Lightcast**, our team analyzed over one million job postings to uncover patterns in salary, experience, and skill demand across industries.  
+Through data cleaning, exploratory visualization, and predictive modeling, we identified which technical and analytical skills — such as **Python**, **SQL**, **Machine Learning**, and **Cloud Computing** — drive higher compensation and career opportunities.  
+The results provide actionable insights for students and professionals aiming to align their skills with the rapidly evolving data economy.
+:::
+
 # Data-Driven Career Analysis: Evaluating Personal Job Market Prospects in 2024
 
 ## Rationale
@@ -42,5 +49,17 @@ Further, our study reveals that hiring is strong in technology,
 healthcare and financial sectors where the use of data is becoming highly 
 critical. These trends clearly indicates that both education and job markets
 must keep evolving to stay aligned with real-world demands.
+
+## Team Contributions
+
+This project was collaboratively completed by **Group 13** as part of Boston University’s *Applied Business Analytics* program.  
+Each member contributed to specific modules that collectively formed the foundation of this website and analysis:
+
+- **Anu Sharma** – Led **Module 1 (Setup)** and **Module 4 (EDA and Dashboarding)**, handling initial data preparation, model setup, and exploratory analysis design. Contributed heavily to the **Machine Learning Methods** and **Data Cleaning** sections.
+- **Cindy Guzman** – Owned **Module 3 (Datalake and Warehouses)**, focusing on structured data pipelines and storage logic. Led the **Exploratory Data Analysis (EDA)** narrative, correlation heatmaps, and dashboard development.
+- **Gavin Boss** – Completed **Module 2 (SQL and Data Modelling)**, designing relational data models and integrating cleaned data for analysis. Also authored the **Skill Gap Analysis** section and supported website publishing.
+- **All Members** – Collaboratively completed **Module 5 (Export and Submission)** and **Module 6 (PPT and Report)**, including final integration, presentation design, and site documentation.
+
+Together, the team ensured analytical rigor, visual clarity, and cohesive storytelling across all pages: *Introduction, Data Cleaning, EDA, Machine Learning Methods, Skill Gap Analysis,* and *Personal Career Strategy Plan*.
 
 ## References
