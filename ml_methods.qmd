@@ -337,7 +337,7 @@ The clustering analysis grouped jobs based on their skill requirements and chara
 - **Remote work:** 25%–56% across clusters
 - **Experience:** 2.0–7.8 years, showing clear career progression
 
-**Takeaways for Job Seekers:**
+**Career Implications:**
 
 - **Most opportunities:** Business Analytics (SQL, Tableau, Power BI, visualization)
 - **Highest pay + volume:** Cluster 1 ($145K, 10K+ jobs) — general tech roles
@@ -348,7 +348,7 @@ The clustering analysis grouped jobs based on their skill requirements and chara
 
 # Supervised Learning: Multiple Regression
 
-The second approach uses supervised learning to predict salary based on skills and experience. Two regression models are trained: Linear Regression (assumes linear relationships) and Random Forest (captures complex non-linear patterns). This analysis identifies which skills and factors most strongly influence compensation.
+The second approach uses supervised learning to predict salary based on skills and experience. Two regression models are trained: Linear Regression and Random Forest. This analysis identifies which skills and factors most strongly influence compensation.
 
 ```{python}
 #| echo: true
@@ -451,7 +451,9 @@ Prediction models were built to understand how skills influence salary. The Rand
 
 **Summary:** Salary is not determined by skills alone. Experience and work flexibility are key, while technical skills provide additional differentiation.
 
-# Supervised Learning: Classification Using Skills (Random Forest Only)
+# Supervised Learning: Classification to Identify BA/ML/DS Roles
+
+Although the project required only one of the supervised learning models. This analysis also explores the classification to distinguish ML/Data Science roles from Business Analytics and other positions. A Random Forest Classifier is trained to predict whether a job is an ML/DS role based on its skill requirements. This analysis reveals which skills are the strongest "signature" indicators that distinguish ML/DS positions from BA roles.
 
 ```{python}
 #| echo: true
@@ -462,7 +464,8 @@ classification_features = skill_feature_cols + ['experience_years', 'is_remote']
 
 # Prepare classification data
 X_clf = df_modeling[classification_features].fillna(0)
-y_clf = df_modeling['is_ba_ml_ds_role']
+# Target: ML/DS roles (computed from is_ml_role OR is_ds_role)
+y_clf = ((df_modeling['is_ml_role'] == 1) | (df_modeling['is_ds_role'] == 1)).astype(int)
 
 # Train/test split for classification
 X_train_clf, X_test_clf, y_train_clf, y_test_clf = train_test_split(X_clf, y_clf, test_size=0.2, random_state=42)
@@ -478,6 +481,8 @@ rf_clf.fit(X_train_clf_scaled, y_train_clf)
 
 print("Skills-based classification model trained successfully!")
 ```
+
+The classifier learns patterns that distinguish ML/DS roles from BA and other positions based on their skill profiles. The model is now evaluated to see how accurately it can identify these specialized ML/DS roles versus the more common BA positions.
 
 ```{python}
 #| echo: true
@@ -514,28 +519,37 @@ clf_importances = rf_clf.feature_importances_
 
 # Visualize classification feature importance
 fig = px.bar(x=clf_actual_feature_names, y=clf_importances,
-             title="Skills Impact on ML/Data Science Role Classification",
-             labels={'x': 'Features', 'y': 'Importance'})
+            title="Skills Impact on ML/Data Science Role Classification",
+            labels={'x': 'Features', 'y': 'Importance'})
 fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
 fig.show()
 ```
-## Clasification Results: Identifying ML/Data Science Roles
+## Classification Results: Identifying ML/Data Science Roles
 
-The classification model predicts whether a job is an ML/Data Science role based on its skill requirements. The Random Forest Classifier achieved stong performance in distinguishing these specialized roles from analyst positions.
+A Random Forest classifier was used to predict whether a job is an ML/Data Science role based on its skill requirements. The model achieved very strong performance in separating ML/DS roles from Business Analytics and other positions.
 
-**Model Performance Interpretation:**
--**Accuracy** shows the model correctly identified all roles
--It suggests ML/DS roles have very distinct skill patterns compared to other data jobs
--This high accuracy indicates our skill based criteria effectively separates these roles
 
-**Feature Importance**
-This chart shows which skills are strongest predictors of ML/DS classification. Skills with higher bars are the "signature" skills that clearly distinguish ML/DS roles from analyst positions.
+**Model Performance:**
 
-**Actionable Insights**
-- The perfect accuracy shows DL/MS roles require distinctly different skill sets
-- Focus on the top features to signal ML/DS capabilities to employers
-- These specialized skills are what separate advance roles from general analytics
-- Building expertise in high importance features directly increases ML/DS role readiness
+- **Accuracy:** 99.95% — nearly all ML/DS roles correctly identified
+- **Insight:** ML/DS roles have distinct skill patterns compared to BA and general analyst jobs
+- **Conclusion:** Skill-based criteria effectively distinguish ML/DS roles from BA positions
+
+**Key Predictive Skills (Feature Importance)**
+
+- **Programming:** Python, R
+- **ML Frameworks:** TensorFlow, PyTorch
+- **Statistical Modeling:** Core differentiator for ML/DS
+- **BA-Oriented Skills:** SQL, Tableau, Power BI, Data Analysis (more common in BA roles)
+
+**Career Implications**
+
+- **Distinct skill sets:** ML/DS roles require clearly different capabilities than BA roles
+- **ML/DS focus:** Programming, modeling, and ML frameworks are the strongest signals
+- **BA focus:** SQL, visualization, and reporting tools dominate BA roles
+- **Career development:** Building expertise in high-importance ML/DS features directly improves readiness for ML/DS positions
+
+**Summary:**The Random Forest classifier confirms that ML/DS roles are defined by specialized technical skills, while BA roles emphasize analysis and visualization tools. This distinction provides a clear roadmap for professionals aiming to transition into ML/DS careers.
 
 # Model Results Visualization
 
