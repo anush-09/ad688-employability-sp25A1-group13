@@ -1,7 +1,8 @@
 ---
-title: "Business Analytics, Data Science and Machine Learning Trends"
+title: "Machine Learning Methods"
+subtitle: "Evaluating Personal Job Market Prospects in 2024"
 author: "Anu Sharma, Cindy Guzman, Gavin Boss"
-date: "2025-09-10"
+date: "2025-10-11"
 format:
   html:
     bibliography: references.bib
@@ -15,9 +16,13 @@ freeze: auto
 
 # Overview
 
-This analysis explores trends in Business Analytics, Data Science, and Machine Learning job postings by focusing on the **skills required** for these roles. We analyze how different skill combinations impact salary, remote work opportunities, and career paths.
+The analysis examines trends in Business Analytics, Data Science, and Machine Learning job postings, with a focus on the **skills required** for these roles. The study evaluates how varying skill combinations influence salary levels, remote work availability, and career progression pathways.
+
+This analysis employs three main approaches: (1) KMeans clustering to segment jobs based on skill requirements, (2) regression models to predict salary based on skills and experience, and (3) classification models to identify Business Analysis, Data Science, and Machine Learning roles from other positions. The models use 25 technical skills as features along with experience and remote work indicators. Results show that experience is the dominant salary driver, jobs cluster into 6 distinct groups with different compensation and remote work patterns, and BA/ML/DS roles have clearly identifiable skill signatures.
 
 # Data Loading and Setup
+
+The analysis starts by loading the Lightcast job postings dataset and identifying relevant skill columns. The dataset contains comprehensive information about job postings including titles, salaries, required skills, and other job characteristics.
 
 ```{python}
 # | echo: true
@@ -41,17 +46,9 @@ df = pd.read_csv("data/lightcast_job_postings.csv", low_memory=False)
 print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
 
 # print(df.head())
-
-# Skills related columns identified through manual inspection of schema
-skills_columns = ['SKILLS', 'SKILLS_NAME', 'SPECIALIZED_SKILLS', 'SPECIALIZED_SKILLS_NAME',
-                  'SOFTWARE_SKILLS', 'SOFTWARE_SKILLS_NAME', 'CERTIFICATIONS', 'CERTIFICATIONS_NAME']
-print("\nSkills-related columns identified through schema:")
-for col in skills_columns:
-    if col in df.columns:
-        print(f"- {col}")
 ```
-## IMPORTANT Skills columns
-We identified that 'SKILLS_NAME, 'SOFTWARE_SKILLS_NAME' and 'SPECIALIZED_SKILLS_NAME' columns are most relevant to the analysis.
+## Important Skills columns
+The dataset contains multiple skill-related columns. After examining the schema, the columns 'SKILLS_NAME', 'SOFTWARE_SKILLS_NAME' and 'SPECIALIZED_SKILLS_NAME' provide the most detailed skill information for this analysis. These columns list the specific technical skills mentioned in each job posting.
 
 # Skills Data Preprocessing
 
@@ -150,38 +147,6 @@ df_skills['is_remote'] = df_skills['REMOTE_TYPE'].fillna(0).astype(int)
 df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
 
 df_final = df_skills
-
-# # Check which skills actually exist in the dataframe
-# available_core_ml = [skill for skill in core_ml_skills if skill in df_skills.columns]
-# available_ds_skills = [skill for skill in data_science_skills if skill in df_skills.columns]
-
-# print(f"Available core ML skills ({len(available_core_ml)}): {available_core_ml}")
-# print(f"Available DS skills ({len(available_ds_skills)}): {available_ds_skills}")
-
-# # ML role if has core ML skills OR (Python + Statistics/Data Analysis)
-# if available_core_ml:
-#     df_skills['has_core_ml'] = df_skills[available_core_ml].sum(axis=1) > 0
-# else:
-#     df_skills['has_core_ml'] = False
-
-# if available_ds_skills and 'has_python_programming_language' in df_skills.columns:
-#     # Check for Python + (Statistics OR Data Analysis OR Data Science)
-#     stats_cols = [col for col in ['has_statistics', 'has_data_analysis', 'has_data_science'] if col in df_skills.columns]
-#     if stats_cols:
-#         df_skills['has_ds_combo'] = (df_skills['has_python_programming_language'] == 1) & (df_skills[stats_cols].sum(axis=1) > 0)
-#     else:
-#         df_skills['has_ds_combo'] = False
-# else:
-#     df_skills['has_ds_combo'] = False
-
-# df_skills['is_ml_role'] = (df_skills['has_core_ml'] | df_skills['has_ds_combo']).astype(int)
-
-# # Create remote work indicator
-# df_skills['is_remote'] = df_skills['REMOTE_TYPE'].fillna(0).astype(int)
-# df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
-
-# df_final = df_skills
-
 print(f"Final dataset size: {len(df_final):,}")
 print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
 ```
@@ -477,7 +442,10 @@ fig = px.imshow(cm, text_auto=True, aspect="auto",
                 title="Confusion Matrix - ML/DS Role Classification",
                 labels=dict(x="Predicted", y="Actual"),
                 color_continuous_scale="Blues")
+
 fig.update_layout(template="plotly_white")
+fig.update_xaxes(tickvals=[0,1], ticktext=['Not ML/DS', 'ML/DS'])
+fig.update_yaxes(tickvals=[0,1], ticktext=['Not ML/DS', 'ML/DS'])
 fig.show()
 
 print("Classification Report:")
@@ -517,6 +485,14 @@ This chart shows which skills are strongest predictors of ML/DS classification. 
 ```{python}
 #| echo: true
 #| eval: true
+
+# Summarize core model performance
+model_summary = pd.DataFrame({
+    'Model': ['Linear Regression', 'Random Forest (Regression)', 'Random Forest (Classifaction)'],
+    'R² / Accuracy': [r2_lr, r2_rf, accuracy_rf],
+    'RMSE / F1 Score': [rmse_lr, rmse_rf, f1_rf]
+})
+print(model_summary)
 
 # Visualization of model results
 fig = make_subplots(

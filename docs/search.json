@@ -2,63 +2,63 @@
   {
     "objectID": "ml_methods.html",
     "href": "ml_methods.html",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "",
-    "text": "This analysis explores trends in Business Analytics, Data Science, and Machine Learning job postings by focusing on the skills required for these roles. We analyze how different skill combinations impact salary, remote work opportunities, and career paths."
+    "text": "The analysis examines trends in Business Analytics, Data Science, and Machine Learning job postings, with a focus on the skills required for these roles. The study evaluates how varying skill combinations influence salary levels, remote work availability, and career progression pathways.\nThis analysis employs three main approaches: (1) KMeans clustering to segment jobs based on skill requirements, (2) regression models to predict salary based on skills and experience, and (3) classification models to identify Business Analysis, Data Science, and Machine Learning roles from other positions. The models use 25 technical skills as features along with experience and remote work indicators. Results show that experience is the dominant salary driver, jobs cluster into 6 distinct groups with different compensation and remote work patterns, and BA/ML/DS roles have clearly identifiable skill signatures."
   },
   {
     "objectID": "ml_methods.html#important-skills-columns",
     "href": "ml_methods.html#important-skills-columns",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
-    "section": "2.1 IMPORTANT Skills columns",
-    "text": "2.1 IMPORTANT Skills columns\nWe identified that ‘SKILLS_NAME, ’SOFTWARE_SKILLS_NAME’ and ‘SPECIALIZED_SKILLS_NAME’ columns are most relevant to the analysis."
+    "title": "Machine Learning Methods",
+    "section": "2.1 Important Skills columns",
+    "text": "2.1 Important Skills columns\nThe dataset contains multiple skill-related columns. After examining the schema, the columns ‘SKILLS_NAME’, ‘SOFTWARE_SKILLS_NAME’ and ‘SPECIALIZED_SKILLS_NAME’ provide the most detailed skill information for this analysis. These columns list the specific technical skills mentioned in each job posting."
   },
   {
     "objectID": "ml_methods.html#heuristics-employed-for-mlds-roles",
     "href": "ml_methods.html#heuristics-employed-for-mlds-roles",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "3.1 Heuristics employed for ML/DS roles",
     "text": "3.1 Heuristics employed for ML/DS roles\nWe identified ML and Data Science roles using specific technical skills listed in the dataset. ML roles need skills like TensorFlow, PyTorch, Deep Learning, etc. Data Science roles typically require R programming, Python with Statistics, or multiple data analysis tools.\nThe goal is to see how these specialized skills impact salary and career opportunities. We’ll use machine learning models to find patterns that can guide job seekers in choosing which skills to develop."
   },
   {
     "objectID": "ml_methods.html#insights-from-kmeans-clustering",
     "href": "ml_methods.html#insights-from-kmeans-clustering",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "5.1 Insights from KMeans Clustering",
     "text": "5.1 Insights from KMeans Clustering\nThe clustering analysis grouped jobs based on their skill requirements and characteristics. We found 6 distinct job clusters, each with different salary levels, remote work availability, and skill profiles.\nKey Findings:\n\nCluster 4 shows higher concentrations of ML/DS roles with corresponding higher average salaries\nRemote work availability varies significantly across clusters, suggesting that certain skill combinations are more compatible with remote positions.\nExperience requirements differ by cluster, indicating distinct career progression paths.\n\nTakeaways for Job Seekers:\n\nThe specialized ML/DS cluster (Cluster 4) offers good pay but fewer opportunities.\nTarget skills that appear in higher-paying clusters to maximize salary potential\nIf remote work is important, target skills common in Cluster(5)."
   },
   {
     "objectID": "ml_methods.html#regression-analysis-what-drives-salary",
     "href": "ml_methods.html#regression-analysis-what-drives-salary",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "6.1 Regression Analysis: What drives salary?",
     "text": "6.1 Regression Analysis: What drives salary?\nWe built the prediction models to understand how skills influence salary. The Random Forest model achieved R2 of 0.47 compared to 0.28 for Linear Regression, showing that skill-salary relationships are complex.\nModel Performance: Random Forest R2 of 0.07 means it explains 47% of salary variation. RMSE of 32514 shows typical prediction error It shows skill alone don’t fully determine salary - other factors matter too\nFeature Importance Results: The chart shows which skills have the strongest impact on salary predictions. Top Salary Drivers(by importance): 1. Experience years(0.49) - the biggest factor, almost half of salary determination 2. Remote work(0.07) - remote positions tend to pay differently 3. Data Analysis skill(0.04) - core analytical capability 4. Tableau(0.04) - visualization and BI tool 5. AWS(0.04) - cloud computing platform 6. SQL(0.04) - database querying 7. Python(0.03) - programming language\nImplications for Career Development: Experience matters - nearly 50% of salary impact comes from years of computer Remote works capability add salary premium Combination of skills drives salary differences Experience(years) and remote work flexibility influence compensation"
   },
   {
     "objectID": "ml_methods.html#clasification-results-identifying-mldata-science-roles",
     "href": "ml_methods.html#clasification-results-identifying-mldata-science-roles",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "7.1 Clasification Results: Identifying ML/Data Science Roles",
     "text": "7.1 Clasification Results: Identifying ML/Data Science Roles\nThe classification model predicts whether a job is an ML/Data Science role based on its skill requirements. The Random Forest Classifier achieved stong performance in distinguishing these specialized roles from analyst positions.\nModel Performance Interpretation: -Accuracy shows the model correctly identified all roles -It suggests ML/DS roles have very distinct skill patterns compared to other data jobs -This high accuracy indicates our skill based criteria effectively separates these roles\nFeature Importance This chart shows which skills are strongest predictors of ML/DS classification. Skills with higher bars are the “signature” skills that clearly distinguish ML/DS roles from analyst positions.\nActionable Insights - The perfect accuracy shows DL/MS roles require distinctly different skill sets - Focus on the top features to signal ML/DS capabilities to employers - These specialized skills are what separate advance roles from general analytics - Building expertise in high importance features directly increases ML/DS role readiness"
   },
   {
     "objectID": "ml_methods.html#summary-of-findings",
     "href": "ml_methods.html#summary-of-findings",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "9.1 Summary of Findings",
     "text": "9.1 Summary of Findings\nOur analysis of business analytics, data science and machine learning job postings reveals several important patterns:\n\nSkill-Based Job Segmentation: Jobs cluster into 6 distinct groups. Cluster 4 (pure ML/DS) pays $140K with only 77 positions, while Cluster 1 (10,189 jobs) pays $145K with mixed roles. Remote work availability varies from 25% to 56% across clusters.\nSalary Drivers: Experience dominates (49% importance) followed by remote work capability (7%). Technical skills like Tableau, AWS, SQL and Python each contribute 3-4%. The R² of 0.47 shows skills explain about half of salary variation.\nRole Differentiation: ML/DS roles have distinct skill patterns, achieving 100% classification accuracy. This indicates these specialized positions require clearly different capabilities than analyst roles."
   },
   {
     "objectID": "ml_methods.html#recommendations-for-job-seekers",
     "href": "ml_methods.html#recommendations-for-job-seekers",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "9.2 Recommendations for Job Seekers",
     "text": "9.2 Recommendations for Job Seekers\nFor Career Advancement: - Gain experience - it’s the single biggest salary driver (49% importance) - Develop remote work capabilities - adds 7% to salary potential - Learn practical tools: Tableau, AWS, SQL are each worth 3-4% salary impact - Not only ML/DS titles can be considered as Cluster 1 (non-ML) pays $145K vs Cluster 4 (pure ML) at $140K\nFor Transitioning to ML/Data Science: - The 100% classification accuracy shows these roles need very specific skill combinations - Focus on the specialized skills shown in the classification importance chart - Note: ML/DS specialization has fewer opportunities (Cluster 4 has only 77 jobs)\nFor Maximizing Opportunities: - For remote work: Target Cluster 5 skills (56% remote, 63% ML/DS roles) - For job volume: Cluster 1 has most opportunities (10,189 jobs) at highest pay ($145K) - For specialization: Cluster 4 is pure ML/DS but limited opportunities (77 jobs)"
   },
   {
     "objectID": "ml_methods.html#limitations-and-considerations",
     "href": "ml_methods.html#limitations-and-considerations",
-    "title": "Business Analytics, Data Science and Machine Learning Trends",
+    "title": "Machine Learning Methods",
     "section": "9.3 Limitations and Considerations",
     "text": "9.3 Limitations and Considerations\n\nThe analysis is based on job posting data which may not reflect actual hiring outcomes\nSkill requirements in job posts may differ from day-to-day job responsibilities\nMarket conditions and geographic factors also influence salaries beyond just skills\nThe models identify patterns but don’t capture all nuances of career success"
   },
