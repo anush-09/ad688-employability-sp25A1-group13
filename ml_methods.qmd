@@ -135,7 +135,7 @@ core_ba_skills = [
 ]
 
 # Role indicators
-# ML roles are straighforward.
+# ML roles are straightforward.
 df_skills['is_ml_role'] = (
     (df_skills[core_ml_skills].sum(axis=1) > 0)
 ).astype(int)
@@ -153,9 +153,6 @@ df_skills['is_ba_role'] = (
     df_skills[core_ba_skills].sum(axis=1) >= 2
 ).astype(int)
 
-df_skills['is_ba_ml_ds_role'] = ((df_skills['is_ml_role'] == 1) | (df_skills['is_ds_role'] == 1) | (df_skills['is_ba_role'] == 1)).astype(int)
-
-
 # Remote work indicator
 df_skills['is_remote'] = df_skills['REMOTE_TYPE'].fillna(0).astype(int)
 df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
@@ -165,7 +162,7 @@ print(f"Final dataset size: {len(df_final):,}")
 print(f"ML roles identified: {df_final['is_ml_role'].sum():,}")
 print(f"Data Science roles identified: {df_final['is_ds_role'].sum():,}")
 print(f"Business Analytics roles identified: {df_final['is_ba_role'].sum():,}")
-print(f"BA/ML/DS combined: {df_final['is_ba_ml_ds_role'].sum():,}")
+print(f"BA/ML/DS combined: {((df_final['is_ml_role'] == 1) | (df_final['is_ds_role'] == 1) | (df_final['is_ba_role'] == 1)).sum():,}")
 ```
 
 For each of the 25 key skills, a binary indicator variable is created (1 if the skill is mentioned, 0 otherwise). This transforms the text skill data into numerical features suitable for machine learning models.
@@ -181,12 +178,14 @@ Three role categories are identified based on technical skills:
 The analysis examines how these specialized skills impact salary and career opportunities. Machine learning models are used to find patterns that can guide job seekers in choosing which skills to develop.
 
 # Feature Engineering for ML
+
+Before building models, the dataset is prepared by selecting relevant columns. This includes the salary (target variable), skill indicators, remote work status, and experience years.
 ```{python}
 #| echo: true
 #| eval: true
 
 # Just prepare the modeling dataset
-modeling_cols = ['SALARY', 'is_ba_ml_ds_role', 'is_remote', 'experience_years'] + \
+modeling_cols = ['SALARY', 'is_ml_role', 'is_ds_role', 'is_ba_role', 'is_remote', 'experience_years'] + \
                [col for col in df_final.columns if col.startswith('has_')]
 
 df_modeling = df_final[modeling_cols].copy()
@@ -196,6 +195,8 @@ print(f"Dataset shape: {df_modeling.shape}")
 print(f"Columns: {list(df_modeling.columns)}")
 print(f"Missing values: {df_modeling.isnull().sum().sum()}")
 ```
+
+The modeling dataset now contains binary skill features, experience, remote work indicator, and salary information. This structured format allows application of various machine learning techniques.
 
 # Unsupervised Learning: KMeans Clustering Based on Skills
 
