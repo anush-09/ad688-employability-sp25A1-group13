@@ -553,13 +553,15 @@ A Random Forest classifier was used to predict whether a job is an ML/Data Scien
 
 # Model Results Visualization
 
+This section provides a consolidated view of all three modeling approaches. The comparison shows how different models perform on their respective tasks and highlights the most impactful skills across different analyses.
+
 ```{python}
 #| echo: true
 #| eval: true
 
 # Summarize core model performance
 model_summary = pd.DataFrame({
-    'Model': ['Linear Regression', 'Random Forest (Regression)', 'Random Forest (Classifaction)'],
+    'Model': ['Linear Regression', 'Random Forest (Regression)', 'Random Forest (Classification)'],
     'R² / Accuracy': [r2_lr, r2_rf, accuracy_rf],
     'RMSE / F1 Score': [rmse_lr, rmse_rf, f1_rf]
 })
@@ -588,7 +590,7 @@ fig.update_layout(
     showlegend=False,
     template="plotly_white",
     title={
-        'text': "Core Model Results - ML/Data Science Skills Analysis",
+        'text': "Core Model Results - BA/ML/DS Skills Analysis",
         'y': 0.98,
         'x': 0.5,
         'xanchor': 'center',
