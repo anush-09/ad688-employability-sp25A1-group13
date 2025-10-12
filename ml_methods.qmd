@@ -18,7 +18,7 @@ freeze: auto
 
 The analysis examines trends in Business Analytics, Data Science, and Machine Learning job postings, with a focus on the **skills required** for these roles. The study evaluates how varying skill combinations influence salary levels, remote work availability, and career progression pathways.
 
-This analysis employs three main approaches: (1) KMeans clustering to segment jobs based on skill requirements, (2) regression models to predict salary based on skills and experience, and (3) classification models to identify Business Analysis, Data Science, and Machine Learning roles from other positions. The models use 25 technical skills as features along with experience and remote work indicators. Results show that experience is the dominant salary driver, jobs cluster into 6 distinct groups with different compensation and remote work patterns, and BA/ML/DS roles have clearly identifiable skill signatures.
+This analysis applies three machine learning approaches to job posting data: clustering to group roles by skill requirements, regression to examine how skills and experience influence salary, and classification to distinguish ML/Data Science positions from Business Analytics and other jobs. Using 25 technical skills along with experience and remote work indicators, the analysis shows that Business Analytics dominates the market (35% of roles), while ML and DS remain smaller but specialized segments. Results highlight that experience is the strongest salary driver, jobs fall into six clear clusters with different pay and remote work patterns, and BA, ML, and DS roles each display distinct skill signatures that make them easy to differentiate
 
 # Data Loading and Setup
 
@@ -607,33 +607,40 @@ fig.show()
 
 Our analysis of business analytics, data science and machine learning job postings reveals several important patterns:
 
-1. **Skill-Based Job Segmentation**: Jobs cluster into 6 distinct groups. Cluster 4 (pure ML/DS) pays $140K with only 77 positions, while Cluster 1 (10,189 jobs) pays $145K with mixed roles. Remote work availability varies from 25% to 56% across clusters.
-
-2. **Salary Drivers**: Experience dominates (49% importance) followed by remote work capability (7%). Technical skills like Tableau, AWS, SQL and Python each contribute 3-4%. The R² of 0.47 shows skills explain about half of salary variation.
-
-3. **Role Differentiation**: ML/DS roles have distinct skill patterns, achieving 100% classification accuracy. This indicates these specialized positions require clearly different capabilities than analyst roles.
+- **Role Distribution:** Business Analytics dominates (35% of jobs), while ML and DS remain smaller but specialized segments.
+- **Job Segmentation:** Six distinct clusters reveal clear differences in pay, experience, and hybrid skill mixes.
+- **Salary Drivers:** Experience is the strongest factor (49%), with remote work and technical skills adding incremental impact.
+- **Role Differentiation:** ML/DS roles are highly distinct, with classification accuracy of 99.95% separating them from BA roles.
 
 ## Recommendations for Job Seekers
 
 **For Career Advancement:**
 - **Gain experience** - it's the single biggest salary driver (49% importance)
-- **Develop remote work capabilities** - adds 7% to salary potential
-- **Learn practical tools**: Tableau, AWS, SQL are each worth 3-4% salary impact
-- Not only ML/DS titles can be considered as Cluster 1 (non-ML) pays $145K vs Cluster 4 (pure ML) at $140K
+- **Remote work flexibility** -  BA/ML/DS roles pay well even when remote, showing that onsite presence is not necessary for competitive salaries.
+- **Learn practical tools**: Data analysis (4.3%), Tableau (3.7%), AWS (3.6%), SQL (3.5%), Statistics (3.0%), Python (3.0%)
+- General technical roles (Cluster 1) pay highest ($145K) with most opportunities (10,189 jobs)
+
+**For Business Analytics Path:**
+- **Highest volume opportunity**: 10,831 BA roles identified (35% of job market)
+- **Core BA skills**: SQL, Tableau/Power BI, data visualization, data analysis
+- **Best BA cluster**: Cluster 3 (6,573 jobs at $109K) with 95% BA roles
+- **Hybrid advantage**: Many BA roles overlap with DS (39% in Cluster 3), so learning Python/statistics opens DS opportunities
 
 **For Transitioning to ML/Data Science:**
-- The 100% classification accuracy shows these roles need very specific skill combinations
-- Focus on the specialized skills shown in the classification importance chart
-- Note: ML/DS specialization has fewer opportunities (Cluster 4 has only 77 jobs)
+- **ML path** (3,226 roles): Most specialized and competitive - requires TensorFlow, PyTorch, Deep Learning, NLP
+- **DS path** (2,877 roles): Requires R or Python + Statistics + multiple DS tools (Pandas, NumPy, Scikit-learn)
+- **Pure ML roles** (Cluster 4): Only 77 jobs at $140K - highly specialized
+- The 99.95% classification accuracy shows these roles need very specific skill combinations
 
 **For Maximizing Opportunities:**
-- **For remote work**: Target Cluster 5 skills (56% remote, 63% ML/DS roles)
-- **For job volume**: Cluster 1 has most opportunities (10,189 jobs) at highest pay ($145K)
-- **For specialization**: Cluster 4 is pure ML/DS but limited opportunities (77 jobs)
+- **Most jobs + highest pay**: Cluster 1 (10,189 jobs at $145K) - general technical roles, only 17% need BA/ML/DS
+- **Entry-level**: Cluster 2 (13,313 jobs at $101K) - 29% BA/ML/DS, lowest experience requirement (2.0 years)
+- **BA opportunities**: Cluster 3 (6,573 jobs at $109K) - 99% need BA/ML/DS (95% BA, 39% DS overlap)
+- **Remote work**: Cluster 5 (73 jobs at $118K, 56% remote) - 96% hybrid BA/ML/DS roles
+- **High-skill hybrid**: Cluster 0 (583 jobs at $140K) - 90% BA/ML/DS (60% ML + 70% BA combination)
 
 ## Limitations and Considerations
 
 - The analysis is based on job posting data which may not reflect actual hiring outcomes
 - Skill requirements in job posts may differ from day-to-day job responsibilities
 - Market conditions and geographic factors also influence salaries beyond just skills
-- The models identify patterns but don't capture all nuances of career success
