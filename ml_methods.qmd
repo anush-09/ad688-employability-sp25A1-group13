@@ -615,24 +615,28 @@ Our analysis of business analytics, data science and machine learning job postin
 ## Recommendations for Job Seekers
 
 **For Career Advancement:**
+
 - **Gain experience** - it's the single biggest salary driver (49% importance)
 - **Remote work flexibility** -  BA/ML/DS roles pay well even when remote, showing that onsite presence is not necessary for competitive salaries.
 - **Learn practical tools**: Data analysis (4.3%), Tableau (3.7%), AWS (3.6%), SQL (3.5%), Statistics (3.0%), Python (3.0%)
 - General technical roles (Cluster 1) pay highest ($145K) with most opportunities (10,189 jobs)
 
 **For Business Analytics Path:**
+
 - **Highest volume opportunity**: 10,831 BA roles identified (35% of job market)
 - **Core BA skills**: SQL, Tableau/Power BI, data visualization, data analysis
 - **Best BA cluster**: Cluster 3 (6,573 jobs at $109K) with 95% BA roles
 - **Hybrid advantage**: Many BA roles overlap with DS (39% in Cluster 3), so learning Python/statistics opens DS opportunities
 
 **For Transitioning to ML/Data Science:**
+
 - **ML path** (3,226 roles): Most specialized and competitive - requires TensorFlow, PyTorch, Deep Learning, NLP
 - **DS path** (2,877 roles): Requires R or Python + Statistics + multiple DS tools (Pandas, NumPy, Scikit-learn)
 - **Pure ML roles** (Cluster 4): Only 77 jobs at $140K - highly specialized
 - The 99.95% classification accuracy shows these roles need very specific skill combinations
 
 **For Maximizing Opportunities:**
+
 - **Most jobs + highest pay**: Cluster 1 (10,189 jobs at $145K) - general technical roles, only 17% need BA/ML/DS
 - **Entry-level**: Cluster 2 (13,313 jobs at $101K) - 29% BA/ML/DS, lowest experience requirement (2.0 years)
 - **BA opportunities**: Cluster 3 (6,573 jobs at $109K) - 99% need BA/ML/DS (95% BA, 39% DS overlap)
