@@ -28,6 +28,7 @@ execute:
 ### Overview
 
 This Exploratory Data Analysis (EDA) examines job postings from Lightcast to uncover salary trends, experience requirements, remote work dynamics, and skill demand across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles.
+Lightcast is a leading labor market analytics provider, whose datasets are widely used to study real-time hiring trends and skills demand [@lightcast2024labor].
 The analysis prepares the dataset for modeling and provides statistical and visual insights that guide the regression and feature engineering stages of the project.
 
 Specifically, this section covers:
@@ -186,7 +187,8 @@ fig
 ### Salary Distribution
 The salary distribution is right-skewed, indicating that most job postings fall within the $80K–$150K range.
 A smaller number of positions extend above $200K, reflecting higher-paying senior and Machine Learning roles.
-This pattern suggests that while the majority of opportunities in analytics and data science offer mid-range compensation, specialized expertise and advanced roles drive the upper end of the salary spectrum.
+This pattern aligns with national data showing that advanced technical and AI-related positions command higher compensation due to specialized skill requirements [@bls2024wages; @bone2025skills].
+Such variation underscores the growing salary dispersion across digital and data-driven occupations [@makela2024complement].
 
 ```{python}
 # Filter out invalid or missing values
@@ -238,9 +240,10 @@ fig
 ```
 
 ### Salary vs Experience
-The scatterplot shows a clear positive relationship between experience and salary across all remote work types. As minimum years of experience increase, average salary consistently rises.
-Among the three groups, Remote and Hybrid Remote roles generally track above Not Remote positions, suggesting that employers may offer higher compensation for flexible or remote-friendly roles.
-This trend highlights how both experience level and work flexibility contribute to earning potential in analytics and data science careers.
+The scatterplot shows a clear positive relationship between experience and salary across all remote work types.
+As minimum years of experience increase, average salary consistently rises, supporting labor economics findings that work experience contributes directly to wage growth [@mincer1974schooling; @bls2024wages].
+Among the three groups, Remote and Hybrid Remote roles generally track above Not Remote positions, suggesting that employers may offer higher pay for flexible or remote-friendly jobs [@mckinsey2022remote].
+This mirrors recent research showing that post-pandemic flexibility often correlates with higher total compensation, especially for data professionals [@glassdoor2024trends].
 
 ```{python}
 #  Filter valid salary data
@@ -291,11 +294,9 @@ fig
 
 ### Role-Based Salary Trends
 The boxplot shows clear salary variation across professional role groups.
-Network and Systems Engineering roles offer the highest median salaries and the widest overall pay range, indicating both strong earning potential and greater variation in compensation.
-Business Intelligence and Data Analysis and Mathematics positions follow, reflecting competitive pay linked to technical and analytical expertise.
-Roles such as Business Analysis, Health IT Professionals, and Marketing Specialists sit at the lower end of the salary scale, with tighter interquartile ranges suggesting more standardized pay structures.
-
-Overall, the trend highlights that roles with deeper technical specialization or infrastructure focus command higher compensation, while business-oriented and support analytics positions tend to offer more consistent but lower salary ranges.
+Network and Systems Engineering roles offer the highest median salaries and the widest overall pay range, consistent with labor market reports highlighting elevated compensation for infrastructure and AI-related talent [@lightcast2024labor].
+In contrast, Business Analysis and Marketing Specialist roles cluster around lower medians, reflecting standardized pay structures common in business-facing positions [@glassdoor2024trends].
+Overall, the trend highlights that technical specialization and data infrastructure expertise command higher pay within analytics fields [@bone2025skills].
 
 
 ```{python}
@@ -365,9 +366,9 @@ fig
 ### Remote Work vs Salary Trends
 The salary distribution varies noticeably by remote work type.
 Remote roles show the highest median salaries and a slightly wider interquartile range, indicating greater earning potential and variability among remote positions.
-Hybrid Remote jobs follow closely, offering competitive pay and a balanced distribution between onsite and remote work structures.
-In contrast, Onsite roles have the lowest median salaries and a tighter spread, suggesting more standardized compensation.
-Overall, the trend suggests that flexible and fully remote positions command higher pay, reflecting market demand for adaptable, tech-enabled talent.
+Hybrid Remote jobs follow closely, while Onsite roles exhibit lower medians and tighter spreads.
+This mirrors workforce evidence that remote-capable roles—particularly in analytics and technology—carry a wage premium and higher demand [@mckinsey2022remote; @lightcast2024labor].
+The findings align with broader trends emphasizing flexibility and digital collaboration as valued aspects of compensation [@glassdoor2024trends].
 
 ```{python}
 #  Use the detected skill column
@@ -426,10 +427,10 @@ fig
 ```
 
 ### Top Skills Frequency
-The top skills highlight a blend of technical, analytical, and soft-skill competencies valued across data-driven roles.
+The top skills highlight a blend of technical, analytical, and interpersonal competencies valued across data-driven roles.
 Communication and Data Analysis appear most frequently, underscoring the importance of translating insights into business impact.
-SQL, Python, and Microsoft Excel remain core technical skills, while Project Management, Leadership, and Problem Solving emphasize the need for strategic coordination and cross-functional collaboration.
-Overall, this distribution reflects that successful analytics professionals combine technical proficiency with strong interpersonal and organizational skills, aligning with modern employer expectations in business analytics and data science.
+SQL, Python, and Microsoft Excel remain core technical skills, while Project Management and Leadership emphasize strategic coordination [@datacamp_ml; @lightcast2024labor].
+This distribution reflects the “T-shaped” professional model, where deep technical knowledge is complemented by broad problem-solving and collaboration abilities [@bone2025skills; @makela2024complement].
 
 ```{python}
 #  Compute correlation matrix
@@ -480,7 +481,8 @@ fig
 
 ### Feature Correlation Analysis Heatmap
 This correlation analysis evaluates the linear relationships between Average Salary, Minimum Years of Experience, and Maximum Years of Experience.
-The results show that salary is moderately correlated with both experience metrics — 0.51 with minimum and 0.58 with maximum years of experience. This indicates that as experience increases, compensation tends to rise, though not perfectly linearly.
-The strong correlation (1.0) between minimum and maximum experience suggests these variables are closely tied — employers typically define experience ranges that scale together.
+The results show that salary is moderately correlated with both experience metrics — 0.51 with minimum and 0.58 with maximum years of experience.
+This indicates that as experience increases, compensation tends to rise, though not perfectly linearly [@bls2024wages; @mincer1974schooling].
+The strong correlation (1.0) between minimum and maximum experience suggests these variables are closely tied — employers typically define experience ranges that scale together [@lightcast2024labor].
 
-Overall, the heatmap confirms that experience is a meaningful predictor of salary, supporting its inclusion as a key numerical feature in subsequent regression modeling.
+Overall, the heatmap confirms that experience is a meaningful predictor of salary, supporting its inclusion as a key numerical feature in subsequent regression modeling [@glassdoor2024trends; @mckinsey2022remote].
