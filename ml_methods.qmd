@@ -4,13 +4,13 @@ subtitle: "Evaluating Personal Job Market Prospects in 2024"
 author: "Anu Sharma, Cindy Guzman, Gavin Boss"
 date: "2025-10-11"
 format:
-  html:
-    bibliography: references.bib
-    csl: csl/econometrica.csl
-    toc: true
+    html:
+        bibliography: references.bib
+        csl: csl/econometrica.csl
+        toc: true
 execute:
-  echo: false
-  warning: false
+    echo: false
+    warning: false
 freeze: auto
 ---
 
@@ -186,7 +186,7 @@ Before building models, the dataset is prepared by selecting relevant columns. T
 
 # Just prepare the modeling dataset
 modeling_cols = ['SALARY', 'is_ml_role', 'is_ds_role', 'is_ba_role', 'is_remote', 'experience_years'] + \
-               [col for col in df_final.columns if col.startswith('has_')]
+            [col for col in df_final.columns if col.startswith('has_')]
 
 df_modeling = df_final[modeling_cols].copy()
 
@@ -199,6 +199,8 @@ print(f"Missing values: {df_modeling.isnull().sum().sum()}")
 The modeling dataset now contains binary skill features, experience, remote work indicator, and salary information. This structured format allows application of various machine learning techniques.
 
 # Unsupervised Learning: KMeans Clustering Based on Skills
+
+The first machine learning approach uses KMeans clustering to discover natural groupings in the job market. This unsupervised technique groups jobs with similar skill profiles together, without using salary information. The goal is to see if jobs naturally segment into distinct categories based on their requirements.
 
 ```{python}
 #| echo: true
@@ -246,6 +248,8 @@ df_modeling['cluster'] = clusters
 #     print(f"Cluster {i}: {center}")
 ```
 
+The clustering model groups similar jobs together using skill patterns, experience requirements, and job characteristics. The algorithm assigns each job to one of 6 clusters. Now the characteristics of each cluster can be examined to understand what makes them distinct.
+
 ```{python}
 #| echo: true
 #| eval: true
@@ -253,14 +257,23 @@ df_modeling['cluster'] = clusters
 # Analyze clustering.
 cluster_summary = df_modeling.groupby('cluster').agg({
     'SALARY': ['count', 'mean'],
-    'is_ba_ml_ds_role': 'mean',
+    'is_ml_role': 'mean',
+    'is_ds_role': 'mean',
+    'is_ba_role': 'mean',
     'is_remote': 'mean',
     'experience_years': 'mean'
 }).round(2)
 
-cluster_summary.columns = ['count', 'avg_salary', 'ml_role_percentage',
-                           'remote_percentage', 'avg_experience']
+cluster_summary.columns = ['count', 'avg_salary', 'ml_role_pct', 'ds_role_pct', 'ba_role_pct',
+                        'remote_percentage', 'avg_experience']
 cluster_summary = cluster_summary.reset_index()
+
+# Compute combined BA/ML/DS percentage on-the-fly
+# A job has BA/ML/DS if it has any of the three role types
+cluster_summary['ml_ds_ba_combined_pct'] = cluster_summary.apply(
+    lambda row: ((df_modeling[df_modeling['cluster'] == row['cluster']][['is_ml_role', 'is_ds_role', 'is_ba_role']].sum(axis=1) > 0).mean()),
+    axis=1
+).round(2)
 
 print("Skills based Cluster Summary:")
 print(cluster_summary)
@@ -268,15 +281,17 @@ print(cluster_summary)
 # Visualize cluster characteristics.
 fig = make_subplots(
     rows=2, cols=3,
-    subplot_titles=('Cluster Size', 'Average Salary', 'ML Role %',
-                   'Remote Work %', 'Avg Experience', 'Salary Distribution'),
+    subplot_titles=('Cluster Size', 'Average Salary', 'BA/ML/DS Role %',
+                'Remote Work %', 'Avg Experience', 'Salary Distribution'),
     specs=[[{"type": "bar"}, {"type": "bar"}, {"type": "bar"}],
-           [{"type": "bar"}, {"type": "bar"}, {"type": "scatter"}]]
+        [{"type": "bar"}, {"type": "bar"}, {"type": "scatter"}]]
 )
 
 fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['count'], name="Count"), row=1, col=1)
 fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['avg_salary'], name="Avg Salary"), row=1, col=2)
-fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['ml_role_percentage'], name="ML %"), row=1, col=3)
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['ml_role_pct'], name="ML %"), row=1, col=3)
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['ds_role_pct'], name="DS %"), row=1, col=3)
+fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['ba_role_pct'], name="BA %"), row=1, col=3)
 fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['remote_percentage'], name="Remote %"), row=2, col=1)
 fig.add_trace(go.Bar(x=cluster_summary['cluster'], y=cluster_summary['avg_experience'], name="Experience"), row=2, col=2)
 
@@ -308,28 +323,40 @@ fig.update_layout(
 fig.show()
 ```
 ## Insights from KMeans Clustering
-The clustering analysis grouped jobs based on their skill requirements and characteristics. We found 6 distinct job clusters, each with different salary levels, remote work availability, and skill profiles.
+The clustering analysis grouped jobs based on their skill requirements and characteristics. The analysis identified 6 distinct job clusters, each with different salary levels, remote work availability, and skill profiles.
 
 **Key Findings:**
 
-- Cluster 4 shows higher concentrations of ML/DS roles with corresponding higher average salaries
-- Remote work availability varies significantly across clusters, suggesting that certain skill combinations are more compatible with remote positions.
-- Experience requirements differ by cluster, indicating distinct career progression paths.
+- **Business Analytics dominates**: 10,831 BA roles vs. 3,226 ML and 2,877 DS
+- **Cluster 0 (583 jobs, $140K):** High-skill hybrid (60% ML, 26% DS, 70% BA)
+- **Cluster 1 (10,189 jobs, $145K):** Mostly general tech, only 17% BA/DS/ML, highest pay
+- **Cluster 2 (13,313 jobs, $101K):** Entry-level, lowest experience (2 yrs), BA-focused (28%)
+- **Cluster 3 (6,573 jobs, $109K):** BA-heavy (95%) with DS overlap (39%)
+- **Cluster 4 (77 jobs, $140K):** Pure ML specialists (100% ML), niche but high-paying
+- **Cluster 5 (73 jobs, $118K):** Hybrid roles (96% BA/DS/ML), most remote-friendly (56%)
+- **Remote work:** 25%–56% across clusters
+- **Experience:** 2.0–7.8 years, showing clear career progression
 
 **Takeaways for Job Seekers:**
 
-- The specialized ML/DS cluster (Cluster 4) offers good pay but fewer opportunities.
-- Target skills that appear in higher-paying clusters to maximize salary potential
-- If remote work is important, target skills common in Cluster(5).
+- **Most opportunities:** Business Analytics (SQL, Tableau, Power BI, visualization)
+- **Highest pay + volume:** Cluster 1 ($145K, 10K+ jobs) — general tech roles
+- **Entry path:** Cluster 2 ($101K, 13K jobs) — BA-focused, lowest experience needed
+- **BA-focused growth:** Cluster 3 ($109K) — strong BA demand with DS hybrid edge
+- **Specialist track:** Cluster 4 ($140K) — pure ML, fewer jobs but high pay
+- **Hybrid advantage:** Cluster 0 ($140K) and Cluster 5 ($118K, 56% remote) — multi-skill roles with flexibility
 
 # Supervised Learning: Multiple Regression
+
+The second approach uses supervised learning to predict salary based on skills and experience. Two regression models are trained: Linear Regression (assumes linear relationships) and Random Forest (captures complex non-linear patterns). This analysis identifies which skills and factors most strongly influence compensation.
 
 ```{python}
 #| echo: true
 #| eval: true
 
 # Identify regression features.
-regression_features = skill_feature_cols + ['experience_years', 'is_remote', 'is_ba_ml_ds_role']
+# Focus on skills (not role labels) to understand how skills directly affect salary
+regression_features = skill_feature_cols + ['experience_years', 'is_remote']
 
 # Prepare regression data using salary as the target variable
 X_reg = df_modeling[regression_features].fillna(0)
@@ -355,6 +382,8 @@ rf_reg.fit(X_train_scaled, y_train)
 
 print("Skills based regression models training completed")
 ```
+
+Both models are trained on 80% of the data and will be evaluated on the remaining 20% test set. The Random Forest model can capture non-linear relationships and interactions between skills, while Linear Regression provides a baseline for comparison.
 
 ```{python}
 #| echo: true
@@ -382,8 +411,8 @@ importances = rf_reg.feature_importances_
 
 # Visualize feature importance
 fig = px.bar(x=actual_feature_names, y=importances,
-             title="Skills Impact on Salary (Random Forest Feature Importance)",
-             labels={'x': 'Features', 'y': 'Importance'})
+            title="Skills Impact on Salary (Random Forest Feature Importance)",
+            labels={'x': 'Features', 'y': 'Importance'})
 fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
 fig.show()
 
@@ -395,29 +424,32 @@ for skill, importance in skill_importance[:10]:
     print(f"{skill}: {importance:.4f}")
 ```
 ## Regression Analysis: What drives salary?
-We built the prediction models to understand how skills influence salary. The Random Forest model achieved R2 of 0.47 compared to 0.28 for Linear Regression, showing that skill-salary relationships are complex.
+Prediction models were built to understand how skills influence salary. The Random Forest model achieved R2 of 0.47 compared to 0.28 for Linear Regression, showing that skill-salary relationships are complex.
 
 **Model Performance:**
-Random Forest R2 of 0.07 means it explains 47% of salary variation.
-RMSE of 32514 shows typical prediction error
-It shows skill alone don't fully determine salary - other factors matter too
 
-**Feature Importance Results:**
-The chart shows which skills have the strongest impact on salary predictions.
-**Top Salary Drivers(by importance):**
-1. **Experience years**(0.49) - the biggest factor, almost half of salary determination
-2. **Remote work**(0.07) - remote positions tend to pay differently
-3. **Data Analysis skill**(0.04) - core analytical capability
-4. **Tableau**(0.04) - visualization and BI tool
-5. **AWS**(0.04) - cloud computing platform
-6. **SQL**(0.04) - database querying
-7. **Python**(0.03) - programming language
+- **Random Forest:** R² = 0.47 (explains 47% of salary variation), RMSE = $32,559
+- **Linear Regression:** R² = 0.28
+- **Insight:** Skills alone do not fully explain salary — other factors also matter.
 
-**Implications for Career Development:**
-Experience matters - nearly 50% of salary impact comes from years of computer
-Remote works capability add salary premium
-Combination of skills drives salary differences
-Experience(years) and remote work flexibility influence compensation
+**Key Salary Drivers (Feature Importance):**
+
+1. **Experience (0.49):** Largest factor, nearly half of salary variation
+2. **Remote work (0.07):** Flexibility influences pay differences
+3. **Data Analysis (0.04):** Core analytical capability
+4. **Tableau (0.04):** Visualization and BI tool
+5. **AWS (0.04):** Cloud computing platform
+6. **SQL (0.04):** Database querying and manipulation
+7. **Statistics (0.03):** Analytical foundation
+8. **Python (0.03):** Programming language
+
+**Career Implications:**
+
+- **Experience is critical** — the strongest driver of salary.
+- **Remote work adds value** — flexibility can boost compensation.
+- **Skill combinations matter** — technical, analytical, and cloud skills together shape salary outcomes.
+
+**Summary:** Salary is not determined by skills alone. Experience and work flexibility are key, while technical skills provide additional differentiation.
 
 # Supervised Learning: Classification Using Skills (Random Forest Only)
 
