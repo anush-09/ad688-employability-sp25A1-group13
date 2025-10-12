@@ -47,10 +47,13 @@ print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
 
 # print(df.head())
 ```
+
 ## Important Skills columns
 The dataset contains multiple skill-related columns. After examining the schema, the columns 'SKILLS_NAME', 'SOFTWARE_SKILLS_NAME' and 'SPECIALIZED_SKILLS_NAME' provide the most detailed skill information for this analysis. These columns list the specific technical skills mentioned in each job posting.
 
 # Skills Data Preprocessing
+
+The next step involves filtering the data to include only records with valid salary and title information. Then, binary features are created for 25 key technical skills covering ML, Data Science, and Business Analytics domains to enable machine learning analysis.
 
 ```{python}
 #| echo: true
@@ -67,8 +70,8 @@ print(f"Records after filtering: {len(df_filtered):,}")
 
 df_skills = df_filtered.copy()
 
-# Focus on key ML/Data Science skills. We identifief some key skills for
-# ML/DS roles manually.
+# Focus on key Business Analytics/ML/Data Science skills. Key skills for
+# BA/ML/DS roles identified manually.
 key_skills =  [
         'Python (Programming Language)',
         'R (Programming Language)',
@@ -97,7 +100,7 @@ key_skills =  [
         'Deep Learning'
     ]
 
-print(f"Using focused {len(key_skills)} ML/Data Science skills for analysis")
+print(f"Using focused {len(key_skills)} BA/ML/DS technical skills for analysis")
 
 # Create binary features for each key skill.
 for skill in key_skills:
@@ -121,9 +124,14 @@ core_ml_skills = [
 ]
 
 core_ds_skills = [
-    'has_python_programming_language', 'has_r_programming_language', 'has_statistics', 'has_data_analysis', 'has_big_data', 'has_data_visualization',
+    'has_python_programming_language', 'has_r_programming_language', 'has_statistics',
     'has_data_science', 'has_pandas_python_package', 'has_numpy_python_package',
-    'has_scikit_learn_python_package'
+    'has_scikit_learn_python_package', 'has_big_data'
+]
+
+core_ba_skills = [
+    'has_data_analysis', 'has_data_visualization', 'has_sql_programming_language',
+    'has_tableau_business_intelligence_software', 'has_power_bi'
 ]
 
 # Role indicators
@@ -139,7 +147,13 @@ df_skills['is_ds_role'] = (
     df_skills['has_r_programming_language'] == 1 | (df_skills[core_ds_skills].sum(axis=1) > 1)
 ).astype(int)
 
-df_skills['is_ml_ds_role'] = ((df_skills['is_ml_role'] == 1) | (df_skills['is_ds_role'] == 1)).astype(int)
+# Business Analytics roles typically require SQL, visualization tools (Tableau, Power BI)
+# and data analysis capabilities. If job has more than two BA skills, consider it a BA role.
+df_skills['is_ba_role'] = (
+    df_skills[core_ba_skills].sum(axis=1) >= 2
+).astype(int)
+
+df_skills['is_ba_ml_ds_role'] = ((df_skills['is_ml_role'] == 1) | (df_skills['is_ds_role'] == 1) | (df_skills['is_ba_role'] == 1)).astype(int)
 
 
 # Remote work indicator
@@ -148,13 +162,23 @@ df_skills['experience_years'] = df_skills['MIN_YEARS_EXPERIENCE'].fillna(0)
 
 df_final = df_skills
 print(f"Final dataset size: {len(df_final):,}")
-print(f"ML/Data Science roles identified: {df_final['is_ml_ds_role'].sum():,}")
+print(f"ML roles identified: {df_final['is_ml_role'].sum():,}")
+print(f"Data Science roles identified: {df_final['is_ds_role'].sum():,}")
+print(f"Business Analytics roles identified: {df_final['is_ba_role'].sum():,}")
+print(f"BA/ML/DS combined: {df_final['is_ba_ml_ds_role'].sum():,}")
 ```
 
-## Heuristics employed for ML/DS roles
-We identified ML and Data Science roles using specific technical skills listed in the dataset. ML roles need skills like TensorFlow, PyTorch, Deep Learning, etc. Data Science roles typically require R programming, Python with Statistics, or multiple data analysis tools.
+For each of the 25 key skills, a binary indicator variable is created (1 if the skill is mentioned, 0 otherwise). This transforms the text skill data into numerical features suitable for machine learning models.
 
-The goal is to see how these specialized skills impact salary and career opportunities. We'll use machine learning models to find patterns that can guide job seekers in choosing which skills to develop.
+## Role Classification Logic
+
+Three role categories are identified based on technical skills:
+
+- **ML roles**: Require advanced ML/AI skills like TensorFlow, PyTorch, Deep Learning, NLP, Computer Vision
+- **Data Science roles**: Require R programming, Python with Statistics, or multiple data science tools (Pandas, NumPy, Scikit-learn)
+- **Business Analytics roles**: Require SQL, data analysis, visualization tools (Tableau, Power BI), typically 2+ BA skills
+
+The analysis examines how these specialized skills impact salary and career opportunities. Machine learning models are used to find patterns that can guide job seekers in choosing which skills to develop.
 
 # Feature Engineering for ML
 ```{python}
@@ -162,7 +186,7 @@ The goal is to see how these specialized skills impact salary and career opportu
 #| eval: true
 
 # Just prepare the modeling dataset
-modeling_cols = ['SALARY', 'is_ml_ds_role', 'is_remote', 'experience_years'] + \
+modeling_cols = ['SALARY', 'is_ba_ml_ds_role', 'is_remote', 'experience_years'] + \
                [col for col in df_final.columns if col.startswith('has_')]
 
 df_modeling = df_final[modeling_cols].copy()
@@ -228,7 +252,7 @@ df_modeling['cluster'] = clusters
 # Analyze clustering.
 cluster_summary = df_modeling.groupby('cluster').agg({
     'SALARY': ['count', 'mean'],
-    'is_ml_ds_role': 'mean',
+    'is_ba_ml_ds_role': 'mean',
     'is_remote': 'mean',
     'experience_years': 'mean'
 }).round(2)
@@ -304,7 +328,7 @@ The clustering analysis grouped jobs based on their skill requirements and chara
 #| eval: true
 
 # Identify regression features.
-regression_features = skill_feature_cols + ['experience_years', 'is_remote', 'is_ml_ds_role']
+regression_features = skill_feature_cols + ['experience_years', 'is_remote', 'is_ba_ml_ds_role']
 
 # Prepare regression data using salary as the target variable
 X_reg = df_modeling[regression_features].fillna(0)
@@ -405,7 +429,7 @@ classification_features = skill_feature_cols + ['experience_years', 'is_remote']
 
 # Prepare classification data
 X_clf = df_modeling[classification_features].fillna(0)
-y_clf = df_modeling['is_ml_ds_role']
+y_clf = df_modeling['is_ba_ml_ds_role']
 
 # Train/test split for classification
 X_train_clf, X_test_clf, y_train_clf, y_test_clf = train_test_split(X_clf, y_clf, test_size=0.2, random_state=42)
