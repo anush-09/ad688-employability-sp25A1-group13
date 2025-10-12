@@ -18,7 +18,6 @@ format:
 ---
 
 
-
 ```{python}
 #| echo: false
 #| include: false
@@ -39,7 +38,6 @@ spark = (
     .getOrCreate()
 )
 
-
 # Load Data
 df = spark.read.option("header", "true").option("inferSchema", "true") \
     .option("multiLine", "true").option("escape", "\"") \
@@ -49,17 +47,17 @@ df = spark.read.option("header", "true").option("inferSchema", "true") \
 ```
 
 # Looks for the duration of job postings 
+
+This was to ensure that the date format for the data was being pulled in the correct way, this is set up to pull the format of M/D/YYYY, this also makes sur ethat it sorts between expired and posted and fills any values that don't represent either **EXPIRED** or **POSTED** with **DURATION** value.
 ```{python}
 from pyspark.sql.functions import col, to_date, datediff, when
 #| label: duration
 #| include: true
 
-# --- Step 1: Use a flexible date format ---
+# Use a flexible date format
 date_cols = ["POSTED", "EXPIRED", "MODELED_EXPIRED"]
 for colname in date_cols:
-    # Cast to string first in case it's not string
     df = df.withColumn(colname, col(colname).cast("string"))
-    # Use M/d/yyyy for single-digit month/day
     df = df.withColumn(colname, to_date(col(colname), "M/d/yyyy"))
 
 # --- Step 2: Compute durations safely ---
@@ -74,16 +72,15 @@ df = df.withColumn(
 ```
 
 # Column Cleaning
-```{python}
-# ===============================
-# Full Text Column Cleaning
-# ===============================
 
-# --- Imports ---
+This is to ensure that we are only sorting columns that could potentially be of use, this isn't every column that was used, but we cut out columns that we knew wouldn't be relevant for the data that we were going to be incorporating into the datasets. While these columns could have been refined even further to minimize the size of the dataset, but we were able to minimize the way that the EC2 utilized the data frames to incorporate and read the data to where we had the data cleaned just in case we needed it.
+
+```{python}
+# Imports
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, regexp_replace
 
-# --- Columns to clean ---
+# All columns that are being cleaned
 text_columns = [
     "TITLE_RAW", "BODY", "SKILLS_NAME",
     "SPECIALIZED_SKILLS_NAME",
@@ -102,7 +99,7 @@ text_columns = [
     "NAICS_2022_6_NAME"
 ]
 
-# --- Function to clean text columns ---
+# clean text columns
 def clean_text_columns(df, columns):
     """
     Cleans text-heavy columns by:
@@ -117,15 +114,17 @@ def clean_text_columns(df, columns):
         df = df.withColumn(c, regexp_replace(col(c), r'\s*,\s*', ', '))  # standardize commas
     return df
 
-# --- Apply cleaning ---
+# Apply cleaning
 df = clean_text_columns(df, text_columns)
 
-# --- Preview cleaned text ---
+# Preview cleaned text (Don't need to render for the project just for testing)
 # df.select(text_columns).show(5, truncate=100)
 
 ```
 
 # Targeted column-specific cleaning
+
+This code targets the Education Levels, Location, and Remote work Labels to clean up the dataframes in order to maintain the naming conventions needed for the datasets.
 ```{python}
 from pyspark.sql.functions import col, regexp_extract, when, regexp_replace
 #| label: targeted_cleaning
@@ -150,6 +149,7 @@ df = df.withColumn(
 
 # Save the cleaned dataset
 
+This saves the dataset, and saves it under our **/data** folder which is where we save our lightcast.csv, and our new cleaned dataframe also gets saved here and can be pulled from later when it is time to use the data for creating models.
 ```{python}
 #| echo: false
 #| include: false

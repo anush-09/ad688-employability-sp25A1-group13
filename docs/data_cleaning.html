@@ -211,90 +211,87 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="looks-for-the-duration-of-job-postings" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Looks for the duration of job postings</h1>
-<div id="0f41d25a" class="cell" data-execution_count="2">
+<p>This was to ensure that the date format for the data was being pulled in the correct way, this is set up to pull the format of M/D/YYYY, this also makes sur ethat it sorts between expired and posted and fills any values that don’t represent either <strong>EXPIRED</strong> or <strong>POSTED</strong> with <strong>DURATION</strong> value.</p>
+<div id="caf20935" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, to_date, datediff, when</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: duration</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: true</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Step 1: Use a flexible date format ---</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use a flexible date format</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>date_cols <span class="op">=</span> [<span class="st">"POSTED"</span>, <span class="st">"EXPIRED"</span>, <span class="st">"MODELED_EXPIRED"</span>]</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> colname <span class="kw">in</span> date_cols:</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cast to string first in case it's not string</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.withColumn(colname, col(colname).cast(<span class="st">"string"</span>))</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use M/d/yyyy for single-digit month/day</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.withColumn(colname, to_date(col(colname), <span class="st">"M/d/yyyy"</span>))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Step 2: Compute durations safely ---</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.withColumn(</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DURATION"</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    when(col(<span class="st">"DURATION"</span>).isNull(), datediff(<span class="st">"EXPIRED"</span>, <span class="st">"POSTED"</span>)).otherwise(col(<span class="st">"DURATION"</span>))</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>).withColumn(</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MODELED_DURATION"</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    when(col(<span class="st">"MODELED_DURATION"</span>).isNull(), datediff(<span class="st">"MODELED_EXPIRED"</span>, <span class="st">"POSTED"</span>)).otherwise(col(<span class="st">"MODELED_DURATION"</span>))</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.withColumn(colname, col(colname).cast(<span class="st">"string"</span>))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.withColumn(colname, to_date(col(colname), <span class="st">"M/d/yyyy"</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Step 2: Compute durations safely ---</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.withColumn(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DURATION"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    when(col(<span class="st">"DURATION"</span>).isNull(), datediff(<span class="st">"EXPIRED"</span>, <span class="st">"POSTED"</span>)).otherwise(col(<span class="st">"DURATION"</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>).withColumn(</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MODELED_DURATION"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    when(col(<span class="st">"MODELED_DURATION"</span>).isNull(), datediff(<span class="st">"MODELED_EXPIRED"</span>, <span class="st">"POSTED"</span>)).otherwise(col(<span class="st">"MODELED_DURATION"</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 <section id="column-cleaning" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Column Cleaning</h1>
-<div id="6d0a2ac6" class="cell" data-execution_count="3">
+<p>This is to ensure that we are only sorting columns that could potentially be of use, this isn’t every column that was used, but we cut out columns that we knew wouldn’t be relevant for the data that we were going to be incorporating into the datasets. While these columns could have been refined even further to minimize the size of the dataset, but we were able to minimize the way that the EC2 utilized the data frames to incorporate and read the data to where we had the data cleaned just in case we needed it.</p>
+<div id="001df3ed" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ===============================</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Full Text Column Cleaning</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ===============================</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Imports</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql <span class="im">import</span> SparkSession</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, regexp_replace</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Imports ---</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql <span class="im">import</span> SparkSession</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, regexp_replace</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Columns to clean ---</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>text_columns <span class="op">=</span> [</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"TITLE_RAW"</span>, <span class="st">"BODY"</span>, <span class="st">"SKILLS_NAME"</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SPECIALIZED_SKILLS_NAME"</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CERTIFICATIONS_NAME"</span>,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"COMMON_SKILLS_NAME"</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SOFTWARE_SKILLS_NAME"</span>, <span class="st">"URL"</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"EDUCATION_LEVELS_NAME"</span>, <span class="st">"LIGHTCAST_SECTORS_NAME"</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CIP6_NAME"</span>, <span class="st">"CIP4_NAME"</span>, <span class="st">"CIP2_NAME"</span>,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"TITLE_NAME"</span>, <span class="st">"TITLE_CLEAN"</span>,</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"COMPANY_NAME"</span>, <span class="st">"COMPANY_RAW"</span>,</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ONET"</span>, <span class="st">"ONET_NAME"</span>, <span class="st">"ONET_2019"</span>, <span class="st">"ONET_2019_NAME"</span>,</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SOC_2021_2_NAME"</span>, <span class="st">"SOC_2021_3_NAME"</span>, <span class="st">"SOC_2021_4_NAME"</span>, <span class="st">"SOC_2021_5_NAME"</span>,</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LOT_CAREER_AREA_NAME"</span>, <span class="st">"LOT_OCCUPATION_NAME"</span>, <span class="st">"LOT_SPECIALIZED_OCCUPATION_NAME"</span>,</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LOT_OCCUPATION_GROUP_NAME"</span>, <span class="st">"LOT_V6_SPECIALIZED_OCCUPATION_NAME"</span>,</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LOT_V6_OCCUPATION_NAME"</span>, <span class="st">"LOT_V6_OCCUPATION_GROUP_NAME"</span>, <span class="st">"LOT_V6_CAREER_AREA_NAME"</span>,</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NAICS_2022_6_NAME"</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Function to clean text columns ---</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_text_columns(df, columns):</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">    Cleans text-heavy columns by:</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">    - Removing brackets, quotes, and newlines</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">    - Replacing multiple spaces with single space</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">    - Standardizing commas with proper spacing</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    pattern_cleanup <span class="op">=</span> <span class="vs">r'[\[\]\n</span><span class="sc">{}</span><span class="vs">"]'</span>  <span class="co"># remove brackets, newlines, braces, quotes</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> columns:</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.withColumn(c, regexp_replace(col(c), pattern_cleanup, <span class="st">""</span>))</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.withColumn(c, regexp_replace(col(c), <span class="vs">r'\s{2,}'</span>, <span class="st">' '</span>))  <span class="co"># multiple spaces → 1 space</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.withColumn(c, regexp_replace(col(c), <span class="vs">r'\s*,\s*'</span>, <span class="st">', '</span>))  <span class="co"># standardize commas</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Apply cleaning ---</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_text_columns(df, text_columns)</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Preview cleaned text ---</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co"># df.select(text_columns).show(5, truncate=100)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># All columns that are being cleaned</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>text_columns <span class="op">=</span> [</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"TITLE_RAW"</span>, <span class="st">"BODY"</span>, <span class="st">"SKILLS_NAME"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SPECIALIZED_SKILLS_NAME"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CERTIFICATIONS_NAME"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"COMMON_SKILLS_NAME"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SOFTWARE_SKILLS_NAME"</span>, <span class="st">"URL"</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"EDUCATION_LEVELS_NAME"</span>, <span class="st">"LIGHTCAST_SECTORS_NAME"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CIP6_NAME"</span>, <span class="st">"CIP4_NAME"</span>, <span class="st">"CIP2_NAME"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"TITLE_NAME"</span>, <span class="st">"TITLE_CLEAN"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"COMPANY_NAME"</span>, <span class="st">"COMPANY_RAW"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ONET"</span>, <span class="st">"ONET_NAME"</span>, <span class="st">"ONET_2019"</span>, <span class="st">"ONET_2019_NAME"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SOC_2021_2_NAME"</span>, <span class="st">"SOC_2021_3_NAME"</span>, <span class="st">"SOC_2021_4_NAME"</span>, <span class="st">"SOC_2021_5_NAME"</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LOT_CAREER_AREA_NAME"</span>, <span class="st">"LOT_OCCUPATION_NAME"</span>, <span class="st">"LOT_SPECIALIZED_OCCUPATION_NAME"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LOT_OCCUPATION_GROUP_NAME"</span>, <span class="st">"LOT_V6_SPECIALIZED_OCCUPATION_NAME"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LOT_V6_OCCUPATION_NAME"</span>, <span class="st">"LOT_V6_OCCUPATION_GROUP_NAME"</span>, <span class="st">"LOT_V6_CAREER_AREA_NAME"</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NAICS_2022_6_NAME"</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># clean text columns</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_text_columns(df, columns):</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">    Cleans text-heavy columns by:</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">    - Removing brackets, quotes, and newlines</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">    - Replacing multiple spaces with single space</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">    - Standardizing commas with proper spacing</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    pattern_cleanup <span class="op">=</span> <span class="vs">r'[\[\]\n</span><span class="sc">{}</span><span class="vs">"]'</span>  <span class="co"># remove brackets, newlines, braces, quotes</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> columns:</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.withColumn(c, regexp_replace(col(c), pattern_cleanup, <span class="st">""</span>))</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.withColumn(c, regexp_replace(col(c), <span class="vs">r'\s{2,}'</span>, <span class="st">' '</span>))  <span class="co"># multiple spaces → 1 space</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.withColumn(c, regexp_replace(col(c), <span class="vs">r'\s*,\s*'</span>, <span class="st">', '</span>))  <span class="co"># standardize commas</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply cleaning</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_text_columns(df, text_columns)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview cleaned text (Don't need to render for the project just for testing)</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co"># df.select(text_columns).show(5, truncate=100)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 <section id="targeted-column-specific-cleaning" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Targeted column-specific cleaning</h1>
-<div id="1c9b70eb" class="cell" data-execution_count="4">
+<p>This code targets the Education Levels, Location, and Remote work Labels to clean up the dataframes in order to maintain the naming conventions needed for the datasets.</p>
+<div id="ba402b5e" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, regexp_extract, when, regexp_replace</span>
@@ -321,6 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="save-the-cleaned-dataset" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Save the cleaned dataset</h1>
+<p>This saves the dataset, and saves it under our <strong>/data</strong> folder which is where we save our lightcast.csv, and our new cleaned dataframe also gets saved here and can be pulled from later when it is time to use the data for creating models.</p>
 
 
 </section>
