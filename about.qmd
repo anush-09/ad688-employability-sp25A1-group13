@@ -13,8 +13,24 @@ execute:
 code-fold: true
 ---
 
-#  About This Project
-### Exploring the future of work through data, collaboration, and curiosity.
+# About This Project
+### Exploring the Future of Work Through Data, Collaboration, and Curiosity
 
-The purpose of this project is to explore how job seekers can strategically position themselves in the evolving labor market of 2025. Rather than analyzing trends from a recruiter’s perspective, our team approached this challenge as future professionals navigating a landscape shaped by AI adoption, remote work, shifting salary norms, and gender-based employment patterns.Using real-world data from Lightcast and other labor market sources, we applied data science, analytics, and visualization techniques to investigate key workforce themes. Our goal was to uncover actionable insights that inform personal career planning and highlight the skills most in demand across industries. This website presents our findings, reflections, and recommendations—designed not only to fulfill academic objectives, but to serve as a practical roadmap for anyone preparing to enter or pivot within today’s dynamic job market.
+This project was developed as part of the **Applied Business Analytics** program at **Boston University**, with the goal of translating academic learning into actionable, real-world insights about the evolving job market for data professionals. Rather than viewing the data solely from an employer or recruiter perspective, our team — **Anu Sharma, Cindy Guzman, and Gavin Boss** — approached the challenge as emerging professionals preparing to navigate a labor market transformed by technology.
 
+By leveraging **Lightcast’s job postings dataset**, we conducted an end-to-end data analysis process encompassing **data cleaning, exploratory data visualization, skill frequency analysis, and machine learning modeling**. Each stage provided a new lens through which to interpret trends in salary, experience, and skill demand across Business Analytics, Data Science, and Machine Learning roles.
+
+Our guiding research questions included:
+- How are salary ranges and experience requirements changing across technical roles?  
+- Which skills most strongly predict higher compensation or remote work opportunities?  
+- How do our own team’s current technical skills compare to the demands of the job market?  
+
+To answer these, we utilized a suite of **Python, PySpark, and Plotly** tools for quantitative and visual analysis, complemented by **Random Forest and regression models** to predict salary outcomes.  
+
+Ultimately, this project serves a dual purpose:
+1. **Academic:** Demonstrate the integration of data analytics, machine learning, and storytelling in a cohesive research workflow.  
+2. **Practical:** Provide career-oriented insights for aspiring data professionals — helping them identify skill gaps, prioritize learning paths, and align with labor market trends.  
+
+As industries continue to evolve, the data-driven methods showcased here emphasize the importance of continuous learning and adaptability. The findings contribute not only to academic discourse but also to the personal career strategies of the next generation of analytics professionals.
+
+## References
