@@ -162,7 +162,6 @@ print(f"Final dataset size: {len(df_final):,}")
 print(f"ML roles identified: {df_final['is_ml_role'].sum():,}")
 print(f"Data Science roles identified: {df_final['is_ds_role'].sum():,}")
 print(f"Business Analytics roles identified: {df_final['is_ba_role'].sum():,}")
-print(f"BA/ML/DS combined: {((df_final['is_ml_role'] == 1) | (df_final['is_ds_role'] == 1) | (df_final['is_ba_role'] == 1)).sum():,}")
 ```
 
 For each of the 25 key skills, a binary indicator variable is created (1 if the skill is mentioned, 0 otherwise). This transforms the text skill data into numerical features suitable for machine learning models.
@@ -198,7 +197,8 @@ print(f"Missing values: {df_modeling.isnull().sum().sum()}")
 
 The modeling dataset now contains binary skill features, experience, remote work indicator, and salary information. This structured format allows application of various machine learning techniques.
 
-# Unsupervised Learning: KMeans Clustering Based on Skills
+# Unsupervised Learning:
+## KMeans Clustering Based on Skills
 
 The first machine learning approach uses KMeans clustering to discover natural groupings in the job market. This unsupervised technique groups jobs with similar skill profiles together, without using salary information. The goal is to see if jobs naturally segment into distinct categories based on their requirements.
 
@@ -322,7 +322,7 @@ fig.update_layout(
 )
 fig.show()
 ```
-## Insights from KMeans Clustering
+### Insights from KMeans Clustering
 The clustering analysis grouped jobs based on their skill requirements and characteristics. The analysis identified 6 distinct job clusters, each with different salary levels, remote work availability, and skill profiles.
 
 **Key Findings:**
@@ -346,9 +346,10 @@ The clustering analysis grouped jobs based on their skill requirements and chara
 - **Specialist track:** Cluster 4 ($140K) — pure ML, fewer jobs but high pay
 - **Hybrid advantage:** Cluster 0 ($140K) and Cluster 5 ($118K, 56% remote) — multi-skill roles with flexibility
 
-# Supervised Learning: Multiple Regression
+# Supervised Learning:
+## Multiple Regression
 
-The second approach uses supervised learning to predict salary based on skills and experience. Two regression models are trained: Linear Regression and Random Forest. This analysis identifies which skills and factors most strongly influence compensation.
+The second approach uses supervised learning to predict salary based on skills and experience. Two regression models are trained: Multiple Linear Regression and Random Forest. This analysis identifies which skills and factors most strongly influence compensation.
 
 ```{python}
 #| echo: true
@@ -383,14 +384,14 @@ rf_reg.fit(X_train_scaled, y_train)
 print("Skills based regression models training completed")
 ```
 
-Both models are trained on 80% of the data and will be evaluated on the remaining 20% test set. The Random Forest model can capture non-linear relationships and interactions between skills, while Linear Regression provides a baseline for comparison.
+Both models are trained on 80% of the data and will be evaluated on the remaining 20% test set. The Random Forest model can capture non-linear relationships and interactions between skills, while Multiple Linear Regression provides a baseline for comparison.
 
 ```{python}
 #| echo: true
 #| eval: true
 
 # Evaluate regression models
-# Linear Regression predictions
+# Multiple Linear Regression predictions
 y_pred_lr = lr.predict(X_test_scaled)
 rmse_lr = np.sqrt(mean_squared_error(y_test, y_pred_lr))
 r2_lr = r2_score(y_test, y_pred_lr)
@@ -401,7 +402,7 @@ rmse_rf = np.sqrt(mean_squared_error(y_test, y_pred_rf))
 r2_rf = r2_score(y_test, y_pred_rf)
 
 print("Skills-based Regression Model Performance:")
-print(f"Linear Regression - RMSE: ${rmse_lr:,.2f}, R²: {r2_lr:.4f}")
+print(f"Multiple Linear Regression - RMSE: ${rmse_lr:,.2f}, R²: {r2_lr:.4f}")
 print(f"Random Forest - RMSE: ${rmse_rf:,.2f}, R²: {r2_rf:.4f}")
 
 # Feature importance for Random Forest
@@ -423,13 +424,13 @@ print("\nTop skills by salary impact:")
 for skill, importance in skill_importance[:10]:
     print(f"{skill}: {importance:.4f}")
 ```
-## Regression Analysis: What drives salary?
-Prediction models were built to understand how skills influence salary. The Random Forest model achieved R2 of 0.47 compared to 0.28 for Linear Regression, showing that skill-salary relationships are complex.
+### Regression Analysis: What drives salary?
+Prediction models were built to understand how skills influence salary. The Random Forest model achieved R2 of 0.47 compared to 0.28 for Multiple Linear Regression, showing that skill-salary relationships are complex.
 
 **Model Performance:**
 
 - **Random Forest:** R² = 0.47 (explains 47% of salary variation), RMSE = $32,559
-- **Linear Regression:** R² = 0.28
+- **Multiple Linear Regression:** R² = 0.28
 - **Insight:** Skills alone do not fully explain salary — other factors also matter.
 
 **Key Salary Drivers (Feature Importance):**
@@ -451,7 +452,7 @@ Prediction models were built to understand how skills influence salary. The Rand
 
 **Summary:** Salary is not determined by skills alone. Experience and work flexibility are key, while technical skills provide additional differentiation.
 
-# Supervised Learning: Classification to Identify BA/ML/DS Roles
+## Classification to Identify BA/ML/DS Roles
 
 Although the project required only one of the supervised learning models. This analysis also explores the classification to distinguish ML/Data Science roles from Business Analytics and other positions. A Random Forest Classifier is trained to predict whether a job is an ML/DS role based on its skill requirements. This analysis reveals which skills are the strongest "signature" indicators that distinguish ML/DS positions from BA roles.
 
@@ -524,7 +525,7 @@ fig = px.bar(x=clf_actual_feature_names, y=clf_importances,
 fig.update_layout(template="plotly_white", xaxis_tickangle=-45)
 fig.show()
 ```
-## Classification Results: Identifying ML/Data Science Roles
+### Classification Results: Identifying ML/Data Science Roles
 
 A Random Forest classifier was used to predict whether a job is an ML/Data Science role based on its skill requirements. The model achieved very strong performance in separating ML/DS roles from Business Analytics and other positions.
 
@@ -561,7 +562,7 @@ This section provides a consolidated view of all three modeling approaches. The 
 
 # Summarize core model performance
 model_summary = pd.DataFrame({
-    'Model': ['Linear Regression', 'Random Forest (Regression)', 'Random Forest (Classification)'],
+    'Model': ['Multiple Linear Regression', 'Random Forest (Regression)', 'Random Forest (Classification)'],
     'R² / Accuracy': [r2_lr, r2_rf, accuracy_rf],
     'RMSE / F1 Score': [rmse_lr, rmse_rf, f1_rf]
 })
@@ -575,7 +576,7 @@ fig = make_subplots(
 )
 
 # Model performance comparison
-models = ['Linear Regression', 'Random Forest Regression', 'Random Forest Classification']
+models = ['Multiple Linear Regression', 'Random Forest Regression', 'Random Forest Classification']
 metrics = [r2_lr, r2_rf, accuracy_rf]
 
 fig.add_trace(go.Bar(x=models, y=metrics, name="Performance"), row=1, col=1)
