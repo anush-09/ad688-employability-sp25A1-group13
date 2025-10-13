@@ -11,6 +11,7 @@ author:
 date: "2025-10-09"
 format:
   html:
+    theme: cosmo
     toc: true
     toc-depth: 2
     number-sections: true
