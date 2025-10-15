@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#targeted-column-specific-cleaning" id="toc-targeted-column-specific-cleaning" class="nav-link" data-scroll-target="#targeted-column-specific-cleaning"><span class="header-section-number">3</span> Targeted column-specific cleaning</a></li>
   <li><a href="#save-the-cleaned-dataset" id="toc-save-the-cleaned-dataset" class="nav-link" data-scroll-target="#save-the-cleaned-dataset"><span class="header-section-number">4</span> Save the cleaned dataset</a></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="data_cleaning.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -212,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="looks-for-the-duration-of-job-postings" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Looks for the duration of job postings</h1>
 <p>This was to ensure that the date format for the data was being pulled in the correct way, this is set up to pull the format of M/D/YYYY, this also makes sur ethat it sorts between expired and posted and fills any values that don’t represent either <strong>EXPIRED</strong> or <strong>POSTED</strong> with <strong>DURATION</strong> value.</p>
-<div id="caf20935" class="cell" data-execution_count="2">
+<div id="60d29ec3" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, to_date, datediff, when</span>
@@ -239,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="column-cleaning" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Column Cleaning</h1>
 <p>This is to ensure that we are only sorting columns that could potentially be of use, this isn’t every column that was used, but we cut out columns that we knew wouldn’t be relevant for the data that we were going to be incorporating into the datasets. While these columns could have been refined even further to minimize the size of the dataset, but we were able to minimize the way that the EC2 utilized the data frames to incorporate and read the data to where we had the data cleaned just in case we needed it.</p>
-<div id="001df3ed" class="cell" data-execution_count="3">
+<div id="42e5bba2" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Imports</span></span>
@@ -291,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="targeted-column-specific-cleaning" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Targeted column-specific cleaning</h1>
 <p>This code targets the Education Levels, Location, and Remote work Labels to clean up the dataframes in order to maintain the naming conventions needed for the datasets.</p>
-<div id="ba402b5e" class="cell" data-execution_count="4">
+<div id="e1a48dd6" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, regexp_extract, when, regexp_replace</span>

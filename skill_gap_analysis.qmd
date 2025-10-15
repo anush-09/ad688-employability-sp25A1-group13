@@ -15,6 +15,7 @@ format:
     toc: true
     number-sections: true
     df-print: paged
+  docx: default
 ---
 # Team Dataframe
 

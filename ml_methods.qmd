@@ -8,6 +8,7 @@ format:
         bibliography: references.bib
         csl: csl/econometrica.csl
         toc: true
+    docx: default
 execute:
     echo: false
     warning: false

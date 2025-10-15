@@ -10,11 +10,12 @@ author:
         state: MA
 bibliography: references.bib
 csl: csl/econometrica.csl
-format: 
+format:
   html:
+    bibliography: references.bib
+    csl: csl/econometrica.csl
     toc: true
-    number-sections: true
-    df-print: paged
+  docx: default
 ---
 
 

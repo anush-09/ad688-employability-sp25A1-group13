@@ -8,15 +8,14 @@ author:
         name: Boston University
         city: Boston
         state: MA
-bibliography: references.bib
-csl: csl/econometrica.csl
-format: 
+format:
   html:
+    bibliography: references.bib
+    csl: csl/econometrica.csl
     toc: true
-    number-sections: true
-    df-print: paged
+  docx: default
 ---
----
+
 title: "Data Cleaning & Rationale"
 format: html
 ---
@@ -69,3 +68,4 @@ Cleaning the dataset in this way improves our analysis by:
 
 With a cleaner dataset, we’re now ready to explore key workforce themes—such as AI-driven job growth, salary disparities, and gender-based employment patterns—using reliable, streamlined data.
 
+---
