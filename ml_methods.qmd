@@ -356,11 +356,11 @@ The second approach uses supervised learning to predict salary based on skills a
 #| echo: true
 #| eval: true
 
-# Identify regression features.
+# Regression features.
 # Focus on skills (not role labels) to understand how skills directly affect salary
 regression_features = skill_feature_cols + ['experience_years', 'is_remote']
 
-# Prepare regression data using salary as the target variable
+# Preparing regression data using salary as the target variable
 X_reg = df_modeling[regression_features].fillna(0)
 y_reg = df_modeling['SALARY']
 
@@ -383,6 +383,148 @@ rf_reg = RandomForestRegressor(n_estimators=100, random_state=42)
 rf_reg.fit(X_train_scaled, y_train)
 
 print("Skills based regression models training completed")
+
+# Regression statistics for Multiple linear regression
+y_train_pred = lr.predict(X_train_scaled)
+
+# Residuals and RSS
+residuals = y_train - y_train_pred
+rss = np.sum(residuals**2)
+n = len(y_train)
+k = len(regression_features)
+
+# Model statistics for Multiple linear regression
+mse_lr = rss / n
+rmse_train_lr = np.sqrt(mse_lr)
+r2_train_lr = r2_score(y_train, y_train_pred)
+adj_r2_lr = 1 - (1 - r2_train_lr) * (n - 1) / (n - k - 1)
+
+# AIC and BIC for Multiple linear regression
+aic_lr = n * np.log(rss / n) + 2 * k
+bic_lr = n * np.log(rss / n) + k * np.log(n)
+log_likelihood_lr = -aic_lr/2 + k
+
+# Random Forest statistics
+y_train_pred_rf = rf_reg.predict(X_train_scaled)
+r2_train_rf = r2_score(y_train, y_train_pred_rf)
+rmse_train_rf = np.sqrt(mean_squared_error(y_train, y_train_pred_rf))
+residuals_rf = y_train - y_train_pred_rf
+rss_rf = np.sum(residuals_rf**2)
+
+# Test set performance
+y_test_pred_lr = lr.predict(X_test_scaled)
+y_test_pred_rf = rf_reg.predict(X_test_scaled)
+r2_test_lr = r2_score(y_test, y_test_pred_lr)
+r2_test_rf = r2_score(y_test, y_test_pred_rf)
+rmse_test_lr = np.sqrt(mean_squared_error(y_test, y_test_pred_lr))
+rmse_test_rf = np.sqrt(mean_squared_error(y_test, y_test_pred_rf))
+
+# Regression statistics table
+print("\n=== REGRESSION MODEL STATISTICS ===\n")
+
+regression_stats = pd.DataFrame({
+    'Statistic': [
+        'Intercept',
+        'Number of Features',
+        'Number of Observations (Train)',
+        'R-squared (Training)',
+        'R-squared (Test)',
+        'Adjusted R-squared',
+        'RMSE (Training)',
+        'RMSE (Test)',
+        'RSS (Residual Sum of Squares)',
+        'MSE (Mean Squared Error)',
+        'AIC',
+        'BIC',
+        'Log-Likelihood'
+    ],
+    'Multiple linear regression': [
+        f"{lr.intercept_:.4f}",
+        f"{k}",
+        f"{n:,}",
+        f"{r2_train_lr:.4f}",
+        f"{r2_test_lr:.4f}",
+        f"{adj_r2_lr:.4f}",
+        f"${rmse_train_lr:,.2f}",
+        f"${rmse_test_lr:,.2f}",
+        f"{rss:,.2f}",
+        f"{mse_lr:,.2f}",
+        f"{aic_lr:.2f}",
+        f"{bic_lr:.2f}",
+        f"{log_likelihood_lr:.2f}"
+    ],
+    'Random Forest': [
+        'N/A',
+        f"{k}",
+        f"{n:,}",
+        f"{r2_train_rf:.4f}",
+        f"{r2_test_rf:.4f}",
+        'N/A',
+        f"${rmse_train_rf:,.2f}",
+        f"${rmse_test_rf:,.2f}",
+        f"{rss_rf:,.2f}",
+        f"{rmse_train_rf**2:,.2f}",
+        'N/A*',
+        'N/A*',
+        'N/A*'
+    ]
+})
+
+print(regression_stats.to_string(index=False))
+print("\n* AIC/BIC/Log-Likelihood are only applicable to parametric linear models")
+print("\nNote: R-squared (Test) shows model performance on unseen data")
+
+print("\n=== FEATURE COEFFICIENTS / IMPORTANCE COMPARISON ===\n")
+
+# Sanity check for alignment
+assert len(regression_features) == len(lr.coef_) == len(rf_reg.feature_importances_), \
+    "Mismatch between features, LR coefficients, and RF importances!"
+
+#  Combine features, coefficients, and importances
+coef_comparison = pd.DataFrame({
+    'Feature': regression_features,
+    'LR_Coefficient': lr.coef_,
+    'RF_Importance': rf_reg.feature_importances_
+})
+
+# Filter out zero coefficients
+coef_comparison = coef_comparison[coef_comparison['LR_Coefficient'] != 0.0]
+
+# Adding impact type (positive or negative only)
+coef_comparison['Impact'] = coef_comparison['LR_Coefficient'].apply(
+    lambda x: 'Positive' if x > 0 else 'Negative'
+)
+
+coef_comparison['LR_Coefficient'] = coef_comparison['LR_Coefficient'].round(4)
+coef_comparison['RF_Importance'] = coef_comparison['RF_Importance'].round(4)
+
+# Positive coefficients (highest impact)
+top_positive = (
+    coef_comparison[coef_comparison['Impact'] == 'Positive']
+    .sort_values(by='LR_Coefficient', ascending=False)
+    .head(15)
+)
+
+print("Top 15 Features by Multiple linear regression Coefficient (Positive Impact):")
+print(top_positive[['Feature', 'LR_Coefficient', 'RF_Importance']].to_string(index=False))
+
+# Negative coefficients (lowest impact)
+top_negative = (
+    coef_comparison[coef_comparison['Impact'] == 'Negative']
+    .sort_values(by='LR_Coefficient', ascending=True)
+    .head(15)
+)
+
+print("\nTop 15 Features by Multiple linear regression Coefficient (Negative Impact):")
+print(top_negative[['Feature', 'LR_Coefficient', 'RF_Importance']].to_string(index=False))
+
+print(f"\nMultiple linear regression Intercept: {lr.intercept_:.4f}")
+
+print("\nNote:")
+print("- LR Coefficients show the direction and strength of linear relationships with the target.")
+print("- Positive coefficients increase predicted salary; negative coefficients decrease it.")
+print("- RF Importance reflects how much each feature contributes to model accuracy (non-linear).")
+
 ```
 
 Both models are trained on 80% of the data and will be evaluated on the remaining 20% test set. The Random Forest model can capture non-linear relationships and interactions between skills, while Multiple Linear Regression provides a baseline for comparison.
@@ -391,23 +533,19 @@ Both models are trained on 80% of the data and will be evaluated on the remainin
 #| echo: true
 #| eval: true
 
-# Evaluate regression models
-# Multiple Linear Regression predictions
-y_pred_lr = lr.predict(X_test_scaled)
-rmse_lr = np.sqrt(mean_squared_error(y_test, y_pred_lr))
-r2_lr = r2_score(y_test, y_pred_lr)
+# Test metrics already calculated above
+r2_lr = r2_test_lr
+r2_rf = r2_test_rf
+rmse_lr = rmse_test_lr
+rmse_rf = rmse_test_rf
+y_pred_rf = y_test_pred_rf
 
-# Random Forest predictions
-y_pred_rf = rf_reg.predict(X_test_scaled)
-rmse_rf = np.sqrt(mean_squared_error(y_test, y_pred_rf))
-r2_rf = r2_score(y_test, y_pred_rf)
-
-print("Skills-based Regression Model Performance:")
+print("Skills-based Regression Model Performance (Test Set):")
 print(f"Multiple Linear Regression - RMSE: ${rmse_lr:,.2f}, R²: {r2_lr:.4f}")
 print(f"Random Forest - RMSE: ${rmse_rf:,.2f}, R²: {r2_rf:.4f}")
 
 # Feature importance for Random Forest
-# Only use features that actually exist in the model
+#Features that actually exist in the model
 actual_feature_names = [col for col in regression_features if col in X_train.columns]
 importances = rf_reg.feature_importances_
 
@@ -464,7 +602,7 @@ Although the project required only one of the supervised learning models. This a
 # Prepare features for classification.
 classification_features = skill_feature_cols + ['experience_years', 'is_remote']
 
-# Prepare classification data
+# Classification data
 X_clf = df_modeling[classification_features].fillna(0)
 # Target: ML/DS roles (computed from is_ml_role OR is_ds_role)
 y_clf = ((df_modeling['is_ml_role'] == 1) | (df_modeling['is_ds_role'] == 1)).astype(int)
@@ -515,7 +653,7 @@ fig.show()
 print("Classification Report:")
 print(classification_report(y_test_clf, y_pred_rf_clf))
 
-# Only use features that actually exist in the classification model
+# Features that actually exist in the classification model
 clf_actual_feature_names = [col for col in classification_features if col in X_train_clf.columns]
 clf_importances = rf_clf.feature_importances_
 
@@ -555,44 +693,85 @@ A Random Forest classifier was used to predict whether a job is an ML/Data Scien
 
 # Model Results Visualization
 
-This section provides a consolidated view of all three modeling approaches. The comparison shows how different models perform on their respective tasks and highlights the most impactful skills across different analyses.
+This section provides a consolidated view of the regression modeling approaches. The comparison shows how different models perform on salary prediction and highlights the most impactful skills across different analyses.
 
 ```{python}
 #| echo: true
 #| eval: true
 
-# Summarize core model performance
+# Model performance
 model_summary = pd.DataFrame({
-    'Model': ['Multiple Linear Regression', 'Random Forest (Regression)', 'Random Forest (Classification)'],
-    'R² / Accuracy': [r2_lr, r2_rf, accuracy_rf],
-    'RMSE / F1 Score': [rmse_lr, rmse_rf, f1_rf]
+    'Model': ['Multiple Linear Regression', 'Random Forest (Regression)'],
+    'R² (Test)': [r2_lr, r2_rf],
+    'RMSE (Test)': [rmse_lr, rmse_rf]
 })
 print(model_summary)
 
 # Visualization of model results
 fig = make_subplots(
-    rows=1, cols=2,
-    subplot_titles=('Model Performance Comparison', 'Skills vs Salary Impact'),
-    specs=[[{"type": "bar"}, {"type": "bar"}]]
+    rows=2, cols=2,
+    subplot_titles=('R² Comparison (Test Set)', 'RMSE Comparison (Test Set)',
+                    'Skills vs Salary Impact', 'Predicted vs Actual Salary'),
+    specs=[[{"type": "bar"}, {"type": "bar"}],
+           [{"type": "bar"}, {"type": "scatter"}]]
 )
 
-# Model performance comparison
-models = ['Multiple Linear Regression', 'Random Forest Regression', 'Random Forest Classification']
-metrics = [r2_lr, r2_rf, accuracy_rf]
+# Row 1, Col 1: R² comparison
+models = ['Multiple linear regression', 'Random Forest']
+r2_values = [r2_lr, r2_rf]
+fig.add_trace(go.Bar(x=models, y=r2_values, name="R² Score",
+                     marker_color=['steelblue', 'darkgreen']), row=1, col=1)
 
-fig.add_trace(go.Bar(x=models, y=metrics, name="Performance"), row=1, col=1)
+# Row 1, Col 2: RMSE comparison
+rmse_values = [rmse_lr, rmse_rf]
+fig.add_trace(go.Bar(x=models, y=rmse_values, name="RMSE",
+                     marker_color=['coral', 'orange']), row=1, col=2)
 
-# Skills vs salary impact
-top_skills_salary = skill_importance[:8]
-fig.add_trace(go.Bar(x=[s[0] for s in top_skills_salary],
-                    y=[s[1] for s in top_skills_salary], name="Salary Impact"), row=1, col=2)
+# Row 2, Col 1: Skills vs salary impact (top 10)
+top_skills_salary = skill_importance[:10]
+fig.add_trace(go.Bar(
+    x=[s[1] for s in top_skills_salary],
+    y=[s[0] for s in top_skills_salary],
+    orientation='h',
+    name="Feature Importance",
+    marker_color='purple'), row=2, col=1)
+
+# Row 2, Col 2: Predicted vs Actual for Random Forest
+sample_size = min(500, len(y_test))
+sample_indices = np.random.choice(len(y_test), sample_size, replace=False)
+fig.add_trace(go.Scatter(
+    x=y_test.iloc[sample_indices],
+    y=y_pred_rf[sample_indices],
+    mode='markers',
+    name='RF Predictions',
+    marker=dict(color='darkgreen', size=5, opacity=0.6)), row=2, col=2)
+
+# Prediction line
+min_val = min(y_test.min(), y_pred_rf.min())
+max_val = max(y_test.max(), y_pred_rf.max())
+fig.add_trace(go.Scatter(
+    x=[min_val, max_val],
+    y=[min_val, max_val],
+    mode='lines',
+    name='Perfect Prediction',
+    line=dict(color='red', dash='dash')), row=2, col=2)
+
+# Axis labels
+fig.update_xaxes(title_text="Model", row=1, col=1)
+fig.update_yaxes(title_text="R² Score", row=1, col=1)
+fig.update_xaxes(title_text="Model", row=1, col=2)
+fig.update_yaxes(title_text="RMSE ($)", row=1, col=2)
+fig.update_xaxes(title_text="Importance", row=2, col=1)
+fig.update_yaxes(title_text="Feature", row=2, col=1)
+fig.update_xaxes(title_text="Actual Salary ($)", row=2, col=2)
+fig.update_yaxes(title_text="Predicted Salary ($)", row=2, col=2)
 
 fig.update_layout(
-    height=450,
+    height=800,
     showlegend=False,
     template="plotly_white",
     title={
-        'text': "Core Model Results - BA/ML/DS Skills Analysis",
+        'text': "Regression Model Comparison - BA/ML/DS Salary Prediction",
         'y': 0.98,
         'x': 0.5,
         'xanchor': 'center',
