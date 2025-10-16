@@ -63,6 +63,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.figure_factory as ff
 import plotly.io as pio
+import plotly.colors as pc
 import json
 import re
 from collections import Counter
@@ -145,40 +146,57 @@ Downsampling: For performance, the dataset was randomly reduced to 5,000 represe
 This preprocessing established a clean, consistent dataset suitable for visualization and modeling.
 
 ```{python}
-# Filter out negative or zero salary values before plotting
+# Filter valid salaries
 df_salary = df[df["Average_Salary"] > 0]
 
+# --- Base histogram (same as your original) ---
 fig = px.histogram(
-    df,
+    df_salary,
     x="Average_Salary",
     nbins=40,
-    color_discrete_sequence=["#187145"],
+    color_discrete_sequence=["#B03A73"], 
     title="Distribution of Average Salaries"
 )
 
+# --- Compute log overlay using numpy ---
+log_salaries = np.log(df_salary["Average_Salary"])
+counts, bins = np.histogram(log_salaries, bins=40)
+bin_centers = (bins[:-1] + bins[1:]) / 2
+log_curve_x = np.exp(bin_centers)
+
+# Get reference histogram counts to scale properly
+linear_counts, _ = np.histogram(df_salary["Average_Salary"], bins=40)
+scale_factor = max(linear_counts) / max(counts)
+log_curve_y = counts * scale_factor
+
+# --- Add overlay line ---
+fig.add_trace(go.Scatter(
+    x=log_curve_x,
+    y=log_curve_y,
+    mode="lines",
+    line=dict(color="#880E4F", width=3),  # deeper magenta for contrast
+    name="Log-transformed Overlay"
+))
+
+# --- Keep your layout exactly the same ---
 fig.update_layout(
-    #  Title styling
     title=dict(
-        text="<b>Distribution of Average Salaries</b>",
-        x=0.5,  # center the title
+        text="<b>Distribution of Average Salaries (with Log Overlay)</b>",
+        x=0.5,
         xanchor="center",
         font=dict(size=20)
     ),
-    
-    #  Axis labels
     xaxis_title="<b>Average Salary (USD)</b>",
     yaxis_title="<b>Number of Job Postings</b>",
-    
-    #  Layout polish
     template="plotly_white",
     width=900,
     height=550,
     bargap=0.05,
     font=dict(size=14),
-    margin=dict(l=60, r=40, t=80, b=60)
+    margin=dict(l=60, r=40, t=80, b=60),
+    legend=dict(title="Legend", orientation="h", y=-0.2, x=0.3)
 )
 
-#  Subtle gridlines for readability
 fig.update_xaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 
@@ -202,15 +220,27 @@ df_exp["REMOTE_GROUP"] = df_exp["REMOTE_GROUP"].replace({
     "Not Remote": "Onsite"
 })
 
-#  Create scatter plot with trendlines
+#  Add gentle jitter to make overlapping points clearer 
+jitter_strength = 0.2
+df_exp["MIN_YEARS_EXPERIENCE_JITTER"] = df_exp["MIN_YEARS_EXPERIENCE"] + np.random.uniform(
+    low=-jitter_strength, high=jitter_strength, size=len(df_exp)
+)
+df_exp["Average_Salary_JITTER"] = df_exp["Average_Salary"] + np.random.uniform(
+    low=-2000, high=2000, size=len(df_exp)
+)
+
+# Use a rainbow-like palette manually 
+rainbow_colors = pc.sample_colorscale("Rainbow", [0.0, 0.25, 0.5, 0.75, 1.0])
+
+#  Create scatter plot with rainbow gradient colors 
 fig = px.scatter(
     df_exp,
-    x="MIN_YEARS_EXPERIENCE",
-    y="Average_Salary",
+    x="MIN_YEARS_EXPERIENCE_JITTER",
+    y="Average_Salary_JITTER",
     color="REMOTE_GROUP",
     trendline="ols",
     title="Salary vs. Minimum Experience by Remote Type",
-    color_discrete_sequence=["#187145", "#45A274", "#79C99E"],
+    color_discrete_sequence=rainbow_colors,  
     opacity=0.7,
     height=550
 )
@@ -232,7 +262,7 @@ fig.update_layout(
     margin=dict(l=60, r=40, t=80, b=60)
 )
 
-#  Final touch: consistent visual polish
+# Final touch: consistent visual polish
 fig.update_traces(marker=dict(size=6))
 fig.update_xaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
@@ -250,15 +280,16 @@ This mirrors recent research showing that post-pandemic flexibility often correl
 #  Filter valid salary data
 df_roles = df[df["Average_Salary"] > 0].copy()
 
+#  Use a solid rainbow palette
+rainbow_colors = pc.sample_colorscale("Rainbow", [0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+
 #  Create the boxplot
 fig = px.box(
     df_roles,
     x="ROLE_GROUP",
     y="Average_Salary",
     color="ROLE_GROUP",
-    color_discrete_sequence=[
-        "#187145", "#45A274", "#79C99E", "#A7D9C9", "#C9EBDD", "#E3F6EE"
-    ],
+    color_discrete_sequence=rainbow_colors,  
     title="Salary Comparison Across Role Categories",
     points="outliers",   # show only outliers for clarity
     height=550
@@ -314,6 +345,9 @@ df_remote["REMOTE_GROUP"] = df_remote["REMOTE_GROUP"].replace({
 #  Define custom order for clarity
 remote_order = ["Onsite", "Hybrid Remote", "Remote"]
 
+#  Use a solid rainbow palette
+rainbow_colors = pc.sample_colorscale("Rainbow", [0.0, 0.5, 1.0])
+
 #  Build polished boxplot
 fig = px.box(
     df_remote,
@@ -321,7 +355,7 @@ fig = px.box(
     y="Average_Salary",
     color="REMOTE_GROUP",
     category_orders={"REMOTE_GROUP": remote_order},
-    color_discrete_sequence=["#187145", "#45A274", "#79C99E"],
+    color_discrete_sequence=rainbow_colors,
     title="Salary Distribution by Remote Work Type",
     points="outliers",  # show only outliers
     height=550
@@ -388,13 +422,17 @@ skill_counts = pd.DataFrame(
     columns=["Skill", "Count"]
 )
 
+#  Generate a rainbow color palette for the bars
+rainbow_colors = pc.sample_colorscale("Rainbow", [i / 14 for i in range(15)])
+
 #  Bar chart
 fig = px.bar(
     skill_counts,
     x="Skill",
     y="Count",
     title="Top 15 Most Frequent Skills",
-    color_discrete_sequence=["#187145"]
+    color="Skill",
+    color_discrete_sequence=rainbow_colors
 )
 
 #  Clean layout
@@ -438,12 +476,15 @@ This distribution reflects the “T-shaped” professional model, where deep tec
 corr_cols = ["Average_Salary", "MIN_YEARS_EXPERIENCE", "MAX_YEARS_EXPERIENCE"]
 corr = df[corr_cols].corr().round(2)
 
+#  Create a rainbow colorscale
+rainbow_colorscale = pc.make_colorscale(pc.sample_colorscale("Rainbow", [0.0, 0.25, 0.5, 0.75, 1.0]))
+
 #  Create heatmap
 fig = ff.create_annotated_heatmap(
     z=corr.values,
     x=corr.columns.tolist(),
     y=corr.columns.tolist(),
-    colorscale="greens",
+    colorscale=rainbow_colorscale,
     showscale=True,
     annotation_text=corr.values,
     font_colors=["black"],
