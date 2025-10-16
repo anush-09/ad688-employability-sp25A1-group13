@@ -95,7 +95,7 @@ from collections import Counter
 skills_keywords = [
     "python", "sql", "machine learning", "cloud", "aws", "azure",
     "docker", "java", "excel", "r", "linux", "tableau", "power bi",
-    "spark", "hadoop", "sas", "javascript", "c++", "pandas", "numpy"
+    "spark", "hadoop", "javascript", "c++", "pandas", "numpy"
 ]
 
 # 2️⃣ Compile regex patterns for faster matching
