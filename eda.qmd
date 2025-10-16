@@ -200,7 +200,7 @@ fig.update_layout(
 fig.update_xaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 
-fig
+fig.show()
 ```
 
 ### Salary Distribution
@@ -267,7 +267,7 @@ fig.update_traces(marker=dict(size=6))
 fig.update_xaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 
-fig
+fig.show()
 ```
 
 ### Salary vs Experience
@@ -321,7 +321,7 @@ fig.update_xaxes(
 )
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 
-fig
+fig.show()
 ```
 
 ### Role-Based Salary Trends
@@ -395,7 +395,7 @@ fig.update_xaxes(
 )
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 
-fig
+fig.show()
 ```
 
 ### Remote Work vs Salary Trends
@@ -462,7 +462,7 @@ fig.update_xaxes(
 )
 fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 
-fig
+fig.show()
 ```
 
 ### Top Skills Frequency
@@ -518,7 +518,7 @@ fig.update_yaxes(
     autorange="reversed"
 )
 
-fig
+fig.show()
 ```
 
 ### Feature Correlation Analysis Heatmap
