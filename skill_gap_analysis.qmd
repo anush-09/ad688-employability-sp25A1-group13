@@ -91,20 +91,20 @@ import pandas as pd
 import re
 from collections import Counter
 
-# 1️⃣ Define the skills you want to look for
+# Define the skills we are looking for
 skills_keywords = [
     "python", "sql", "machine learning", "cloud", "aws", "azure",
     "docker", "java", "excel", "r", "linux", "tableau", "power bi",
     "spark", "hadoop", "javascript", "c++", "pandas", "numpy"
 ]
 
-# 2️⃣ Compile regex patterns for faster matching
+# Compile regex patterns for faster matching
 pattern_dict = {skill: re.compile(rf"\b{re.escape(skill)}\b") for skill in skills_keywords}
 
-# 3️⃣ Initialize a counter to store matches
+# Initialize a counter to store matches
 skill_counts = Counter()
 
-# 4️⃣ Read the CSV in chunks to avoid memory overload
+# Read the CSV in chunks to avoid memory overload
 chunk_size = 10000  # You can adjust this if your EC2 has more memory
 for chunk in pd.read_csv(
     "data/lightcast_cleaned.csv",
@@ -116,7 +116,7 @@ for chunk in pd.read_csv(
     sep=",",                     # <-- enforce comma delimiter
     quoting=3                    # <-- ignore quote mismatches
 ):
-    # Drop missing text and convert to lowercase
+    
     chunk = chunk["BODY"].dropna().str.lower()
     
     # For each job description, count skill occurrences
@@ -124,10 +124,9 @@ for chunk in pd.read_csv(
         for skill, pattern in pattern_dict.items():
             skill_counts[skill] += len(pattern.findall(text))
 
-# 5️⃣ Get the top 5 most common skills
+
 top_skills = skill_counts.most_common(5)
 
-# 6️⃣ Print results neatly
 import pandas as pd
 
 # Convert Counter to DataFrame
