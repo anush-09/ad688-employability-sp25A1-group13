@@ -252,7 +252,7 @@ div.csl-indent {
 </section>
 <section id="load-and-prepare-data" class="level3" data-number="0.2">
 <h3 data-number="0.2" class="anchored" data-anchor-id="load-and-prepare-data"><span class="header-section-number">0.2</span> Load and Prepare Data</h3>
-<div id="1ed5d4b7" class="cell" data-execution_count="1">
+<div id="282a743a" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -335,7 +335,7 @@ div.csl-indent {
 <p>Invalid Data Removal: Rows with missing or non-positive salaries were dropped.</p>
 <p>Downsampling: For performance, the dataset was randomly reduced to 5,000 representative rows, preserving the statistical diversity of the original population.</p>
 <p>This preprocessing established a clean, consistent dataset suitable for visualization and modeling.</p>
-<div id="1587a7c8" class="cell" data-execution_count="2">
+<div id="c6c5da12" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter valid salaries</span></span>
@@ -392,17 +392,17 @@ div.csl-indent {
 <span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>fig.update_xaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_72.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_9.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="salary-distribution" class="level3" data-number="0.4">
 <h3 data-number="0.4" class="anchored" data-anchor-id="salary-distribution"><span class="header-section-number">0.4</span> Salary Distribution</h3>
 <p>The salary distribution is right-skewed, indicating that most job postings fall within the $80K–$150K range. A smaller number of positions extend above $200K, reflecting higher-paying senior and Machine Learning roles. This pattern aligns with national data showing that advanced technical and AI-related positions command higher compensation due to specialized skill requirements <span class="citation" data-cites="bls2024wages bone2025skills">(<a href="#ref-bls2024wages" role="doc-biblioref">Bureau of Labor Statistics (2024)</a>; <a href="#ref-bone2025skills" role="doc-biblioref">Bone, Ehlinger, and Stephany (2025)</a>)</span>. Such variation underscores the growing salary dispersion across digital and data-driven occupations <span class="citation" data-cites="makela2024complement">(<a href="#ref-makela2024complement" role="doc-biblioref">Mäkelä and Stephany (2024)</a>)</span>.</p>
-<div id="3a7e9c13" class="cell" data-execution_count="3">
+<div id="65a68a31" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out invalid or missing values</span></span>
@@ -462,17 +462,17 @@ div.csl-indent {
 <span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>fig.update_xaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_73.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_10.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="salary-vs-experience" class="level3" data-number="0.5">
 <h3 data-number="0.5" class="anchored" data-anchor-id="salary-vs-experience"><span class="header-section-number">0.5</span> Salary vs Experience</h3>
 <p>The scatterplot shows a clear positive relationship between experience and salary across all remote work types. As minimum years of experience increase, average salary consistently rises, supporting labor economics findings that work experience contributes directly to wage growth <span class="citation" data-cites="mincer1974schooling bls2024wages">(<a href="#ref-mincer1974schooling" role="doc-biblioref">Mincer (1974)</a>; <a href="#ref-bls2024wages" role="doc-biblioref">Bureau of Labor Statistics (2024)</a>)</span>. Among the three groups, Remote and Hybrid Remote roles generally track above Not Remote positions, suggesting that employers may offer higher pay for flexible or remote-friendly jobs <span class="citation" data-cites="mckinsey2022remote">(<a href="#ref-mckinsey2022remote" role="doc-biblioref">McKinsey &amp; Company (2022)</a>)</span>. This mirrors recent research showing that post-pandemic flexibility often correlates with higher total compensation, especially for data professionals <span class="citation" data-cites="glassdoor2024trends">(<a href="#ref-glassdoor2024trends" role="doc-biblioref">Glassdoor Economic Research (2024)</a>)</span>.</p>
-<div id="1320cd3c" class="cell" data-execution_count="4">
+<div id="211617ab" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Filter valid salary data</span></span>
@@ -519,17 +519,17 @@ div.csl-indent {
 <span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_74.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_11.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="role-based-salary-trends" class="level3" data-number="0.6">
 <h3 data-number="0.6" class="anchored" data-anchor-id="role-based-salary-trends"><span class="header-section-number">0.6</span> Role-Based Salary Trends</h3>
 <p>The boxplot shows clear salary variation across professional role groups. Network and Systems Engineering roles offer the highest median salaries and the widest overall pay range, consistent with labor market reports highlighting elevated compensation for infrastructure and AI-related talent <span class="citation" data-cites="lightcast2024labor">(<a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>. In contrast, Business Analysis and Marketing Specialist roles cluster around lower medians, reflecting standardized pay structures common in business-facing positions <span class="citation" data-cites="glassdoor2024trends">(<a href="#ref-glassdoor2024trends" role="doc-biblioref">Glassdoor Economic Research (2024)</a>)</span>. Overall, the trend highlights that technical specialization and data infrastructure expertise command higher pay within analytics fields <span class="citation" data-cites="bone2025skills">(<a href="#ref-bone2025skills" role="doc-biblioref">Bone, Ehlinger, and Stephany (2025)</a>)</span>.</p>
-<div id="f9829790" class="cell" data-execution_count="5">
+<div id="de65e285" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Copy and clean up data</span></span>
@@ -595,17 +595,17 @@ div.csl-indent {
 <span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_75.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_12.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="remote-work-vs-salary-trends" class="level3" data-number="0.7">
 <h3 data-number="0.7" class="anchored" data-anchor-id="remote-work-vs-salary-trends"><span class="header-section-number">0.7</span> Remote Work vs Salary Trends</h3>
 <p>The salary distribution varies noticeably by remote work type. Remote roles show the highest median salaries and a slightly wider interquartile range, indicating greater earning potential and variability among remote positions. Hybrid Remote jobs follow closely, while Onsite roles exhibit lower medians and tighter spreads. This mirrors workforce evidence that remote-capable roles—particularly in analytics and technology—carry a wage premium and higher demand <span class="citation" data-cites="mckinsey2022remote lightcast2024labor">(<a href="#ref-mckinsey2022remote" role="doc-biblioref">McKinsey &amp; Company (2022)</a>; <a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>. The findings align with broader trends emphasizing flexibility and digital collaboration as valued aspects of compensation <span class="citation" data-cites="glassdoor2024trends">(<a href="#ref-glassdoor2024trends" role="doc-biblioref">Glassdoor Economic Research (2024)</a>)</span>.</p>
-<div id="33e87888" class="cell" data-execution_count="6">
+<div id="3cc4ac81" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Use the detected skill column</span></span>
@@ -664,17 +664,17 @@ div.csl-indent {
 <span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>fig.update_yaxes(showgrid<span class="op">=</span><span class="va">True</span>, gridcolor<span class="op">=</span><span class="st">"lightgray"</span>, zeroline<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_76.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="920px" height="570" src="iframe_figures/figure_13.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
 <section id="top-skills-frequency" class="level3" data-number="0.8">
 <h3 data-number="0.8" class="anchored" data-anchor-id="top-skills-frequency"><span class="header-section-number">0.8</span> Top Skills Frequency</h3>
 <p>The top skills highlight a blend of technical, analytical, and interpersonal competencies valued across data-driven roles. Communication and Data Analysis appear most frequently, underscoring the importance of translating insights into business impact. SQL, Python, and Microsoft Excel remain core technical skills, while Project Management and Leadership emphasize strategic coordination <span class="citation" data-cites="datacamp_ml lightcast2024labor">(<a href="#ref-datacamp_ml" role="doc-biblioref">DataCamp (2025)</a>; <a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>. This distribution reflects the “T-shaped” professional model, where deep technical knowledge is complemented by broad problem-solving and collaboration abilities <span class="citation" data-cites="bone2025skills makela2024complement">(<a href="#ref-bone2025skills" role="doc-biblioref">Bone, Ehlinger, and Stephany (2025)</a>; <a href="#ref-makela2024complement" role="doc-biblioref">Mäkelä and Stephany (2024)</a>)</span>.</p>
-<div id="f5808cb5" class="cell" data-execution_count="7">
+<div id="56e44172" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Compute correlation matrix</span></span>
@@ -723,10 +723,10 @@ div.csl-indent {
 <span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    autorange<span class="op">=</span><span class="st">"reversed"</span></span>
 <span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="720px" height="520" src="iframe_figures/figure_77.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="720px" height="520" src="iframe_figures/figure_14.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
