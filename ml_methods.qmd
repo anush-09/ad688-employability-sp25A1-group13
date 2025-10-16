@@ -476,55 +476,62 @@ print("\nNote: R-squared (Test) shows model performance on unseen data")
 
 print("\n=== FEATURE COEFFICIENTS / IMPORTANCE COMPARISON ===\n")
 
-# Sanity check for alignment
+#  Sanity Check
 assert len(regression_features) == len(lr.coef_) == len(rf_reg.feature_importances_), \
     "Mismatch between features, LR coefficients, and RF importances!"
 
-#  Combine features, coefficients, and importances
+# Combined DataFrame
 coef_comparison = pd.DataFrame({
     'Feature': regression_features,
-    'LR_Coefficient': lr.coef_,
+    'MLR_Coefficient': lr.coef_,
     'RF_Importance': rf_reg.feature_importances_
 })
 
-# Filter out zero coefficients
-coef_comparison = coef_comparison[coef_comparison['LR_Coefficient'] != 0.0]
+# Remove zero coefficients from MLR
+coef_comparison = coef_comparison[coef_comparison['MLR_Coefficient'] != 0.0]
 
-# Adding impact type (positive or negative only)
-coef_comparison['Impact'] = coef_comparison['LR_Coefficient'].apply(
+# Impact Type (Positive / Negative only)
+coef_comparison['Impact'] = coef_comparison['MLR_Coefficient'].apply(
     lambda x: 'Positive' if x > 0 else 'Negative'
 )
 
-coef_comparison['LR_Coefficient'] = coef_comparison['LR_Coefficient'].round(4)
+coef_comparison['MLR_Coefficient'] = coef_comparison['MLR_Coefficient'].round(4)
 coef_comparison['RF_Importance'] = coef_comparison['RF_Importance'].round(4)
 
-# Positive coefficients (highest impact)
+# Top 15 Positive Features by MLR Coefficient
 top_positive = (
     coef_comparison[coef_comparison['Impact'] == 'Positive']
-    .sort_values(by='LR_Coefficient', ascending=False)
+    .sort_values(by='MLR_Coefficient', ascending=False)
     .head(15)
 )
 
-print("Top 15 Features by Multiple linear regression Coefficient (Positive Impact):")
-print(top_positive[['Feature', 'LR_Coefficient', 'RF_Importance']].to_string(index=False))
+print("Top 15 Features by Multiple Linear Regression Coefficient (Positive Impact):")
+print(top_positive[['Feature', 'MLR_Coefficient', 'RF_Importance']].to_string(index=False))
 
-# Negative coefficients (lowest impact)
+#  Top 15 Negative Features by MLR Coefficient
 top_negative = (
     coef_comparison[coef_comparison['Impact'] == 'Negative']
-    .sort_values(by='LR_Coefficient', ascending=True)
+    .sort_values(by='MLR_Coefficient', ascending=True)
     .head(15)
 )
 
-print("\nTop 15 Features by Multiple linear regression Coefficient (Negative Impact):")
-print(top_negative[['Feature', 'LR_Coefficient', 'RF_Importance']].to_string(index=False))
+print("\nTop 15 Features by Multiple Linear Regression Coefficient (Negative Impact):")
+print(top_negative[['Feature', 'MLR_Coefficient', 'RF_Importance']].to_string(index=False))
 
-print(f"\nMultiple linear regression Intercept: {lr.intercept_:.4f}")
+# Top 15 Features by Random Forest Importance
+top_rf = coef_comparison.sort_values(by='RF_Importance', ascending=False).head(15)
 
+print("\nTop 15 Features by Random Forest Importance:")
+print(top_rf[['Feature', 'RF_Importance', 'MLR_Coefficient']].to_string(index=False))
+
+print(f"\nMultiple Linear Regression Intercept: {lr.intercept_:.4f}")
+
+# Interpretation ---
 print("\nNote:")
-print("- LR Coefficients show the direction and strength of linear relationships with the target.")
+print("- MLR Coefficients show the direction and strength of linear relationships with the target.")
 print("- Positive coefficients increase predicted salary; negative coefficients decrease it.")
 print("- RF Importance reflects how much each feature contributes to model accuracy (non-linear).")
-
+print("- RF does not provide directionality, but captures feature interactions and non-linear effects.")
 ```
 
 Both models are trained on 80% of the data and will be evaluated on the remaining 20% test set. The Random Forest model can capture non-linear relationships and interactions between skills, while Multiple Linear Regression provides a baseline for comparison.
