@@ -26,7 +26,7 @@ execute:
   message: false
 ---
 
-### Overview
+## Overview
 
 This Exploratory Data Analysis (EDA) examines job postings from Lightcast to uncover salary trends, experience requirements, remote work dynamics, and skill demand across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles.
 Lightcast is a leading labor market analytics provider, whose datasets are widely used to study real-time hiring trends and skills demand [@lightcast2024labor].
@@ -51,7 +51,7 @@ Specifically, this section covers:
 Together, these insights establish a clear understanding of labor market patterns and help define which features are most predictive for the upcoming salary regression models.
 
 
-### Load and Prepare Data
+## Load and Prepare Data
 ```{python}
 # | echo: true
 # | eval: true
@@ -124,7 +124,7 @@ if len(df) > 5000:
 # print(f" Loaded {len(df)} rows safely with {len(df.columns)} unique columns.")
 ```
 
-### Data Preparation and Cleaning
+## Data Preparation and Cleaning
 
 The dataset used for this analysis was sourced from Lightcast job postings, containing thousands of listings across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles.
 To ensure data quality and consistency:
@@ -203,7 +203,7 @@ fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.show()
 ```
 
-### Salary Distribution
+## Salary Distribution
 The salary distribution is right-skewed, indicating that most job postings fall within the $80K–$150K range.
 A smaller number of positions extend above $200K, reflecting higher-paying senior and Machine Learning roles.
 This pattern aligns with national data showing that advanced technical and AI-related positions command higher compensation due to specialized skill requirements [@bls2024wages; @bone2025skills].
@@ -270,7 +270,7 @@ fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.show()
 ```
 
-### Salary vs Experience
+## Salary vs Experience
 The scatterplot shows a clear positive relationship between experience and salary across all remote work types.
 As minimum years of experience increase, average salary consistently rises, supporting labor economics findings that work experience contributes directly to wage growth [@mincer1974schooling; @bls2024wages].
 Among the three groups, Remote and Hybrid Remote roles generally track above Not Remote positions, suggesting that employers may offer higher pay for flexible or remote-friendly jobs [@mckinsey2022remote].
@@ -324,7 +324,7 @@ fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.show()
 ```
 
-### Role-Based Salary Trends
+## Role-Based Salary Trends
 The boxplot shows clear salary variation across professional role groups.
 Network and Systems Engineering roles offer the highest median salaries and the widest overall pay range, consistent with labor market reports highlighting elevated compensation for infrastructure and AI-related talent [@lightcast2024labor].
 In contrast, Business Analysis and Marketing Specialist roles cluster around lower medians, reflecting standardized pay structures common in business-facing positions [@glassdoor2024trends].
@@ -398,7 +398,7 @@ fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.show()
 ```
 
-### Remote Work vs Salary Trends
+## Remote Work vs Salary Trends
 The salary distribution varies noticeably by remote work type.
 Remote roles show the highest median salaries and a slightly wider interquartile range, indicating greater earning potential and variability among remote positions.
 Hybrid Remote jobs follow closely, while Onsite roles exhibit lower medians and tighter spreads.
@@ -465,7 +465,7 @@ fig.update_yaxes(showgrid=True, gridcolor="lightgray", zeroline=False)
 fig.show()
 ```
 
-### Top Skills Frequency
+## Top Skills Frequency
 The top skills highlight a blend of technical, analytical, and interpersonal competencies valued across data-driven roles.
 Communication and Data Analysis appear most frequently, underscoring the importance of translating insights into business impact.
 SQL, Python, and Microsoft Excel remain core technical skills, while Project Management and Leadership emphasize strategic coordination [@datacamp_ml; @lightcast2024labor].
@@ -521,7 +521,7 @@ fig.update_yaxes(
 fig.show()
 ```
 
-### Feature Correlation Analysis Heatmap
+## Feature Correlation Analysis Heatmap
 This correlation analysis evaluates the linear relationships between Average Salary, Minimum Years of Experience, and Maximum Years of Experience.
 The results show that salary is moderately correlated with both experience metrics — 0.51 with minimum and 0.58 with maximum years of experience.
 This indicates that as experience increases, compensation tends to rise, though not perfectly linearly [@bls2024wages; @mincer1974schooling].

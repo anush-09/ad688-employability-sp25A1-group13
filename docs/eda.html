@@ -191,8 +191,22 @@ div.csl-indent {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="eda.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">1</span> Overview</a></li>
+  <li><a href="#load-and-prepare-data" id="toc-load-and-prepare-data" class="nav-link" data-scroll-target="#load-and-prepare-data"><span class="header-section-number">2</span> Load and Prepare Data</a></li>
+  <li><a href="#data-preparation-and-cleaning" id="toc-data-preparation-and-cleaning" class="nav-link" data-scroll-target="#data-preparation-and-cleaning"><span class="header-section-number">3</span> Data Preparation and Cleaning</a></li>
+  <li><a href="#salary-distribution" id="toc-salary-distribution" class="nav-link" data-scroll-target="#salary-distribution"><span class="header-section-number">4</span> Salary Distribution</a></li>
+  <li><a href="#salary-vs-experience" id="toc-salary-vs-experience" class="nav-link" data-scroll-target="#salary-vs-experience"><span class="header-section-number">5</span> Salary vs Experience</a></li>
+  <li><a href="#role-based-salary-trends" id="toc-role-based-salary-trends" class="nav-link" data-scroll-target="#role-based-salary-trends"><span class="header-section-number">6</span> Role-Based Salary Trends</a></li>
+  <li><a href="#remote-work-vs-salary-trends" id="toc-remote-work-vs-salary-trends" class="nav-link" data-scroll-target="#remote-work-vs-salary-trends"><span class="header-section-number">7</span> Remote Work vs Salary Trends</a></li>
+  <li><a href="#top-skills-frequency" id="toc-top-skills-frequency" class="nav-link" data-scroll-target="#top-skills-frequency"><span class="header-section-number">8</span> Top Skills Frequency</a></li>
+  <li><a href="#feature-correlation-analysis-heatmap" id="toc-feature-correlation-analysis-heatmap" class="nav-link" data-scroll-target="#feature-correlation-analysis-heatmap"><span class="header-section-number">9</span> Feature Correlation Analysis Heatmap</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="eda.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -235,8 +249,8 @@ div.csl-indent {
 </header>
 
 
-<section id="overview" class="level3" data-number="0.1">
-<h3 data-number="0.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">0.1</span> Overview</h3>
+<section id="overview" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="overview"><span class="header-section-number">1</span> Overview</h2>
 <p>This Exploratory Data Analysis (EDA) examines job postings from Lightcast to uncover salary trends, experience requirements, remote work dynamics, and skill demand across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles. Lightcast is a leading labor market analytics provider, whose datasets are widely used to study real-time hiring trends and skills demand <span class="citation" data-cites="lightcast2024labor">(<a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>. The analysis prepares the dataset for modeling and provides statistical and visual insights that guide the regression and feature engineering stages of the project.</p>
 <p>Specifically, this section covers:</p>
 <ul>
@@ -250,9 +264,9 @@ div.csl-indent {
 </ul>
 <p>Together, these insights establish a clear understanding of labor market patterns and help define which features are most predictive for the upcoming salary regression models.</p>
 </section>
-<section id="load-and-prepare-data" class="level3" data-number="0.2">
-<h3 data-number="0.2" class="anchored" data-anchor-id="load-and-prepare-data"><span class="header-section-number">0.2</span> Load and Prepare Data</h3>
-<div id="282a743a" class="cell" data-execution_count="1">
+<section id="load-and-prepare-data" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="load-and-prepare-data"><span class="header-section-number">2</span> Load and Prepare Data</h2>
+<div id="655d4c71" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -324,8 +338,8 @@ div.csl-indent {
 </details>
 </div>
 </section>
-<section id="data-preparation-and-cleaning" class="level3" data-number="0.3">
-<h3 data-number="0.3" class="anchored" data-anchor-id="data-preparation-and-cleaning"><span class="header-section-number">0.3</span> Data Preparation and Cleaning</h3>
+<section id="data-preparation-and-cleaning" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="data-preparation-and-cleaning"><span class="header-section-number">3</span> Data Preparation and Cleaning</h2>
 <p>The dataset used for this analysis was sourced from Lightcast job postings, containing thousands of listings across Business Analytics (BA), Data Science (DS), and Machine Learning (ML) roles. To ensure data quality and consistency:</p>
 <p>Column Normalization: Extra spaces and hidden characters were stripped from column names to avoid mismatches and duplicates.</p>
 <p>Duplicate Removal: Identical columns were collapsed to retain only unique fields.</p>
@@ -335,7 +349,7 @@ div.csl-indent {
 <p>Invalid Data Removal: Rows with missing or non-positive salaries were dropped.</p>
 <p>Downsampling: For performance, the dataset was randomly reduced to 5,000 representative rows, preserving the statistical diversity of the original population.</p>
 <p>This preprocessing established a clean, consistent dataset suitable for visualization and modeling.</p>
-<div id="c6c5da12" class="cell" data-execution_count="2">
+<div id="ace7de13" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter valid salaries</span></span>
@@ -399,10 +413,10 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="salary-distribution" class="level3" data-number="0.4">
-<h3 data-number="0.4" class="anchored" data-anchor-id="salary-distribution"><span class="header-section-number">0.4</span> Salary Distribution</h3>
+<section id="salary-distribution" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="salary-distribution"><span class="header-section-number">4</span> Salary Distribution</h2>
 <p>The salary distribution is right-skewed, indicating that most job postings fall within the $80K–$150K range. A smaller number of positions extend above $200K, reflecting higher-paying senior and Machine Learning roles. This pattern aligns with national data showing that advanced technical and AI-related positions command higher compensation due to specialized skill requirements <span class="citation" data-cites="bls2024wages bone2025skills">(<a href="#ref-bls2024wages" role="doc-biblioref">Bureau of Labor Statistics (2024)</a>; <a href="#ref-bone2025skills" role="doc-biblioref">Bone, Ehlinger, and Stephany (2025)</a>)</span>. Such variation underscores the growing salary dispersion across digital and data-driven occupations <span class="citation" data-cites="makela2024complement">(<a href="#ref-makela2024complement" role="doc-biblioref">Mäkelä and Stephany (2024)</a>)</span>.</p>
-<div id="65a68a31" class="cell" data-execution_count="3">
+<div id="1cac83c2" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out invalid or missing values</span></span>
@@ -469,10 +483,10 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="salary-vs-experience" class="level3" data-number="0.5">
-<h3 data-number="0.5" class="anchored" data-anchor-id="salary-vs-experience"><span class="header-section-number">0.5</span> Salary vs Experience</h3>
+<section id="salary-vs-experience" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="salary-vs-experience"><span class="header-section-number">5</span> Salary vs Experience</h2>
 <p>The scatterplot shows a clear positive relationship between experience and salary across all remote work types. As minimum years of experience increase, average salary consistently rises, supporting labor economics findings that work experience contributes directly to wage growth <span class="citation" data-cites="mincer1974schooling bls2024wages">(<a href="#ref-mincer1974schooling" role="doc-biblioref">Mincer (1974)</a>; <a href="#ref-bls2024wages" role="doc-biblioref">Bureau of Labor Statistics (2024)</a>)</span>. Among the three groups, Remote and Hybrid Remote roles generally track above Not Remote positions, suggesting that employers may offer higher pay for flexible or remote-friendly jobs <span class="citation" data-cites="mckinsey2022remote">(<a href="#ref-mckinsey2022remote" role="doc-biblioref">McKinsey &amp; Company (2022)</a>)</span>. This mirrors recent research showing that post-pandemic flexibility often correlates with higher total compensation, especially for data professionals <span class="citation" data-cites="glassdoor2024trends">(<a href="#ref-glassdoor2024trends" role="doc-biblioref">Glassdoor Economic Research (2024)</a>)</span>.</p>
-<div id="211617ab" class="cell" data-execution_count="4">
+<div id="fe2debc6" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Filter valid salary data</span></span>
@@ -526,10 +540,10 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="role-based-salary-trends" class="level3" data-number="0.6">
-<h3 data-number="0.6" class="anchored" data-anchor-id="role-based-salary-trends"><span class="header-section-number">0.6</span> Role-Based Salary Trends</h3>
+<section id="role-based-salary-trends" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="role-based-salary-trends"><span class="header-section-number">6</span> Role-Based Salary Trends</h2>
 <p>The boxplot shows clear salary variation across professional role groups. Network and Systems Engineering roles offer the highest median salaries and the widest overall pay range, consistent with labor market reports highlighting elevated compensation for infrastructure and AI-related talent <span class="citation" data-cites="lightcast2024labor">(<a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>. In contrast, Business Analysis and Marketing Specialist roles cluster around lower medians, reflecting standardized pay structures common in business-facing positions <span class="citation" data-cites="glassdoor2024trends">(<a href="#ref-glassdoor2024trends" role="doc-biblioref">Glassdoor Economic Research (2024)</a>)</span>. Overall, the trend highlights that technical specialization and data infrastructure expertise command higher pay within analytics fields <span class="citation" data-cites="bone2025skills">(<a href="#ref-bone2025skills" role="doc-biblioref">Bone, Ehlinger, and Stephany (2025)</a>)</span>.</p>
-<div id="de65e285" class="cell" data-execution_count="5">
+<div id="74314dd5" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Copy and clean up data</span></span>
@@ -602,10 +616,10 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="remote-work-vs-salary-trends" class="level3" data-number="0.7">
-<h3 data-number="0.7" class="anchored" data-anchor-id="remote-work-vs-salary-trends"><span class="header-section-number">0.7</span> Remote Work vs Salary Trends</h3>
+<section id="remote-work-vs-salary-trends" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="remote-work-vs-salary-trends"><span class="header-section-number">7</span> Remote Work vs Salary Trends</h2>
 <p>The salary distribution varies noticeably by remote work type. Remote roles show the highest median salaries and a slightly wider interquartile range, indicating greater earning potential and variability among remote positions. Hybrid Remote jobs follow closely, while Onsite roles exhibit lower medians and tighter spreads. This mirrors workforce evidence that remote-capable roles—particularly in analytics and technology—carry a wage premium and higher demand <span class="citation" data-cites="mckinsey2022remote lightcast2024labor">(<a href="#ref-mckinsey2022remote" role="doc-biblioref">McKinsey &amp; Company (2022)</a>; <a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>. The findings align with broader trends emphasizing flexibility and digital collaboration as valued aspects of compensation <span class="citation" data-cites="glassdoor2024trends">(<a href="#ref-glassdoor2024trends" role="doc-biblioref">Glassdoor Economic Research (2024)</a>)</span>.</p>
-<div id="3cc4ac81" class="cell" data-execution_count="6">
+<div id="0bf6d2fa" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Use the detected skill column</span></span>
@@ -671,10 +685,10 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="top-skills-frequency" class="level3" data-number="0.8">
-<h3 data-number="0.8" class="anchored" data-anchor-id="top-skills-frequency"><span class="header-section-number">0.8</span> Top Skills Frequency</h3>
+<section id="top-skills-frequency" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="top-skills-frequency"><span class="header-section-number">8</span> Top Skills Frequency</h2>
 <p>The top skills highlight a blend of technical, analytical, and interpersonal competencies valued across data-driven roles. Communication and Data Analysis appear most frequently, underscoring the importance of translating insights into business impact. SQL, Python, and Microsoft Excel remain core technical skills, while Project Management and Leadership emphasize strategic coordination <span class="citation" data-cites="datacamp_ml lightcast2024labor">(<a href="#ref-datacamp_ml" role="doc-biblioref">DataCamp (2025)</a>; <a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>. This distribution reflects the “T-shaped” professional model, where deep technical knowledge is complemented by broad problem-solving and collaboration abilities <span class="citation" data-cites="bone2025skills makela2024complement">(<a href="#ref-bone2025skills" role="doc-biblioref">Bone, Ehlinger, and Stephany (2025)</a>; <a href="#ref-makela2024complement" role="doc-biblioref">Mäkelä and Stephany (2024)</a>)</span>.</p>
-<div id="56e44172" class="cell" data-execution_count="7">
+<div id="a5b32791" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  Compute correlation matrix</span></span>
@@ -730,8 +744,8 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="feature-correlation-analysis-heatmap" class="level3" data-number="0.9">
-<h3 data-number="0.9" class="anchored" data-anchor-id="feature-correlation-analysis-heatmap"><span class="header-section-number">0.9</span> Feature Correlation Analysis Heatmap</h3>
+<section id="feature-correlation-analysis-heatmap" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="feature-correlation-analysis-heatmap"><span class="header-section-number">9</span> Feature Correlation Analysis Heatmap</h2>
 <p>This correlation analysis evaluates the linear relationships between Average Salary, Minimum Years of Experience, and Maximum Years of Experience. The results show that salary is moderately correlated with both experience metrics — 0.51 with minimum and 0.58 with maximum years of experience. This indicates that as experience increases, compensation tends to rise, though not perfectly linearly <span class="citation" data-cites="bls2024wages mincer1974schooling">(<a href="#ref-bls2024wages" role="doc-biblioref">Bureau of Labor Statistics (2024)</a>; <a href="#ref-mincer1974schooling" role="doc-biblioref">Mincer (1974)</a>)</span>. The strong correlation (1.0) between minimum and maximum experience suggests these variables are closely tied — employers typically define experience ranges that scale together <span class="citation" data-cites="lightcast2024labor">(<a href="#ref-lightcast2024labor" role="doc-biblioref">Lightcast (2024)</a>)</span>.</p>
 <p>Overall, the heatmap confirms that experience is a meaningful predictor of salary, supporting its inclusion as a key numerical feature in subsequent regression modeling <span class="citation" data-cites="glassdoor2024trends mckinsey2022remote">(<a href="#ref-glassdoor2024trends" role="doc-biblioref">Glassdoor Economic Research (2024)</a>; <a href="#ref-mckinsey2022remote" role="doc-biblioref">McKinsey &amp; Company (2022)</a>)</span>.</p>
 
